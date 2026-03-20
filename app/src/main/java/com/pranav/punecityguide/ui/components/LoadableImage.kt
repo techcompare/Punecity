@@ -78,7 +78,11 @@ fun LoadableImage(
     category: String = "",
 ) {
     val context = LocalContext.current
-    val displayUrl = model?.takeIf { it.isNotBlank() } ?: ""
+    val displayUrl = when {
+        model.isNullOrBlank() -> ""
+        model.startsWith("http") -> model
+        else -> "${com.pranav.punecityguide.AppConfig.Supabase.COMMUNITY_SUPABASE_URL.trimEnd('/')}/storage/v1/object/public/posts/$model"
+    }
 
     val palette = categoryPalette(category, contentDescription ?: "")
 

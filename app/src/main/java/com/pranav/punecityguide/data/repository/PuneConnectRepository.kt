@@ -9,16 +9,18 @@ import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import kotlinx.coroutines.*
 import com.pranav.punecityguide.data.service.RemoteAiService
 import com.pranav.punecityguide.data.service.AiMessage
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class PuneConnectRepository {
     private val client: HttpClient
         get() = SupabaseClient.getHttpClient()
 
-    private val baseUrl = AppConfig.Supabase.SUPABASE_URL
+    private val baseUrl = AppConfig.Supabase.COMMUNITY_SUPABASE_URL
+    
+    // Structured Concurrency for AI background tasks
+    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     // --- Storage (Image Upload) ---
 
@@ -136,7 +138,7 @@ class PuneConnectRepository {
                 
                 // --- Outstanding Backend: AI Auto-Response ---
                 // Trigger a background "AI Discussion Starter" comment
-                kotlinx.coroutines.GlobalScope.launch {
+                repositoryScope.launch {
                     try {
                         val aiPrompt = """
                             A user just posted this on Pune Connect:
@@ -148,21 +150,26 @@ class PuneConnectRepository {
                             If it's a traffic issue, be sympathetic. If it's food, be excited.
                         """.trimIndent()
                         
-                        val aiReply = RemoteAiService.getChatResponse(aiPrompt).getOrNull()
-                        if (aiReply != null) {
-                            val aiComment = ConnectComment(
-                                id = java.util.UUID.randomUUID().toString(),
-                                postId = createdPost.id,
-                                userId = "00000000-0000-0000-0000-000000000000", // Pune AI Assistant System ID
-                                text = "🤖 *Pune AI Insight:* $aiReply",
-                                createdAt = null // Let Supabase handle now()
+                        // 2. Generate the "First Response" AI Comment
+                        val response = com.pranav.punecityguide.data.service.RemoteAiService.getChatResponse(
+                            aiPrompt,
+                            listOf(com.pranav.punecityguide.data.service.AiMessage("system", "You are the Pune Connect AI helper. Help users with their posts."))
+                        ).getOrDefault("Punekar, what a post! Lay Bhari! ✨")
+
+                        
+                        // 3. Save it as a REAL database comment for the community to see
+                        if (response.isNotBlank()) {
+                            addComment(
+                                ConnectComment(
+                                    id = java.util.UUID.randomUUID().toString(),
+                                    postId = createdPost.id,
+                                    userId = "00000000-0000-0000-0000-000000000000", // System AI ID
+                                    text = "🤖 *Pune AI Insight:* $response"
+                                )
                             )
-                            addComment(aiComment).onFailure { 
-                                com.pranav.punecityguide.util.Logger.e("Failed to post AI auto-comment: ${it.message}")
-                            }
                         }
                     } catch (e: Exception) {
-                        // Silent fail for AI side-effect
+                        // Silent fail for background tasks
                     }
                 }
                 
@@ -425,8 +432,7 @@ class PuneConnectRepository {
                 id = java.util.UUID.randomUUID().toString(),
                 userId = userId,
                 userName = userName,
-                text = text,
-                createdAt = null
+                text = text
             )
             val response = client.post("$baseUrl/rest/v1/${AppConfig.Supabase.TABLE_LOUNGE}") {
                 contentType(ContentType.Application.Json)
@@ -437,7 +443,7 @@ class PuneConnectRepository {
                 val created: List<GlobalChatMessage> = response.body()
                 Result.success(created.first())
             } else {
-                Result.failure(Exception("Failed to send message: ${response.status}"))
+                Result.failure(Exception("Failed to send lounge message: ${response.status}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

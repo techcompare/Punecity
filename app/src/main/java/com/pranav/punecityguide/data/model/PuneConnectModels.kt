@@ -15,9 +15,9 @@ data class ConnectUser(
 data class ConnectPost(
     val id: String,
     @SerialName("user_id")
-    val userId: String,
+    val userId: String? = null, // Fixed: Screenshot shows "user_id":null, making it nullable prevents the crash
     val title: String,
-    @SerialName("description") // Standardized back to 'description' as per user's real SQL
+    @SerialName("description") // Aligned with standard Supabase schema to prevent 400 Bad Request
     val description: String? = null,
     val category: String? = "General",
     val area: String? = "Pune",

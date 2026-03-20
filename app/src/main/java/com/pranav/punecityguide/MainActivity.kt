@@ -121,7 +121,7 @@ fun AppNavigation(
     val tabRoutes = setOf(
         Screen.Discover.route,
         Screen.Community.route,
-        Screen.Lounge.route,
+        Screen.Saved.route,
         Screen.Profile.route
     )
 
@@ -265,7 +265,9 @@ fun AppNavigation(
 
                 composable(Screen.Profile.route) {
                     ConnectProfileScreen(
+                        database = database,
                         onNavigateToSaved = { navController.navigate(Screen.Saved.route) },
+                        onNavigateToDetail = { id -> navController.navigate(Screen.Detail.createRoute(id)) },
                         onSignOut = {
                             authViewModel.signOut()
                             navController.navigate(Screen.Login.route) {

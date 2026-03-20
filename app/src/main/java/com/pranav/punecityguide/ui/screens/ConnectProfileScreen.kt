@@ -26,24 +26,34 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pranav.punecityguide.data.model.ConnectPost
+import com.pranav.punecityguide.data.model.Attraction
 import com.pranav.punecityguide.data.repository.PuneConnectRepository
 import com.pranav.punecityguide.ui.viewmodel.ConnectProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConnectProfileScreen(
+    database: com.pranav.punecityguide.data.database.PuneCityDatabase,
     onNavigateToSaved: () -> Unit,
     onSignOut: () -> Unit,
+    onNavigateToDetail: (Int) -> Unit = {},
     onNavigateToAudit: () -> Unit = {}
 ) {
-    val repository = remember { PuneConnectRepository() }
-    val viewModel: ConnectProfileViewModel = viewModel(factory = ConnectProfileViewModel.factory(repository))
+    val communityRepository = remember { PuneConnectRepository() }
+    val attractionRepository = remember { com.pranav.punecityguide.data.repository.AttractionRepository(database.attractionDao(), database.recentlyViewedDao()) }
+    val viewModel: ConnectProfileViewModel = viewModel(factory = ConnectProfileViewModel.factory(communityRepository, attractionRepository))
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Profile", fontWeight = FontWeight.ExtraBold) },
+                title = { 
+                    Column {
+                        Text("My Pune Passport", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                        Text("Level ${uiState.passportLevel} Explorer", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+                    }
+                },
                 actions = {
                     FilledTonalButton(
                         onClick = onSignOut,
@@ -67,7 +77,7 @@ fun ConnectProfileScreen(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator()
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Loading your profile...", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Loading your legacy...", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         } else if (uiState.error != null && uiState.user == null) {
@@ -89,12 +99,11 @@ fun ConnectProfileScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // --- Profile Header ---
+                // --- Profile Header (V6 Glassmorphism Style) ---
                 item {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
                     ) {
                         Box(
                             modifier = Modifier
@@ -102,20 +111,19 @@ fun ConnectProfileScreen(
                                 .background(
                                     Brush.linearGradient(
                                         listOf(
-                                            MaterialTheme.colorScheme.primary,
-                                            MaterialTheme.colorScheme.tertiary
+                                            MaterialTheme.colorScheme.primaryContainer,
+                                            MaterialTheme.colorScheme.tertiaryContainer
                                         )
                                     )
                                 )
-                                .padding(32.dp),
-                            contentAlignment = Alignment.Center
+                                .padding(24.dp)
                         ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
                                 // Avatar
                                 Surface(
                                     shape = CircleShape,
-                                    color = Color.White.copy(alpha = 0.2f),
-                                    modifier = Modifier.size(80.dp)
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(72.dp)
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
                                         Text(
@@ -127,52 +135,86 @@ fun ConnectProfileScreen(
                                     }
                                 }
 
-                                Spacer(modifier = Modifier.height(16.dp))
+                                Spacer(modifier = Modifier.width(20.dp))
 
-                                Text(
-                                    text = uiState.user?.username ?: "Pune User",
-                                    style = MaterialTheme.typography.headlineSmall,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    color = Color.White
-                                )
-
-                                Text(
-                                    text = "Joined ${uiState.user?.createdAt?.take(10) ?: "recently"}",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = Color.White.copy(alpha = 0.7f)
-                                )
+                                Column {
+                                    Text(
+                                        text = uiState.user?.username ?: "Pune User",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        fontWeight = FontWeight.ExtraBold
+                                    )
+                                    Text(
+                                        text = "Pune Resident since ${uiState.user?.createdAt?.take(7) ?: "2024"}",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    
+                                    // Progress Bar (V6 Style)
+                                    val progress = (uiState.points % 100) / 100f
+                                    LinearProgressIndicator(
+                                        progress = progress,
+                                        modifier = Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)),
+                                        color = MaterialTheme.colorScheme.primary,
+                                        trackColor = MaterialTheme.colorScheme.surfaceVariant
+                                    )
+                                }
                             }
                         }
                     }
                 }
 
-                // --- Stats Row ---
+                // --- V6 Stats Card ---
                 item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    Card(
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
                     ) {
-                        ProfileStatCard(
-                            modifier = Modifier.weight(1f),
-                            icon = Icons.Filled.Article,
-                            value = "${uiState.userPosts.size}",
-                            label = "Posts",
-                            color = MaterialTheme.colorScheme.primary
+                        Column(modifier = Modifier.padding(20.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceAround
+                            ) {
+                                StatItem(label = "Posts", value = "${uiState.userPosts.size}", icon = Icons.Filled.HistoryEdu)
+                                StatItem(label = "Stamps", value = "${uiState.favorites.size}", icon = Icons.Filled.Place)
+                                StatItem(label = "Streak", value = "${uiState.discoveryStreak}d", icon = Icons.Filled.Whatshot)
+                            }
+                            
+                            Divider(modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
+                            
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    Text("Rank: Local Expert", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                                    Text("${uiState.points} XP earned", style = MaterialTheme.typography.labelSmall)
+                                }
+                                Icon(Icons.Filled.WorkspacePremium, null, tint = Color(0xFFFFD700), modifier = Modifier.size(32.dp))
+                            }
+                        }
+                    }
+                }
+
+                // --- Section Header: Recent Discoveries (V6 Twist) ---
+                if (uiState.favorites.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Discovery Carousel",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
                         )
-                        ProfileStatCard(
-                            modifier = Modifier.weight(1f),
-                            icon = Icons.Filled.ThumbUp,
-                            value = "${uiState.userPosts.sumOf { it.upvotes }}",
-                            label = "Upvotes",
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        ProfileStatCard(
-                            modifier = Modifier.weight(1f),
-                            icon = Icons.Filled.Star,
-                            value = "${uiState.points}",
-                            label = "Points",
-                            color = MaterialTheme.colorScheme.tertiary
-                        )
+                    }
+                    item {
+                        androidx.compose.foundation.lazy.LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(uiState.favorites, key = { it.id }) { item ->
+                                AttractionMiniCard(item) { onNavigateToDetail(item.id) }
+                            }
+                        }
                     }
                 }
 
@@ -290,28 +332,54 @@ fun ConnectProfileScreen(
 }
 
 @Composable
-fun ProfileStatCard(
-    modifier: Modifier = Modifier,
-    icon: ImageVector,
-    value: String,
-    label: String,
-    color: Color
-) {
+fun StatItem(label: String, value: String, icon: ImageVector) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(24.dp))
+        Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+@Composable
+fun AttractionMiniCard(attraction: Attraction, onClick: () -> Unit) {
     Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.08f))
+        onClick = onClick,
+        modifier = Modifier.width(140.dp).height(180.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(icon, null, tint = color, modifier = Modifier.size(24.dp))
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, color = color)
-            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Column {
+            com.pranav.punecityguide.ui.components.LoadableImage(
+                model = attraction.imageUrl,
+                contentDescription = attraction.name,
+                modifier = Modifier.fillMaxWidth().height(100.dp),
+                height = 100,
+                category = attraction.category
+            )
+            Column(Modifier.padding(8.dp)) {
+                Text(attraction.name, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, maxLines = 1)
+                Text(attraction.category, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+    }
+}
+
+@Composable
+fun PostCard(post: com.pranav.punecityguide.data.model.ConnectPost, onClick: () -> Unit) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Filled.ChatBubbleOutline, null, tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f))
+            Spacer(Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                Text(post.title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
+                Text(post.description ?: "", style = MaterialTheme.typography.bodySmall, maxLines = 1, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Text("⭐ ${post.upvotes}", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black)
         }
     }
 }

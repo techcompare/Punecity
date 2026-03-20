@@ -45,8 +45,11 @@ object SupabaseClient {
                     on(io.ktor.client.plugins.api.Send) { request ->
                         val targetUrl = request.url.toString()
 
-                        // Only inject Supabase auth headers for requests to OUR backend
-                        if (targetUrl.startsWith(baseUrl)) {
+                        // Only inject Supabase auth headers for requests to OUR backend(s)
+                        val mainBase = AppConfig.Supabase.SUPABASE_URL
+                        val commBase = AppConfig.Supabase.COMMUNITY_SUPABASE_URL
+                        
+                        if (targetUrl.startsWith(mainBase) || targetUrl.startsWith(commBase)) {
                             // Refresh cached token periodically (every 10s)
                             val now = System.currentTimeMillis()
                             if (currentAccessToken == null || now - lastTokenFetchMs > 10_000) {
@@ -54,11 +57,18 @@ object SupabaseClient {
                                 lastTokenFetchMs = now
                             }
 
-                            val tokenToUse = currentAccessToken ?: anonKey
+                            // Use specific anonKey based on target project
+                            val targetAnonKey = if (targetUrl.startsWith(commBase)) {
+                                AppConfig.Supabase.COMMUNITY_SUPABASE_ANON_KEY
+                            } else {
+                                AppConfig.Supabase.SUPABASE_ANON_KEY
+                            }
+
+                            val tokenToUse = currentAccessToken ?: targetAnonKey
 
                             // Always set apikey (Supabase requires it for RLS)
                             request.headers.remove("apikey")
-                            request.headers.append("apikey", anonKey)
+                            request.headers.append("apikey", targetAnonKey)
 
                             // Set Authorization with the user's session token (or anon fallback)
                             request.headers.remove("Authorization")

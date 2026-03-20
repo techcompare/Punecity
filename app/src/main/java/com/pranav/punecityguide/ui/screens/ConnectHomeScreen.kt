@@ -18,13 +18,9 @@ import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,114 +103,175 @@ fun ConnectHomeScreen(
             ExtendedFloatingActionButton(
                 onClick = onNavigateToCreatePost,
                 icon = { Icon(Icons.Filled.Add, null) },
-                text = { Text("Post Update") }
+                text = { Text("Post Update") },
+                expanded = !scrollState.isScrollInProgress
             )
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            // Sort & Filter
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            // V6 Social Hub Tabs
+            var selectedTab by remember { mutableStateOf(0) }
+            val tabs = listOf("Community Feed", "Live Lounge")
+            
+            TabRow(
+                selectedTabIndex = selectedTab,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.primary,
+                divider = {},
+                indicator = { tabPositions ->
+                    TabRowDefaults.SecondaryIndicator(
+                        Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
+                        color = MaterialTheme.colorScheme.primary,
+                        height = 3.dp
+                    )
+                }
             ) {
-                FilterChip(
-                    selected = uiState.selectedSort == "latest",
-                    onClick = { viewModel.setSortMode("latest") },
-                    label = { Text("Latest") }
-                )
-                FilterChip(
-                    selected = uiState.selectedSort == "trending",
-                    onClick = { viewModel.setSortMode("trending") },
-                    label = { Text("Trending") }
-                )
-                
-                VerticalDivider(modifier = Modifier.height(24.dp).width(1.dp))
-                
-                LazyRow(
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        selected = selectedTab == index,
+                        onClick = { selectedTab = index },
+                        text = { 
+                            Text(
+                                title, 
+                                fontWeight = if (selectedTab == index) FontWeight.Black else FontWeight.Medium,
+                                letterSpacing = 0.5.sp
+                            ) 
+                        }
+                    )
+                }
+            }
+
+            if (selectedTab == 1) {
+                // Live Lounge Slot (V6 Integrated)
+                CityLoungeScreen()
+            } else {
+                // Original Feed UI
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(uiState.availableAreas) { area ->
-                        FilterChip(
-                            selected = uiState.selectedArea == area,
-                            onClick = { 
-                                if (uiState.selectedArea == area) viewModel.setAreaFilter(null) 
-                                else viewModel.setAreaFilter(area)
-                            },
-                            label = { Text(area) }
-                        )
-                    }
-                }
-            }
-
-            if (uiState.isLoading) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            }
-
-            if (uiState.error != null) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Error: ${uiState.error}", color = MaterialTheme.colorScheme.error)
-                }
-            } else if (uiState.posts.isEmpty()) {
-                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(32.dp)) {
-                        Icon(Icons.Filled.PostAdd, null, modifier = Modifier.size(64.dp), tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            "No updates in this area yet", 
-                            style = MaterialTheme.typography.titleMedium, 
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            "Be the first to post about ${uiState.selectedArea ?: "Pune"}!", 
-                            style = MaterialTheme.typography.bodyMedium, 
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
-                        Button(onClick = onNavigateToCreatePost) {
-                            Icon(Icons.Filled.Add, null, modifier = Modifier.size(18.dp))
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Create First Post")
+                    FilterChip(
+                        selected = uiState.selectedSort == "latest",
+                        onClick = { viewModel.setSortMode("latest") },
+                        label = { Text("Latest") }
+                    )
+                    FilterChip(
+                        selected = uiState.selectedSort == "trending",
+                        onClick = { viewModel.setSortMode("trending") },
+                        label = { Text("Trending") }
+                    )
+                    
+                    VerticalDivider(modifier = Modifier.height(24.dp).width(1.dp))
+                    
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(uiState.availableAreas) { area ->
+                            FilterChip(
+                                selected = uiState.selectedArea == area,
+                                onClick = { 
+                                    if (uiState.selectedArea == area) viewModel.setAreaFilter(null) 
+                                    else viewModel.setAreaFilter(area)
+                                },
+                                label = { Text(area) }
+                            )
                         }
                     }
                 }
-            } else {
-                LazyColumn(
-                    state = scrollState,
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                    contentPadding = PaddingValues(bottom = 120.dp)
-                ) {
-                    // Daily AI Spark
-                    item {
-                        PuneDailySpark(
-                            tip = uiState.dailyAiSpark,
-                            onPromptSelected = { prompt -> 
-                                onAiPrompt(prompt)
-                            }
-                        )
+
+                if (uiState.isLoading) {
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
+
+                if (uiState.error != null) {
+                    Box(modifier = Modifier.fillMaxSize().weight(1f), contentAlignment = Alignment.Center) {
+                        Text("Error: ${uiState.error}", color = MaterialTheme.colorScheme.error)
                     }
+                } else if (uiState.posts.isEmpty()) {
+                     Box(modifier = Modifier.fillMaxSize().weight(1f), contentAlignment = Alignment.Center) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(32.dp)) {
+                            Icon(Icons.Filled.PostAdd, null, modifier = Modifier.size(64.dp), tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                "No updates in this area yet", 
+                                style = MaterialTheme.typography.titleMedium, 
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                "Be the first to post about ${uiState.selectedArea ?: "Pune"}!", 
+                                style = MaterialTheme.typography.bodyMedium, 
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Button(onClick = onNavigateToCreatePost) {
+                                Icon(Icons.Filled.Add, null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Create First Post")
+                            }
+                        }
+                    }
+                } else {
+                    LazyColumn(
+                        state = scrollState,
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        contentPadding = PaddingValues(bottom = 120.dp)
+                    ) {
+                        // Daily AI Spark
+                        item {
+                            PuneDailySpark(
+                                tip = uiState.dailyAiSpark,
+                                onPromptSelected = { prompt -> 
+                                    onAiPrompt(prompt)
+                                }
+                            )
+                        }
 
-                    val urgentPosts = uiState.posts.filter { (it.category ?: "") == "Alert" || (it.category ?: "") == "Traffic" }
-                    val otherPosts = uiState.posts.filterNot { (it.category ?: "") == "Alert" || (it.category ?: "") == "Traffic" }
+                        val urgentPosts = uiState.posts.filter { (it.category ?: "") == "Alert" || (it.category ?: "") == "Traffic" }
+                        val otherPosts = uiState.posts.filterNot { (it.category ?: "") == "Alert" || (it.category ?: "") == "Traffic" }
 
-                    if (urgentPosts.isNotEmpty()) {
+                        if (urgentPosts.isNotEmpty()) {
+                            item {
+                                Text(
+                                    "Live Pune Updates", 
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp),
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            }
+                            items(urgentPosts, key = { it.id }) { post ->
+                                Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
+                                    PostCard(
+                                        post = post,
+                                        isSaved = uiState.savedPostIds.contains(post.id),
+                                        onUpvote = { viewModel.votePost(post, 1) },
+                                        onDownvote = { viewModel.votePost(post, -1) },
+                                        onToggleSave = { viewModel.toggleSave(post.id) },
+                                        onClick = { onNavigateToDetail(post.id) }
+                                    )
+                                }
+                            }
+                        }
+                        
                         item {
                             Text(
-                                "Live Pune Updates", 
+                                "Community Feed", 
                                 style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp),
-                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(start = 16.dp, top = 32.dp, bottom = 8.dp),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.ExtraBold
                             )
                         }
-                        items(urgentPosts) { post ->
-                            Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
-                                PostCard(
+
+                        items(otherPosts, key = { it.id }) { post ->
+                            Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                                 PostCard(
                                     post = post,
                                     isSaved = uiState.savedPostIds.contains(post.id),
                                     onUpvote = { viewModel.votePost(post, 1) },
@@ -223,29 +280,6 @@ fun ConnectHomeScreen(
                                     onClick = { onNavigateToDetail(post.id) }
                                 )
                             }
-                        }
-                    }
-                    
-                    item {
-                        Text(
-                            "Community Feed", 
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(start = 16.dp, top = 32.dp, bottom = 8.dp),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontWeight = FontWeight.ExtraBold
-                        )
-                    }
-
-                    items(otherPosts) { post ->
-                        Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                             PostCard(
-                                post = post,
-                                isSaved = uiState.savedPostIds.contains(post.id),
-                                onUpvote = { viewModel.votePost(post, 1) },
-                                onDownvote = { viewModel.votePost(post, -1) },
-                                onToggleSave = { viewModel.toggleSave(post.id) },
-                                onClick = { onNavigateToDetail(post.id) }
-                            )
                         }
                     }
                 }

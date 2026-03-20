@@ -40,7 +40,7 @@ fun AppBottomNavBar(
     val items = listOf(
         BottomNavItem("Discover", Icons.Filled.Explore, Screen.Discover.route),
         BottomNavItem("Community", Icons.Filled.Forum, Screen.Community.route),
-        BottomNavItem("Lounge", Icons.Filled.Chat, Screen.Lounge.route),
+        BottomNavItem("Saved", Icons.Filled.Bookmark, Screen.Saved.route),
         BottomNavItem("Profile", Icons.Filled.AccountCircle, Screen.Profile.route),
     )
 
