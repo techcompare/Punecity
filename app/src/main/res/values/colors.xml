@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand color (Indigo 700) -->
+    <color name="primary">#4338CA</color>
+    <color name="primary_dark">#3730A3</color>
+    <color name="primary_light">#6366F1</color>
+
+    <!-- Splash screen background (very dark indigo) -->
+    <color name="splash_bg">#0F0A1E</color>
+
+    <!-- Secondary (Rose) -->
+    <color name="secondary">#F43F5E</color>
+    <color name="secondary_light">#FB7185</color>
+
+    <!-- Accent (Teal) -->
+    <color name="accent">#0D9488</color>
+
+    <!-- Gold accent -->
+    <color name="gold">#F59E0B</color>
+
+    <!-- Background Colors -->
+    <color name="background_light">#F8FAFC</color>
+    <color name="background_dark">#020617</color>
+
+    <!-- Surface Colors -->
+    <color name="surface_light">#FFFFFF</color>
+    <color name="surface_dark">#0F172A</color>
+
+    <!-- Error Colors -->
+    <color name="error_light">#DC2626</color>
+    <color name="error_dark">#F87171</color>
+
+    <!-- Utility -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+</resources>

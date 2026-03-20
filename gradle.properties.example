@@ -1,0 +1,9 @@
+# API Keys & Secrets (DO NOT COMMIT REAL VALUES)
+CLAUDE_API_KEY=your_claude_api_key_here
+CLAUDE_MODEL=nvidia/nemotron-3-super-120b-a12b:free
+REMOTE_ATTRACTIONS_PATH=attractions
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+COMMUNITY_SUPABASE_URL=your_community_supabase_url
+COMMUNITY_SUPABASE_ANON_KEY=your_community_supabase_anon_key
+COMMUNITY_TABLE=community_posts
