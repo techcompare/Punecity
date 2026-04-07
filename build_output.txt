@@ -36,57 +36,24 @@
 > Task :app:writeDebugAppMetadata UP-TO-DATE
 > Task :app:writeDebugSigningConfigVersions UP-TO-DATE
 
-> Task :app:compileDebugKotlin
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:83:13 Unresolved reference 'PuneCityTheme'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:84:17 @Composable invocations can only happen from the context of a @Composable function
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:84:82 @Composable invocations can only happen from the context of a @Composable function
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:86:40 Unresolved reference 'AuthViewModel'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:86:56 Unresolved reference 'viewModel'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:87:35 Unresolved reference 'AuthViewModelFactory'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:89:38 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:89:38 Property delegate must have a 'getValue(Nothing?, KProperty0<ERROR CLASS: Cannot infer argument for type parameter T>)' method. None of the following functions is applicable:
-fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:89:52 Unresolved reference 'uiState'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:89:60 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:94:36 Unresolved reference 'isLoading'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:115:20 Unresolved reference 'AuthViewModel'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:133:22 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:133:22 Property delegate must have a 'getValue(Nothing?, KProperty0<ERROR CLASS: Cannot infer argument for type parameter T>)' method. None of the following functions is applicable:
-fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:133:36 Unresolved reference 'uiState'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:133:44 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:139:47 Unresolved reference 'isLoggedIn'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:141:28 Unresolved reference 'isLoggedIn'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:176:33 Unresolved reference 'rememberCoroutineScope'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:177:21 Unresolved reference 'OnboardingScreen'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:178:38 Unresolved reference 'launch'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:180:51 Suspend function 'suspend fun setOnboardingCompleted(completed: Boolean): Unit' should be called only from a coroutine or another suspend function.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:254:43 Unresolved reference 'signOut'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:303:21 Unresolved reference 'ScanToPlanScreen'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:310:21 Unresolved reference 'SecretSpotsScreen'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:313:48 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/MainActivity.kt:318:21 Unresolved reference 'MyPlansScreen'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectCreatePostScreen.kt:15:8 Unresolved reference 'coil'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectCreatePostScreen.kt:109:23 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectCreatePostScreen.kt:109:27 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectCreatePostScreen.kt:110:17 Unresolved reference 'AsyncImage'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:50:69 Unresolved reference 'Refresh'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:62:70 Unresolved reference 'Add'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:195:30 Unresolved reference 'Icons'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:207:52 Unresolved reference 'Icons'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:207:79 Unresolved reference 'Icons'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:216:17 Unresolved reference 'coil'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:250:30 Unresolved reference 'Icons'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:254:30 Unresolved reference 'Icons'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectPostDetailScreen.kt:16:8 Unresolved reference 'coil'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectPostDetailScreen.kt:105:29 Unresolved reference 'AsyncImage'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectPostDetailScreen.kt:173:33 Unresolved reference 'content'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectProfileScreen.kt:31:13 This material API is experimental and is likely to change or to be removed in the future.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectSavedScreen.kt:28:13 This material API is experimental and is likely to change or to be removed in the future.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/viewmodel/ConnectPostDetailViewModel.kt:69:17 No parameter with name 'content' found.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/viewmodel/ConnectPostDetailViewModel.kt:70:17 No value passed for parameter 'text'.
-
 > Task :app:compileDebugKotlin FAILED
+e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/viewmodel/HomeViewModel.kt:138:45 Unresolved reference 'topAttractions'.
+e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/viewmodel/HomeViewModel.kt:141:47 Overload resolution ambiguity between candidates:
+fun <T> Array<out T>.contains(element: T): Boolean
+fun IntArray.contains(element: Int): Boolean
+fun <T> Iterable<T>.contains(element: T): Boolean
+fun <K, V> Map<out K, V>.contains(key: K): Boolean
+fun IntRange.contains(element: Int?): Boolean
+fun ClosedRange<Long>.contains(value: Int): Boolean
+fun ClosedRange<Byte>.contains(value: Int): Boolean
+fun ClosedRange<Short>.contains(value: Int): Boolean
+fun OpenEndRange<Long>.contains(value: Int): Boolean
+fun OpenEndRange<Byte>.contains(value: Int): Boolean
+fun OpenEndRange<Short>.contains(value: Int): Boolean
+fun LongRange.contains(value: Int): Boolean
+fun <T> Sequence<T>.contains(element: T): Boolean
+e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/viewmodel/PlanViewModel.kt:63:64 Unresolved reference 'ownerId'.
+e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/viewmodel/PlanViewModel.kt:69:26 Unresolved reference 'ownerId'.
 
 FAILURE: Build failed with an exception.
 
@@ -98,8 +65,8 @@ Execution failed for task ':app:compileDebugKotlin'.
 * Try:
 > Run with --stacktrace option to get the stack trace.
 > Run with --info or --debug option to get more log output.
+32 actionable tasks: 1 executed, 31 up-to-date
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 12s
-32 actionable tasks: 1 executed, 31 up-to-date
+BUILD FAILED in 2s

@@ -5,8 +5,8 @@
     <color name="primary_dark">#3730A3</color>
     <color name="primary_light">#6366F1</color>
 
-    <!-- Splash screen background (very dark indigo) -->
-    <color name="splash_bg">#0F0A1E</color>
+    <!-- Splash screen background (Cinematic Black) -->
+    <color name="splash_bg">#030303</color>
 
     <!-- Secondary (Rose) -->
     <color name="secondary">#F43F5E</color>

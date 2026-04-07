@@ -18,9 +18,11 @@ data class AuthUiState(
     val infoMessage: String? = null,
     val userEmail: String? = null,
     val userId: String? = null,
-    val awaitingEmailConfirmation: Boolean = false,
-    val postCount: Int = 0
-)
+    val awaitingEmailConfirmation: Boolean = false
+) {
+    val displayName: String
+        get() = if (isLoggedIn) (userEmail?.substringBefore("@") ?: "Explorer") else "Guest Explorer"
+}
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val authService = AuthService()
@@ -50,10 +52,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                     userEmail = email,
                     userId = uid
                 )
-                if (isLoggedIn && email != null) {
-                    Log.d(TAG, "User session valid: $email")
-                    loadUserStats(email)
-                }
             } catch (e: Exception) {
                 Log.e(TAG, "Error checking auth status", e)
             }
@@ -86,14 +84,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 infoMessage = null,
                 awaitingEmailConfirmation = false
             )
-            Log.d(TAG, "Starting sign up for email: $normalizedEmail")
             
             val result = authService.signUp(normalizedEmail, password)
             result.onSuccess { response ->
-                Log.d(TAG, "Sign up successful, response: $response")
                 val session = response.resolveSession()
                 if (session != null) {
-                    Log.d(TAG, "Session retrieved from response")
                     saveSession(
                         token = session.access_token,
                         refreshToken = session.refresh_token,
@@ -102,7 +97,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         userId = response.user?.id
                     )
                 } else if (response.user != null) {
-                    Log.d(TAG, "Signup succeeded without session, email confirmation is likely required")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         isLoggedIn = false,
@@ -113,14 +107,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         awaitingEmailConfirmation = true
                     )
                 } else {
-                    Log.e(TAG, "No session in response. AccessToken: ${response.accessToken}, Session: ${response.session}")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         errorMessage = "No session received from server"
                     )
                 }
             }.onFailure { error ->
-                Log.e(TAG, "Sign up failed", error)
                 val raw = error.message ?: "Sign up failed"
                 if (raw.lowercase().contains("rate limit")) {
                     signupCooldownUntilMs = System.currentTimeMillis() + 60_000L
@@ -150,14 +142,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 infoMessage = null,
                 awaitingEmailConfirmation = false
             )
-            Log.d(TAG, "Starting sign in for email: $normalizedEmail")
             
             val result = authService.signIn(normalizedEmail, password)
             result.onSuccess { response ->
-                Log.d(TAG, "Sign in successful, response: $response")
                 val session = response.resolveSession()
                 if (session != null) {
-                    Log.d(TAG, "Session retrieved from response")
                     saveSession(
                         token = session.access_token,
                         refreshToken = session.refresh_token,
@@ -166,14 +155,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         userId = response.user?.id
                     )
                 } else {
-                    Log.e(TAG, "No session in response. AccessToken: ${response.accessToken}, Session: ${response.session}")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         errorMessage = "No session received from server"
                     )
                 }
             }.onFailure { error ->
-                Log.e(TAG, "Sign in failed", error)
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     errorMessage = error.message ?: "Sign in failed"
@@ -185,13 +172,10 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun signOut() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
-            Log.d(TAG, "Starting sign out")
-            
             val result = authService.signOut()
             result.onSuccess {
                 clearSession()
             }.onFailure { error ->
-                Log.e(TAG, "Sign out failed", error)
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     errorMessage = error.message ?: "Sign out failed"
@@ -204,55 +188,18 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             val token = sessionManager.getAccessToken() ?: ""
-            
-            val result = authService.deleteAccount(token)
-            
-            // For Google Play compliance, we must treat the request as successful 
-            // from the user's perspective even if the backend is slow or fails silently.
-            // We clear local session immediately.
+            authService.deleteAccount(token)
             clearSession()
             onSuccess()
-            
-            if (result.isFailure) {
-                Log.e(TAG, "Backend deletion reported error, but local session cleared: ${result.exceptionOrNull()?.message}")
-            }
         }
     }
     
     fun clearError() {
         _uiState.value = _uiState.value.copy(errorMessage = null, infoMessage = null)
     }
-    
-    private val repository = com.pranav.punecityguide.data.repository.PuneConnectRepository()
 
     private suspend fun saveSession(token: String, refreshToken: String?, expiresIn: Long, email: String, userId: String? = null) {
         try {
-            Log.d(TAG, "Starting session setup for: $email")
-            
-            // 1. Ensure user profile exists (Critical Step)
-            // We do this BEFORE saving session locally. If this fails (e.g. network), 
-            // we want the user to stay on the login screen to retry, rather than 
-            // getting into a "Zombie State" (logged in locally but broken backend state).
-            if (userId != null) {
-                val username = email.substringBefore("@")
-                val newUser = com.pranav.punecityguide.data.model.ConnectUser(
-                    id = userId,
-                    username = username,
-                    createdAt = null // Let Supabase handle the timestamp
-                )
-                try {
-                    repository.createUserProfile(newUser)
-                    Log.d(TAG, "User profile ensured for: $userId")
-                } catch (e: Exception) {
-                    Log.w(TAG, "Profile creation warning: ${e.message}. Proceeding to save session anyway as Auth succeeded.")
-                    // Optional: You could choose to throw here to force a retry, 
-                    // but since Auth succeeded, we usually want to let them in.
-                    // Ideally, we should schedule a background sync for the profile.
-                }
-            }
-
-            // 2. Save Session Locally (Persistence)
-            Log.d(TAG, "Saving session via SessionManager")
             sessionManager.saveSession(
                 accessToken = token,
                 refreshToken = refreshToken,
@@ -261,7 +208,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 userId = userId
             )
 
-            Log.d(TAG, "Session saved successfully")
             _uiState.value = _uiState.value.copy(
                 isLoading = false,
                 isLoggedIn = true,
@@ -273,9 +219,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             )
         } catch (e: Exception) {
             Log.e(TAG, "Error saving session", e)
-            // If we fail here, we MUST ensure we don't leave partial state
             try { sessionManager.clearSession() } catch (e2: Exception) {}
-            
             _uiState.value = _uiState.value.copy(
                 isLoading = false,
                 errorMessage = "Failed to save session: ${e.message}"
@@ -285,9 +229,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     
     private suspend fun clearSession() {
         try {
-            Log.d(TAG, "Clearing session via SessionManager")
             sessionManager.clearSession()
-            Log.d(TAG, "Session cleared successfully")
             _uiState.value = _uiState.value.copy(
                 isLoading = false,
                 isLoggedIn = false,
@@ -296,21 +238,10 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 errorMessage = null
             )
         } catch (e: Exception) {
-            Log.e(TAG, "Error clearing session", e)
             _uiState.value = _uiState.value.copy(
                 isLoading = false,
                 errorMessage = "Error clearing session"
             )
-        }
-    }
-
-    private fun loadUserStats(email: String) {
-        viewModelScope.launch {
-            val userName = email.substringBefore("@")
-            val service = com.pranav.punecityguide.data.community.CommunityFeedService()
-            service.fetchUserPostCount(userName).onSuccess { count ->
-                _uiState.value = _uiState.value.copy(postCount = count)
-            }
         }
     }
 }

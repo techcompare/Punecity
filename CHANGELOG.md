@@ -1,67 +1,30 @@
 # Changelog
 
-## Version 1.0 - Complete Redesign & Optimization
+## Version 8.0 - Pune City Utility & Expense Tracker (Complete Pivot)
 
-### 🎨 Design & UI Improvements
-- Implemented Material Design 3 with custom Pune-inspired color scheme
-- Created beautiful, modern UI with smooth transitions and animations
-- Responsive layout that works on all device sizes
-- Dark mode support with proper contrast and accessibility
+### 🚀 Major Transformation
+- **Pivot to Utility**: Transformed the "Pune City Guide" into a dedicated "Pune City Utility & Expense Tracker".
+- **Fiscal Mastery**: Added a comprehensive **Daily Expense Tracker** with Room persistence and category-aware budgeting.
+- **Smart AI Pune**: Rebuilt the chatbot to act as a **Pune Fiscal & Utility Expert**, providing advice on taxes, rickshaw fares, and local budgeting tips.
+- **Official Rickshaw Guide**: Implemented an official Pune Rickshaw fare calculator based on **RTO Rates (Effective Feb 1, 2025)**.
 
-### 🏗️ Architecture & Code Quality
-- Implemented clean MVVM architecture with proper separation of concerns
-- Added Repository pattern for data management
-- Proper ViewModel implementations with state management
-- Type-safe navigation using sealed classes
-- Comprehensive error handling and loading states
+### 🧹 Infrastructure Cleanup
+- **Purged Legacy Code**: Removed over 5,000 lines of attraction-related code, repositories, and UI screens.
+- **Database Schema v13**: Migration to a streamlined schema focusing on Expenses, AI, and System Audit logs.
+- **Repository Optimization**: Deleted defunct Attraction, Itinerary, and RecentlyViewed repositories.
+- **Health Diagnostics**: Rebuilt `BackendHealthService` to focus on mission-critical Auth and AI connectivity.
 
-### 📦 Database & Data
-- Integrated Room database for offline data persistence
-- Created 10+ sample attractions with sample data
-- Support for categories, ratings, and detailed attraction information
-- Efficient database queries with proper indexing
-
-### 🎯 Features Added
-- Home screen with top attractions and categories
-- Detailed attraction view with comprehensive information
-- Category-based browsing
-- Search functionality
-- Smooth navigation between screens
-- Loading placeholders for better UX
-- Error handling with retry options
+### 🎨 Design & Experience
+- **Premium Glassmorphism**: Overhauled the Navigation and AI Chat Overlay with advanced glassmorphic aesthetics.
+- **Smart Onboarding**: Rebuilt the onboarding flow to reflect the app's new utility identity.
+- **Micro-Animations**: Added smooth spring animations to the Bottom Navigation and Expense cards.
 
 ### 🛠️ Technical Improvements
-- Updated Gradle to use Kotlin DSL
-- Modern dependency management with version catalog
-- Added essential libraries: Navigation, ViewModel, Coil, Room
-- ProGuard configuration for optimized release builds
-- Proper resource management and minification
+- **Supabase Integration**: Robust Auth and Profile management with local persistence.
+- **Ktor Migration**: Standardized networking across the app using Ktor.
+- **Kotlin 2.0 readiness**: Upgraded dependency patterns and ViewModels.
 
-### 🔒 Production-Ready Features
-- Minification and resource shrinking enabled
-- Proper permission configuration (Internet, Location)
-- Clean manifest with proper activity configuration
-- Comprehensive ProGuard rules for third-party libraries
-- Proper logging and error reporting setup
-
-### 📱 User Experience
-- Animated card transitions
-- Scroll animations for lazy-loaded lists
-- Ripple effects on clickable items
-- Loading states with proper timing
-- Error messages with retry functionality
-
-### 🌍 Localization Ready
-- App supports Marathi display names for attractions
-- Strings externalized in resources
-- Ready for multi-language support
-
-## Future Roadmap
-- Google Maps integration for location display
-- Location-based recommendations
-- User favorites and bookmarks
-- Real-time reviews and ratings
-- In-app navigation guidance
-- Social sharing features
-- Offline maps support
-- Widget for home screen
+## Version 1.0 - Initial Pune City Guide (Legacy)
+- *Note: Version 1.0 features (Attractions, Discovery, Search) have been deprecated and removed in favor of the v2.0 Utility Rewrite.*
+- Initial implementation of Pune-inspired Material 3 theme.
+- Basic attraction listing and navigation.

@@ -28,6 +28,17 @@ class PreferenceManager(private val context: Context) {
         private val KEY_SPOT_OF_THE_DAY_DATE = stringPreferencesKey("spot_of_the_day_date")
         private val KEY_SPOT_REVEALED_DATE = stringPreferencesKey("spot_revealed_date")
         val KEY_PROFILE_PIC_URI = stringPreferencesKey("profile_pic_uri")
+        private val KEY_LAST_POST_TIME = longPreferencesKey("last_post_time_epoch")
+        
+        // Guest Auth
+        private val KEY_GUEST_ID = stringPreferencesKey("guest_id_v2")
+        private val KEY_GUEST_NAME = stringPreferencesKey("guest_name_v2")
+        
+        // Mission Keys
+        private val KEY_DAILY_MISSION_DATE = stringPreferencesKey("daily_mission_date")
+        private val KEY_MISSION_COMPARE_DONE = booleanPreferencesKey("mission_compare_done")
+        private val KEY_MISSION_EXPENSE_DONE = booleanPreferencesKey("mission_expense_done")
+        private val KEY_MISSION_COMMUNITY_DONE = booleanPreferencesKey("mission_community_done")
     }
 
     val profilePicUri: Flow<String?> = context.appPrefsDataStore.data
@@ -41,6 +52,14 @@ class PreferenceManager(private val context: Context) {
     val onboardingCompleted: Flow<Boolean> = context.appPrefsDataStore.data
         .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
         .map { it[KEY_ONBOARDING_COMPLETED] ?: false }
+
+    val lastPostTime: Flow<Long> = context.appPrefsDataStore.data
+        .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
+        .map { it[KEY_LAST_POST_TIME] ?: 0L }
+
+    suspend fun updateLastPostTime() {
+        context.appPrefsDataStore.edit { it[KEY_LAST_POST_TIME] = System.currentTimeMillis() }
+    }
 
     val discoveryStreak: Flow<Int> = context.appPrefsDataStore.data
         .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
@@ -67,7 +86,7 @@ class PreferenceManager(private val context: Context) {
         val currentStreak = context.appPrefsDataStore.data.map { it[KEY_DISCOVERY_STREAK] }.firstOrNull() ?: 0
 
         val newStreak = when (lastDate) {
-            yesterday -> currentStreak + 1
+            yesterday -> (currentStreak + 1).coerceAtMost(99)
             else -> 1
         }
 
@@ -75,7 +94,42 @@ class PreferenceManager(private val context: Context) {
             prefs[KEY_DISCOVERY_STREAK] = newStreak
             prefs[KEY_LAST_CHECKIN_DATE] = today
         }
+        
+        resetMissionsIfNewDay()
     }
+
+    private suspend fun resetMissionsIfNewDay() {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+        val savedDate = context.appPrefsDataStore.data.map { it[KEY_DAILY_MISSION_DATE] }.firstOrNull()
+        
+        if (savedDate != today) {
+            context.appPrefsDataStore.edit { prefs ->
+                prefs[KEY_DAILY_MISSION_DATE] = today
+                prefs[KEY_MISSION_COMPARE_DONE] = false
+                prefs[KEY_MISSION_EXPENSE_DONE] = false
+                prefs[KEY_MISSION_COMMUNITY_DONE] = false
+            }
+        }
+    }
+
+    suspend fun completeMission(type: MissionType) {
+        context.appPrefsDataStore.edit { prefs ->
+            when (type) {
+                MissionType.COMPARE -> prefs[KEY_MISSION_COMPARE_DONE] = true
+                MissionType.EXPENSE -> prefs[KEY_MISSION_EXPENSE_DONE] = true
+                MissionType.COMMUNITY -> prefs[KEY_MISSION_COMMUNITY_DONE] = true
+            }
+        }
+    }
+
+    val missionsState: Flow<MissionsState> = context.appPrefsDataStore.data
+        .map { prefs ->
+            MissionsState(
+                compareDone = prefs[KEY_MISSION_COMPARE_DONE] ?: false,
+                expenseDone = prefs[KEY_MISSION_EXPENSE_DONE] ?: false,
+                communityDone = prefs[KEY_MISSION_COMMUNITY_DONE] ?: false
+            )
+        }
 
     /**
      * Gets a stable spot ID for the day or generates a new one.
@@ -100,23 +154,47 @@ class PreferenceManager(private val context: Context) {
             context.appPrefsDataStore.edit { p ->
                 p[KEY_SPOT_OF_THE_DAY_ID] = newId
                 p[KEY_SPOT_OF_THE_DAY_DATE] = today
-                // When generating a new spot for a new day, reset revealed status
             }
             return newId
         } catch (e: Exception) {
             return 0
         }
     }
+    suspend fun getOrCreateGuestId(): String {
+        val prefs = context.appPrefsDataStore.data.firstOrNull() ?: emptyPreferences()
+        val currentId = prefs[KEY_GUEST_ID]
+        if (currentId != null) return currentId
 
-    val isSpotRevealed: Flow<Boolean> = context.appPrefsDataStore.data
-        .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
-        .map { 
-            val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
-            it[KEY_SPOT_REVEALED_DATE] == today 
-        }
-
-    suspend fun markSpotAsRevealed() {
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
-        context.appPrefsDataStore.edit { it[KEY_SPOT_REVEALED_DATE] = today }
+        val newId = UUID.randomUUID().toString()
+        context.appPrefsDataStore.edit { it[KEY_GUEST_ID] = newId }
+        return newId
     }
+
+    suspend fun getOrCreateGuestName(): String {
+        val prefs = context.appPrefsDataStore.data.firstOrNull() ?: emptyPreferences()
+        val currentName = prefs[KEY_GUEST_NAME]
+        if (currentName != null) return currentName
+
+        val animal = listOf("Nomad", "Explorer", "Pilot", "Scout", "Voyager", "Rover").random()
+        val suffix = (1000..9999).random()
+        val newName = "Guest $animal#$suffix"
+        context.appPrefsDataStore.edit { it[KEY_GUEST_NAME] = newName }
+        return newName
+    }
+}
+
+enum class MissionType { COMPARE, EXPENSE, COMMUNITY }
+data class MissionsState(
+    val compareDone: Boolean,
+    val expenseDone: Boolean,
+    val communityDone: Boolean
+) {
+    val totalDone: Int get() {
+        var count = 0
+        if (compareDone) count++
+        if (expenseDone) count++
+        if (communityDone) count++
+        return count
+    }
+    val allDone: Boolean get() = compareDone && expenseDone && communityDone
 }

@@ -123,16 +123,16 @@ object NetworkResilience {
     fun classifyError(e: Throwable): String {
         val msg = e.message?.lowercase().orEmpty()
         return when {
-            e is CircuitOpenException -> e.message ?: "Service temporarily unavailable."
+            e is CircuitOpenException -> "Service temporarily busy. Please try again in 30 seconds."
             e is SocketTimeoutException || "timeout" in msg -> "Connection timed out. Check your network and try again."
-            e is UnknownHostException || "unable to resolve" in msg -> "No internet connection. Please check your network."
+            e is UnknownHostException || "unable to resolve" in msg || "no address" in msg -> "No internet connection. Please check your network."
             "401" in msg || "unauthorized" in msg -> "Authentication expired. Please sign in again."
             "403" in msg || "forbidden" in msg -> "Access denied. Your session may have expired."
             "429" in msg || "rate limit" in msg -> "Too many requests. Please wait a moment."
             "500" in msg || "internal server" in msg -> "Server error. The team has been notified."
             "502" in msg || "bad gateway" in msg -> "Service is updating. Please try again in a few seconds."
             "503" in msg || "service unavailable" in msg -> "Service is temporarily down for maintenance."
-            else -> e.message ?: "An unexpected error occurred."
+            else -> "An unexpected connection issue occurred. Please try again later."
         }
     }
 

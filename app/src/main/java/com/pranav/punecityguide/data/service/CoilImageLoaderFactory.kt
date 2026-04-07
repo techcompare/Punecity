@@ -29,7 +29,7 @@ object CoilImageLoaderFactory {
 
         val userAgentInterceptor = Interceptor { chain ->
             val request = chain.request().newBuilder()
-                .header("User-Agent", "PuneCityGuide/1.0 (Android; Coil)")
+                .header("User-Agent", "CostPilot/9.0 (Android; Coil)")
                 .header("Accept", "image/webp,image/avif,image/apng,image/*,*/*;q=0.8")
                 .build()
             chain.proceed(request)

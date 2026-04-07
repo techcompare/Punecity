@@ -1,42 +1,36 @@
 <resources>
-    <string name="app_name">Pune City Guide</string>
+    <string name="app_name">CostPilot</string>
     
     <!-- Home Screen -->
-    <string name="home_title">Pune City</string>
-    <string name="home_subtitle">Explore the Magic</string>
-    <string name="discover_pune">Discover Pune</string>
-    <string name="discover_description">Explore historical sites, temples, and modern attractions</string>
-    
-    <!-- Sections -->
-    <string name="top_attractions">Top Attractions</string>
-    <string name="categories">Categories</string>
-    <string name="search_attractions">Search attractions...</string>
-    
-    <!-- Details Screen -->
-    <string name="about">About</string>
-    <string name="location">Location</string>
-    <string name="hours">Hours</string>
-    <string name="entry_fee">Entry Fee</string>
-    <string name="best_time">Best Time to Visit</string>
-    <string name="local_name">Local Name</string>
-    <string name="reviews">reviews</string>
+    <string name="home_title">CostPilot</string>
+    <string name="home_subtitle">Smart Travel Budget Intelligence</string>
     
     <!-- Navigation -->
     <string name="back">Back</string>
     <string name="search">Search</string>
     <string name="details">Details</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_compare">Compare</string>
+    <string name="nav_trips">Trips</string>
+    <string name="nav_insights">Insights</string>
+    <string name="nav_profile">Profile</string>
     
     <!-- Messages -->
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="error_occurred">An error occurred</string>
     <string name="retry">Retry</string>
     <string name="something_wrong">Something went wrong</string>
     <string name="no_results">No results found</string>
-    <string name="found_attractions">Found %d attractions</string>
+    <string name="found_attractions">Found %d records</string>
     
     <!-- Categories -->
-    <string name="historical">Historical</string>
-    <string name="spiritual">Spiritual</string>
-    <string name="nature">Nature</string>
-    <string name="museum">Museum</string>
+    <string name="expense">Expense</string>
+    <string name="utility">Utility</string>
+    <string name="finance">Finance</string>
+    
+    <!-- CostPilot Features -->
+    <string name="compare_cities">Compare Cities</string>
+    <string name="trip_budget">Trip Budget</string>
+    <string name="expense_tracker">Expense Tracker</string>
+    <string name="spending_insights">Spending Insights</string>
 </resources>

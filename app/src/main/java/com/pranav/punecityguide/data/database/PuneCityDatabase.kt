@@ -11,8 +11,16 @@ import com.pranav.punecityguide.data.model.SyncAuditLog
 import com.pranav.punecityguide.data.model.AiTokenQuota
 
 @Database(
-    entities = [Attraction::class, Itinerary::class, RecentlyViewed::class, SyncAuditLog::class, AiTokenQuota::class],
-    version = 10,
+    entities = [
+        Attraction::class, 
+        Itinerary::class, 
+        RecentlyViewed::class, 
+        SyncAuditLog::class, 
+        AiTokenQuota::class,
+        com.pranav.punecityguide.data.model.AiConversation::class,
+        com.pranav.punecityguide.data.model.AiMessage::class
+    ],
+    version = 11,
     exportSchema = false
 )
 abstract class PuneCityDatabase : RoomDatabase() {
@@ -21,6 +29,7 @@ abstract class PuneCityDatabase : RoomDatabase() {
     abstract fun recentlyViewedDao(): RecentlyViewedDao
     abstract fun syncAuditDao(): SyncAuditDao
     abstract fun aiTokenQuotaDao(): AiTokenQuotaDao
+    abstract fun aiChatDao(): AiChatDao
     
     companion object {
         @Volatile

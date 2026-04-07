@@ -1,0 +1,7 @@
+
+{
+  "code": "PGRST204",
+  "details": null,
+  "hint": null,
+  "message": "Could not find the \u0027content\u0027 column of \u0027lounge_messages\u0027 in the schema cache"
+}

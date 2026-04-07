@@ -5,33 +5,34 @@ import com.pranav.punecityguide.data.repository.SyncAuditRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.http.takeFrom
 
 /**
- * Centralized backend health diagnostics service.
+ * Centralized backend health diagnostics for CostPilot.
  *
- * Production features:
- * - Probes all critical backend dependencies (Supabase, Google Places, AI, local DB)
- * - Returns structured health status with latency metrics
- * - Integrates with audit log for persistent health history
- * - Designed to be called periodically or on-demand from a "System Health" screen
+ * Probes:
+ * - Supabase Auth
+ * - Supabase REST API (data layer)
+ * - AI Service (OpenRouter/Anthropic)
+ * - Local SQLite (Room)
+ * - Currency API (frankfurter.app)
+ * - Offline cache health
+ * - Background sync status
  */
 class BackendHealthService(
     private val auditRepository: SyncAuditRepository
 ) {
     private val TAG = "BackendHealthService"
     private val httpClient by lazy { SupabaseClient.getHttpClient() }
-    private val json = Json { ignoreUnknownKeys = true }
 
     @Serializable
     data class HealthReport(
         val overallStatus: String, // "HEALTHY", "DEGRADED", "UNHEALTHY"
         val checks: List<HealthCheck>,
         val timestamp: Long = System.currentTimeMillis(),
-        val cacheStats: String = ""
+        val appVersion: String = com.pranav.punecityguide.AppConfig.APP_VERSION
     )
 
     @Serializable
@@ -42,43 +43,53 @@ class BackendHealthService(
         val details: String = ""
     )
 
-    /**
-     * Run a full health probe across all backend dependencies.
-     */
     suspend fun runFullHealthCheck(): HealthReport = withContext(Dispatchers.IO) {
         val checks = mutableListOf<HealthCheck>()
 
         checks.add(probeSupabaseAuth())
-        checks.add(probeSupabaseData())
-        checks.add(probeCommunityService())
+        checks.add(probeSupabaseRest())
         checks.add(probeAiService())
         checks.add(probeLocalDatabase())
-
-        val cacheStats = AttractionCache.stats()
+        checks.add(probeCurrencyApi())
+        checks.add(probeOfflineCache())
+        checks.add(probeBackgroundSync())
 
         val downCount = checks.count { it.status == "DOWN" }
         val degradedCount = checks.count { it.status == "DEGRADED" }
+        
         val overallStatus = when {
             downCount >= 3 -> "UNHEALTHY"
-            downCount >= 1 || degradedCount >= 2 -> "DEGRADED"
+            downCount >= 1 || degradedCount >= 3 -> "DEGRADED"
             else -> "HEALTHY"
         }
 
         val report = HealthReport(
             overallStatus = overallStatus,
-            checks = checks,
-            cacheStats = cacheStats.toString()
+            checks = checks
         )
 
-        // Persist the health check result
         auditRepository.log(
             "HEALTH_CHECK",
-            "Overall: $overallStatus | ${checks.size} probes | Cache: $cacheStats",
+            "Overall: $overallStatus | ${checks.size} probes",
             checks.joinToString("; ") { "${it.name}=${it.status}(${it.latencyMs}ms)" }
         )
 
-        Log.i(TAG, "Health check complete: $overallStatus")
+        Log.i(TAG, "Health check complete: $overallStatus [${checks.size} probes]")
         report
+    }
+
+    /**
+     * Run a quick health check (critical services only).
+     */
+    suspend fun runQuickHealthCheck(): HealthReport = withContext(Dispatchers.IO) {
+        val checks = mutableListOf<HealthCheck>()
+        checks.add(probeSupabaseAuth())
+        checks.add(probeLocalDatabase())
+
+        val downCount = checks.count { it.status == "DOWN" }
+        val overallStatus = if (downCount > 0) "DEGRADED" else "HEALTHY"
+
+        HealthReport(overallStatus = overallStatus, checks = checks)
     }
 
     private suspend fun probeSupabaseAuth(): HealthCheck {
@@ -104,64 +115,26 @@ class BackendHealthService(
         }
     }
 
-    private suspend fun probeSupabaseData(): HealthCheck {
+    private suspend fun probeSupabaseRest(): HealthCheck {
         val start = System.currentTimeMillis()
         return try {
             val url = com.pranav.punecityguide.AppConfig.Supabase.SUPABASE_URL
-            val key = com.pranav.punecityguide.AppConfig.Supabase.SUPABASE_ANON_KEY
-            if (url.isBlank() || key.isBlank()) {
-                return HealthCheck("Supabase Data", "DOWN", 0, "URL or key not configured")
+            if (url.isBlank()) {
+                return HealthCheck("Supabase REST", "DOWN", 0, "URL not configured")
             }
 
-            val remotePath = com.pranav.punecityguide.AppConfig.Supabase.TABLE_ATTRACTIONS
-            val response = httpClient.get("$url/rest/v1/$remotePath?select=count&limit=1") {
-                headers.append("apikey", key)
-                headers.append("Authorization", "Bearer $key")
-                headers.append("Prefer", "count=exact")
+            val response = httpClient.get("$url/rest/v1/city_costs?select=cityName&limit=1") {
+                headers.append("apikey", com.pranav.punecityguide.AppConfig.Supabase.SUPABASE_ANON_KEY)
             }
             val latency = System.currentTimeMillis() - start
 
             if (response.status.value in 200..299) {
-                HealthCheck("Supabase Data", if (latency > 4000) "DEGRADED" else "UP", latency, "Table '$remotePath' accessible")
+                HealthCheck("Supabase REST", if (latency > 3000) "DEGRADED" else "UP", latency, "Data API responsive")
             } else {
-                HealthCheck("Supabase Data", "DEGRADED", latency, "HTTP ${response.status.value} on '$remotePath'")
+                HealthCheck("Supabase REST", "DOWN", latency, "HTTP ${response.status.value}")
             }
         } catch (e: Exception) {
-            HealthCheck("Supabase Data", "DOWN", System.currentTimeMillis() - start, e.message ?: "Unknown error")
-        }
-    }
-
-    private suspend fun probeCommunityService(): HealthCheck {
-        val start = System.currentTimeMillis()
-        return try {
-            val communityUrl = com.pranav.punecityguide.AppConfig.Supabase.COMMUNITY_SUPABASE_URL
-                .ifBlank { com.pranav.punecityguide.AppConfig.Supabase.SUPABASE_URL }
-            val communityKey = when {
-                com.pranav.punecityguide.AppConfig.Supabase.COMMUNITY_SUPABASE_ANON_KEY.isNotBlank() ->
-                    com.pranav.punecityguide.AppConfig.Supabase.COMMUNITY_SUPABASE_ANON_KEY
-                communityUrl == com.pranav.punecityguide.AppConfig.Supabase.SUPABASE_URL ->
-                    com.pranav.punecityguide.AppConfig.Supabase.SUPABASE_ANON_KEY
-                else -> ""
-            }
-
-            if (communityUrl.isBlank() || communityKey.isBlank()) {
-                return HealthCheck("Community Feed", "DOWN", 0, "Community keys not configured")
-            }
-
-            val table = com.pranav.punecityguide.AppConfig.Supabase.TABLE_POSTS
-            val response = httpClient.get("$communityUrl/rest/v1/$table?select=id&limit=1") {
-                headers.append("apikey", communityKey)
-                headers.append("Authorization", "Bearer $communityKey")
-            }
-            val latency = System.currentTimeMillis() - start
-
-            if (response.status.value in 200..299) {
-                HealthCheck("Community Feed", if (latency > 4000) "DEGRADED" else "UP", latency)
-            } else {
-                HealthCheck("Community Feed", "DEGRADED", latency, "HTTP ${response.status.value}")
-            }
-        } catch (e: Exception) {
-            HealthCheck("Community Feed", "DOWN", System.currentTimeMillis() - start, e.message ?: "Unknown error")
+            HealthCheck("Supabase REST", "DOWN", System.currentTimeMillis() - start, e.message ?: "Unknown error")
         }
     }
 
@@ -170,10 +143,9 @@ class BackendHealthService(
         return try {
             val apiKey = com.pranav.punecityguide.BuildConfig.CLAUDE_API_KEY
             if (apiKey.isBlank()) {
-                return HealthCheck("AI Service", "DOWN", 0, "CLAUDE_API_KEY not configured")
+                return HealthCheck("AI Service", "DOWN", 0, "API key not configured")
             }
 
-            // For OpenRouter keys, probe their health endpoint
             if (apiKey.startsWith("sk-or-v1-")) {
                 val response = httpClient.get("https://openrouter.ai/api/v1/models") {
                     headers.append("Authorization", "Bearer $apiKey")
@@ -186,8 +158,7 @@ class BackendHealthService(
                 }
             }
 
-            // For direct Anthropic API keys
-            HealthCheck("AI Service (Anthropic)", "UP", System.currentTimeMillis() - start, "Key configured – live probe skipped for cost")
+            HealthCheck("AI Service (Anthropic)", "UP", System.currentTimeMillis() - start, "Key configured")
         } catch (e: Exception) {
             HealthCheck("AI Service", "DOWN", System.currentTimeMillis() - start, e.message ?: "Unknown error")
         }
@@ -196,7 +167,6 @@ class BackendHealthService(
     private suspend fun probeLocalDatabase(): HealthCheck {
         val start = System.currentTimeMillis()
         return try {
-            // This just checks if the audit repo can write
             auditRepository.log("HEALTH_PROBE", "Database write probe")
             val latency = System.currentTimeMillis() - start
             HealthCheck("Local Database", if (latency > 500) "DEGRADED" else "UP", latency, "Read-write OK")
@@ -204,9 +174,49 @@ class BackendHealthService(
             HealthCheck("Local Database", "DOWN", System.currentTimeMillis() - start, e.message ?: "Unknown error")
         }
     }
+
+    private suspend fun probeCurrencyApi(): HealthCheck {
+        val start = System.currentTimeMillis()
+        return try {
+            val response = httpClient.get("https://api.frankfurter.app/latest?from=USD&to=EUR") {}
+            val latency = System.currentTimeMillis() - start
+
+            if (response.status.value in 200..299) {
+                HealthCheck("Currency API", if (latency > 3000) "DEGRADED" else "UP", latency, "frankfurter.app")
+            } else {
+                HealthCheck("Currency API", "DEGRADED", latency, "HTTP ${response.status.value} — using cached rates")
+            }
+        } catch (e: Exception) {
+            HealthCheck("Currency API", "DEGRADED", System.currentTimeMillis() - start, "Offline — using cached rates")
+        }
+    }
+
+    private fun probeOfflineCache(): HealthCheck {
+        return try {
+            val cacheSize = ServiceLocator.offlineCacheService.getCacheSize()
+            HealthCheck("Offline Cache", "UP", 0, "$cacheSize entries in memory")
+        } catch (e: Exception) {
+            HealthCheck("Offline Cache", "DEGRADED", 0, e.message ?: "Unknown")
+        }
+    }
+
+    private fun probeBackgroundSync(): HealthCheck {
+        return try {
+            val statuses = ServiceLocator.backgroundSyncManager.getWorkStatus()
+            val allRunning = statuses.values.all { it == "ENQUEUED" || it == "RUNNING" || it == "SUCCEEDED" }
+            val details = statuses.entries.joinToString(", ") { "${it.key.substringAfterLast('_')}=${it.value}" }
+            HealthCheck(
+                "Background Sync",
+                if (allRunning) "UP" else "DEGRADED",
+                0,
+                details
+            )
+        } catch (e: Exception) {
+            HealthCheck("Background Sync", "DEGRADED", 0, e.message ?: "Unknown")
+        }
+    }
 }
 
-// Extension to add the missing get function used in probes
 private suspend fun io.ktor.client.HttpClient.get(
     url: String,
     block: io.ktor.client.request.HttpRequestBuilder.() -> Unit = {}

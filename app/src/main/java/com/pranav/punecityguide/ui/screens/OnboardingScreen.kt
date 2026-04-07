@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -16,12 +15,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.CompareArrows
 import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.FlightTakeoff
+import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.Payments
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,14 +32,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pranav.punecityguide.ui.theme.*
 import kotlinx.coroutines.launch
-import com.pranav.punecityguide.R
 
 data class OnboardingPage(
     val title: String,
@@ -54,22 +51,22 @@ data class OnboardingPage(
 fun OnboardingScreen(onFinished: () -> Unit) {
     val pages = listOf(
         OnboardingPage(
-            title = "Explore Pune\nLike a Local",
-            description = "Discover the best attractions, historical sites, and cultural landmarks curated just for you.",
-            icon = Icons.Filled.Explore,
-            color = Color(0xFFE91E63) // Pink/Magenta for culture
+            title = "Compare Costs\nWorldwide",
+            description = "Instantly compare living costs between 50+ cities across 6 continents. Know before you go.",
+            icon = Icons.Filled.CompareArrows,
+            color = CostPilotCyan
         ),
         OnboardingPage(
-            title = "Plan Your Day\nEasily",
-            description = "Find places near you, check entry fees, and create your perfect itinerary in minutes.",
-            icon = Icons.Filled.Map,
-            color = Color(0xFF6C63FF) // Purple for AI/Tech
+            title = "AI-Powered\nTrip Budgets",
+            description = "Get intelligent daily budget breakdowns personalized to your travel style — backpacker to luxury.",
+            icon = Icons.Filled.AutoAwesome,
+            color = CostPilotGold
         ),
         OnboardingPage(
-            title = "Discover Hidden\nGems",
-            description = "From secret study spots to the best street food, find the places that make Pune unique.",
-            icon = Icons.Filled.LocationOn,
-            color = Color(0xFFFF9800) // Orange for activity/social
+            title = "Track Every\nCurrency",
+            description = "Log expenses in any currency. Beautiful analytics show you exactly where your money goes.",
+            icon = Icons.Filled.Payments,
+            color = CostPilotSuccess
         )
     )
 
@@ -88,14 +85,14 @@ fun OnboardingScreen(onFinished: () -> Unit) {
             animationSpec = tween(1000),
             label = "color"
         )
-        
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            animatedColor.copy(alpha = 0.15f),
+                            animatedColor.copy(alpha = 0.12f),
                             MaterialTheme.colorScheme.background,
                             MaterialTheme.colorScheme.background
                         )
@@ -103,32 +100,39 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                 )
         )
 
-        // Floating blobs for decoration
+        // Floating blobs
         Box(
             modifier = Modifier
                 .offset(x = (-50).dp, y = (-50).dp)
                 .size(200.dp)
-                .alpha(0.1f)
+                .alpha(0.08f)
                 .background(animatedColor, CircleShape)
         )
-        
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = 50.dp, y = 50.dp)
                 .size(250.dp)
-                .alpha(0.1f)
+                .alpha(0.08f)
                 .background(animatedColor, CircleShape)
         )
 
         Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
-            // Skip button (Always visible to allow exit at any point)
+            // Skip / CostPilot branding
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(
+                    "COSTPILOT",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = 3.sp,
+                    color = animatedColor
+                )
                 TextButton(onClick = onFinished) {
                     Text(
                         if (pagerState.currentPage < pages.size - 1) "Skip" else "Finish",
@@ -166,10 +170,9 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                             animationSpec = spring(stiffness = Spring.StiffnessLow)
                         )
                         val color by animateColorAsState(
-                            targetValue = if (isSelected) pages[index].color else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                            targetValue = if (isSelected) pages[index].color else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f),
                             label = "color"
                         )
-
                         Box(
                             modifier = Modifier
                                 .height(10.dp)
@@ -180,10 +183,10 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                     }
                 }
 
-                // Next / Finish Button
+                // Next / Get Started
                 val isLastPage = pagerState.currentPage == pages.size - 1
                 val buttonColor = pages[pagerState.currentPage].color
-                
+
                 Button(
                     onClick = {
                         if (!isLastPage) {
@@ -196,25 +199,13 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                     },
                     modifier = Modifier.height(56.dp),
                     shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = buttonColor
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 6.dp,
-                        pressedElevation = 2.dp
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp, pressedElevation = 2.dp)
                 ) {
-                    AnimatedContent(
-                        targetState = isLastPage,
-                        label = "buttonText"
-                    ) { last ->
+                    AnimatedContent(targetState = isLastPage, label = "buttonText") { last ->
                         if (last) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    "Get Started",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
+                                Text("Get Started", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                                 Spacer(Modifier.width(8.dp))
                                 Icon(Icons.Default.CheckCircle, contentDescription = null)
                             }
@@ -236,13 +227,9 @@ fun OnboardingScreen(onFinished: () -> Unit) {
 fun OnboardingPageView(page: OnboardingPage, isCurrent: Boolean) {
     val scale by animateFloatAsState(
         targetValue = if (isCurrent) 1f else 0.8f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow),
         label = "scale"
     )
-    
     val animatedAlpha by animateFloatAsState(
         targetValue = if (isCurrent) 1f else 0.5f,
         animationSpec = tween(500),
@@ -253,27 +240,16 @@ fun OnboardingPageView(page: OnboardingPage, isCurrent: Boolean) {
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp)
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-                alpha = animatedAlpha
-            },
+            .graphicsLayer { scaleX = scale; scaleY = scale; alpha = animatedAlpha },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Icon Circle with ripple effect
         Box(contentAlignment = Alignment.Center) {
             Box(
-                modifier = Modifier
-                    .size(280.dp)
-                    .clip(CircleShape)
-                    .background(page.color.copy(alpha = 0.1f))
+                modifier = Modifier.size(280.dp).clip(CircleShape).background(page.color.copy(alpha = 0.08f))
             )
             Box(
-                modifier = Modifier
-                    .size(220.dp)
-                    .clip(CircleShape)
-                    .background(page.color.copy(alpha = 0.2f))
+                modifier = Modifier.size(220.dp).clip(CircleShape).background(page.color.copy(alpha = 0.15f))
             )
             Surface(
                 shape = CircleShape,
@@ -281,16 +257,8 @@ fun OnboardingPageView(page: OnboardingPage, isCurrent: Boolean) {
                 shadowElevation = 10.dp,
                 modifier = Modifier.size(160.dp)
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Icon(
-                        imageVector = page.icon,
-                        contentDescription = null,
-                        modifier = Modifier.size(80.dp),
-                        tint = page.color
-                    )
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    Icon(imageVector = page.icon, contentDescription = null, modifier = Modifier.size(80.dp), tint = page.color)
                 }
             }
         }

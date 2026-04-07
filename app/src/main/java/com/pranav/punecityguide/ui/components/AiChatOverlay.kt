@@ -20,6 +20,9 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.WifiOff
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.AddComment
+import com.pranav.punecityguide.data.repository.AiChatRepository
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -60,11 +63,12 @@ fun AiChatOverlay(
     val repository = remember { AttractionRepository(database.attractionDao(), database.recentlyViewedDao()) }
     val auditRepository = remember { SyncAuditRepository(database.syncAuditDao()) }
     val tokenQuotaService = remember { com.pranav.punecityguide.data.service.AiTokenQuotaService(database.aiTokenQuotaDao()) }
+    val aiChatRepository = remember { AiChatRepository() }
     
     val activity = LocalContext.current as ComponentActivity
     val viewModel: ChatbotViewModel = viewModel(
         viewModelStoreOwner = activity,
-        factory = ChatbotViewModel.factory(repository, auditRepository, tokenQuotaService, userId ?: "user_default")
+        factory = ChatbotViewModel.factory(repository, auditRepository, tokenQuotaService, aiChatRepository, userId ?: "user_default")
     )
     val uiState by viewModel.uiState.collectAsState()
     
@@ -84,6 +88,7 @@ fun AiChatOverlay(
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
     var input by remember { mutableStateOf("") }
+    var showHistory by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.messages.size) {
         if (uiState.messages.isNotEmpty()) {
@@ -122,23 +127,22 @@ fun AiChatOverlay(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                        Surface(
-                            shape = CircleShape,
-                            color = Color.White.copy(alpha = 0.25f),
-                            modifier = Modifier.size(44.dp)
+                        IconButton(
+                            onClick = { 
+                                if (showHistory) showHistory = false 
+                                else showHistory = true
+                            },
+                            colors = IconButtonDefaults.iconButtonColors(containerColor = Color.White.copy(alpha = 0.1f))
                         ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Icon(
-                                    imageVector = Icons.Filled.AutoAwesome,
-                                    contentDescription = null,
-                                    tint = Color.White,
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            }
+                            Icon(
+                                if (showHistory) Icons.Filled.AddComment else Icons.Filled.History,
+                                null,
+                                tint = Color.White
+                            )
                         }
                         Column {
                             Text(
-                                "Pune Connect AI",
+                                if (showHistory) "Past Conversations" else (uiState.currentConversationId?.let { "Chat History" } ?: "Pune Connect AI"),
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Black,
                                 color = Color.White,
@@ -159,88 +163,143 @@ fun AiChatOverlay(
                 }
             }
 
-            // --- Chat Area ---
-            LazyColumn(
-                state = scrollState,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(
-                        Brush.verticalGradient(
-                            listOf(
-                                MaterialTheme.colorScheme.surface,
-                                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-                            )
-                        )
-                    ),
-                contentPadding = PaddingValues(20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(uiState.messages) { message ->
-                    ChatBubble(message)
-                }
-                
-                if (uiState.isSending) {
-                    item {
-                        ThinkingIndicator()
-                    }
-                }
-
-                if (uiState.errorMessage != null) {
-                    item {
-                        ErrorState(message = uiState.errorMessage!!, onRetry = { viewModel.sendMessage(input) })
-                    }
-                }
-            }
-
-            // --- Input Area ---
-            Surface(
-                tonalElevation = 8.dp,
-                shadowElevation = 16.dp,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 20.dp),
-                shape = RoundedCornerShape(24.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp, vertical = 6.dp)
-                        .navigationBarsPadding()
-                        .imePadding(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+            if (showHistory) {
+                // --- History List ---
+                LazyColumn(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    TextField(
-                        value = input,
-                        onValueChange = { input = it },
-                        modifier = Modifier.weight(1f),
-                        placeholder = { Text("Ask about any spot in Pune...", style = MaterialTheme.typography.bodyMedium) },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        ),
-                        maxLines = 4
-                    )
-                    
-                    IconButton(
-                        onClick = {
-                            val prompt = input.trim()
-                            if (prompt.isEmpty() || uiState.isSending) return@IconButton
-                            viewModel.sendMessage(prompt) {
-                                input = ""
+                    if (uiState.isConversationsLoading) {
+                        item { Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator() } }
+                    } else if (uiState.conversations.isEmpty()) {
+                        item { 
+                            Column(Modifier.fillMaxWidth().padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(Icons.Filled.History, null, modifier = Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f))
+                                Text("No history yet", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
-                        },
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = Color.White
+                        }
+                    } else {
+                        items(uiState.conversations) { conv ->
+                            val isSelected = conv.id == uiState.currentConversationId
+                            Card(
+                                onClick = { 
+                                    viewModel.selectConversation(conv.id)
+                                    showHistory = false
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(16.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                )
+                            ) {
+                                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Filled.AutoAwesome, null, tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Spacer(Modifier.width(16.dp))
+                                    Column {
+                                        Text(conv.title, fontWeight = FontWeight.Bold, maxLines = 1)
+                                        Text(conv.createdAt?.take(10) ?: "Just now", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                // --- Chat Area ---
+                LazyColumn(
+                    state = scrollState,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .background(
+                            Brush.verticalGradient(
+                                listOf(
+                                    MaterialTheme.colorScheme.surface,
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                                )
+                            )
                         ),
-                        modifier = Modifier.size(48.dp)
+                    contentPadding = PaddingValues(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    if (uiState.messages.isEmpty() && !uiState.isSending) {
+                        item {
+                            Column(Modifier.fillMaxWidth().padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(Icons.Filled.AutoAwesome, null, modifier = Modifier.size(48.dp), tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+                                Spacer(Modifier.height(16.dp))
+                                Text("Start a new conversation!", fontWeight = FontWeight.Bold)
+                                Text("Ask anything about Pune", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                    }
+
+                    items(uiState.messages) { message ->
+                        ChatBubble(message)
+                    }
+                    
+                    if (uiState.isSending) {
+                        item {
+                            ThinkingIndicator()
+                        }
+                    }
+
+                    if (uiState.errorMessage != null) {
+                        item {
+                            ErrorState(message = uiState.errorMessage!!, onRetry = { viewModel.sendMessage(input) })
+                        }
+                    }
+                }
+
+                // --- Input Area ---
+                Surface(
+                    tonalElevation = 8.dp,
+                    shadowElevation = 16.dp,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 20.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp, vertical = 6.dp)
+                            .navigationBarsPadding()
+                            .imePadding(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        if (uiState.isSending) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White, strokeWidth = 2.dp)
-                        } else {
-                            Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send", modifier = Modifier.size(22.dp))
+                        TextField(
+                            value = input,
+                            onValueChange = { input = it },
+                            modifier = Modifier.weight(1f),
+                            placeholder = { Text("Ask about any spot in Pune...", style = MaterialTheme.typography.bodyMedium) },
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
+                            ),
+                            maxLines = 4
+                        )
+                        
+                        IconButton(
+                            onClick = {
+                                val prompt = input.trim()
+                                if (prompt.isEmpty() || uiState.isSending) return@IconButton
+                                viewModel.sendMessage(prompt) {
+                                    input = ""
+                                }
+                            },
+                            colors = IconButtonDefaults.filledIconButtonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = Color.White
+                            ),
+                            modifier = Modifier.size(48.dp)
+                        ) {
+                            if (uiState.isSending) {
+                                CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White, strokeWidth = 2.dp)
+                            } else {
+                                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send", modifier = Modifier.size(22.dp))
+                            }
                         }
                     }
                 }
@@ -305,7 +364,7 @@ private fun ThinkingIndicator() {
             Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary.copy(alpha = alpha)))
         }
         Text(
-            "Pune AI is weaving a response...",
+            "Analyzing data and generating response...",
             style = MaterialTheme.typography.labelMedium.copy(fontSize = 13.sp),
             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
             fontWeight = FontWeight.Bold
@@ -315,12 +374,9 @@ private fun ThinkingIndicator() {
 
 @Composable
 private fun ErrorState(message: String, onRetry: () -> Unit) {
-    val isBudgetError = message.contains("402", ignoreCase = true) || message.contains("credits", ignoreCase = true)
-    
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = if (isBudgetError) MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f) 
-                            else MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.6f)
+            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.6f)
         ),
         shape = RoundedCornerShape(20.dp),
         modifier = Modifier.fillMaxWidth(),
@@ -329,28 +385,26 @@ private fun ErrorState(message: String, onRetry: () -> Unit) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Icon(
-                    imageVector = if (isBudgetError) Icons.Filled.Info else Icons.Filled.WifiOff,
+                    imageVector = Icons.Filled.WifiOff,
                     contentDescription = null,
-                    tint = if (isBudgetError) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                    tint = MaterialTheme.colorScheme.error
                 )
                 Text(
-                    text = if (isBudgetError) "OpenRouter Credit Limit Reached" else "Connection Interrupted",
+                    text = "Connection Interrupted",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.ExtraBold,
-                    color = if (isBudgetError) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onErrorContainer
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
             Text(
-                text = if (isBudgetError) 
-                  "The AI budget for this request was exceeded (1282 token limit). Please try a shorter question or check your OpenRouter credits."
-                  else message,
+                text = "I couldn’t fetch results right now. Try again.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Button(
                 onClick = onRetry,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isBudgetError) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                    containerColor = MaterialTheme.colorScheme.error
                 ),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.height(36.dp)

@@ -4,32 +4,29 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
+@Entity(tableName = "attractions")
 @Serializable
-@Entity(
-    tableName = "attractions",
-    indices = [
-        androidx.room.Index(value = ["name", "category"], unique = true),
-        androidx.room.Index(value = ["rating"]),
-        androidx.room.Index(value = ["isFavorite"])
-    ]
-)
 data class Attraction(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey val id: Int,
     val name: String,
-    val description: String,
-    val imageUrl: String,
     val category: String,
-    val latitude: Double = 0.0,
-    val longitude: Double = 0.0,
-    val rating: Float = 4.5f,
-    val reviewCount: Int = 0,
-    val nativeLanguageName: String = "",
-    val bestTimeToVisit: String = "Throughout the year",
+    val description: String,
+    val image: String,
+    val rating: Double,
+    val latitude: Double,
+    val longitude: Double,
+    val address: String = "Pune, Maharashtra",
+    val tags: List<String> = emptyList(),
+    val reviews: Int = 0,
+    val visitDuration: String = "1-2 hours",
+    val location: String = "Pune, Maharashtra",
+    val timings: String = "Open Daily",
     val entryFee: String = "Free",
-    val openingHours: String = "Open daily",
-    val isFavorite: Boolean = false,
-    val isVerified: Boolean = false,
-    val cityId: String = "pune-01",
-    val neighborhood: String = ""
+    val localName: String? = null,
+    val bestTime: String? = null,
+    val currentCrowdLevel: String? = null, // "Low", "Moderate", "High" or null if unavailable
+    val neighborhood: String? = null,
+    val budgetFriendly: Boolean? = true,
+    val hasWifi: Boolean? = false,
+    val isVerified: Boolean = false
 )

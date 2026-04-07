@@ -1,12 +1,11 @@
 package com.pranav.punecityguide.data.service
 
-import com.pranav.punecityguide.data.model.Attraction
 import com.pranav.punecityguide.ui.viewmodel.ChatMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -16,10 +15,9 @@ import kotlinx.serialization.json.*
 import android.util.Log
 
 /**
- * ⚡ Real-Time AI Service (V6 Philosophy)
+ * ⚡ AI Service (Utility Pivot)
  * 
- * A lean, high-performance assistant that uses OpenRouter for global-scale AI.
- * It is fully localized to Pune using Verified Attraction Context.
+ * Optimized for OpenRouter with reliable parsing.
  */
 class RealtimeChatService(
     private val httpClient: HttpClient,
@@ -30,77 +28,71 @@ class RealtimeChatService(
 
     suspend fun getChatReply(
         history: List<ChatMessage>,
-        userInput: String,
-        attractionsContext: List<Attraction> = emptyList()
+        userInput: String
     ): Result<String> {
         if (apiKey.isBlank()) {
-            return Result.failure(IllegalStateException("CLAUDE_API_KEY is missing from environment"))
+            return Result.failure(IllegalStateException("API KEY is missing. Check local.properties."))
         }
 
-        return NetworkResilience.withRetry("openrouter_chat", maxRetries = 2) {
-            val systemPrompt = buildSystemPrompt(attractionsContext)
-
+        return try {
+            val systemPrompt = buildSystemPrompt()
+            val resolvedModel = resolveOpenRouterModel(model)
+            
             val request = OpenRouterChatRequest(
-                model = resolveOpenRouterModel(model),
+                model = resolvedModel,
                 messages = buildOpenRouterMessages(history, userInput, systemPrompt),
                 temperature = 0.7,
-                maxTokens = 1200,
-                stream = true
+                maxTokens = 800,
+                stream = false // Disable streaming for better reliability on flaky connections
             )
 
-            val response = httpClient.post("https://openrouter.ai/api/v1/chat/completions") {
-                header("Authorization", "Bearer $apiKey")
-                header("HTTP-Referer", "https://punecityguide.local")
-                header("X-Title", "Pune City Guide")
-                contentType(ContentType.Application.Json)
-                setBody(request)
-            }
+            Log.d("AiChat", "Requesting $resolvedModel with key ${apiKey.take(8)}...")
 
-            val body = response.bodyAsText()
-            if (!response.status.isSuccess()) {
-                val error = parseOpenRouterError(body)
-                throw IllegalStateException("AI engine error: $error")
-            }
-
-            // --- SSE Streaming Parser (Instant Feel) ---
-            val fullContent = StringBuilder()
-            body.lines().forEach { line ->
-                if (line.trim().startsWith("data: ")) {
-                    val data = line.trim().removePrefix("data: ").trim()
-                    if (data == "[DONE]") return@forEach
-                    try {
-                        val root = json.parseToJsonElement(data) as? JsonObject
-                        val choices = (root?.get("choices") as? JsonArray)
-                        val delta = choices?.firstOrNull()?.let { it as? JsonObject }?.get("delta") as? JsonObject
-                        val contentPart = delta?.get("content")?.let { if (it is JsonPrimitive) it.content else null }
-                        if (contentPart != null) {
-                            fullContent.append(contentPart)
-                        }
-                    } catch (e: Exception) {
-                        // Suppress parse failures on partial SSE data chunks
-                    }
+            val response = kotlinx.coroutines.withTimeout(25000L) {
+                httpClient.post("https://openrouter.ai/api/v1/chat/completions") {
+                    header("Authorization", "Bearer $apiKey")
+                    header("HTTP-Referer", "https://costpilot.app")
+                    header("X-Title", "CostPilot Travel Intelligence")
+                    contentType(ContentType.Application.Json)
+                    setBody(request)
                 }
             }
 
-            val finalResult = fullContent.toString().trim()
-            if (finalResult.isBlank()) {
-                throw IllegalStateException("AI returned an empty response. Verify API settings.")
+            val body = response.bodyAsText()
+            Log.d("AiChat", "Response: ${response.status}")
+
+            if (!response.status.isSuccess()) {
+                val errorMsg = try {
+                    val root = json.parseToJsonElement(body) as? JsonObject
+                    val error = root?.get("error") as? JsonObject
+                    error?.get("message")?.let { if (it is JsonPrimitive) it.content else null } ?: body
+                } catch (e: Exception) { body }
+                throw IllegalStateException("AI engine error: $errorMsg")
             }
-            finalResult
-        }.onFailure { e ->
-            Log.e("RealtimeChat", "Chat failure: ${e.message}")
-        }.recoverCatching { e ->
-            throw Exception(NetworkResilience.classifyError(e))
+
+            // --- Non-Streaming Parser ---
+            val root = json.parseToJsonElement(body) as JsonObject
+            val choices = root["choices"] as JsonArray
+            val firstChoice = choices[0] as JsonObject
+            val message = firstChoice["message"] as JsonObject
+            val content = (message["content"] as JsonPrimitive).content
+
+            if (content.isBlank()) {
+                throw IllegalStateException("AI returned empty content")
+            }
+            
+            Result.success(content.trim())
+        } catch (e: Exception) {
+            Log.e("RealtimeChat", "Chat failure: ${e.message}", e)
+            Result.failure(e)
         }
     }
 
     private fun resolveOpenRouterModel(currentModel: String): String {
-        if (currentModel.contains("/")) return currentModel
-        if (currentModel.isEmpty()) return "anthropic/claude-3.5-sonnet"
-        // Standardize IDs for OpenRouter
         return when {
-            currentModel.contains("claude") -> "anthropic/${currentModel.replace("3-5", "3.5")}"
-            else -> "anthropic/claude-3.5-sonnet"
+            currentModel.isBlank() || currentModel.contains("free") -> "google/gemini-flash-1.5-8bnd" // Better free fallback
+            currentModel.contains("/") -> currentModel
+            else -> "anthropic/$currentModel"
         }
     }
 
@@ -110,8 +102,7 @@ class RealtimeChatService(
         systemPrompt: String
     ): List<OpenRouterMessage> {
         val prior = history
-            .dropWhile { !it.isUser }
-            .takeLast(6)
+            .takeLast(8)
             .map { msg ->
                 OpenRouterMessage(
                     role = if (msg.isUser) "user" else "assistant",
@@ -119,41 +110,21 @@ class RealtimeChatService(
                 )
             }
 
-        val hasLatestInHistory = history.lastOrNull()?.let { it.isUser && it.text.trim() == userInput.trim() } == true
-        val latest = if (hasLatestInHistory) emptyList() else listOf(OpenRouterMessage(role = "user", content = userInput))
-
-        return listOf(OpenRouterMessage(role = "system", content = systemPrompt)) + prior + latest
+        // Only add the system prompt and the history. 
+        // Note: The UI adds the current userInput to history before calling this, 
+        // so history already contains the latest message.
+        return listOf(OpenRouterMessage(role = "system", content = systemPrompt)) + prior
     }
 
-    private fun parseOpenRouterError(body: String): String {
-        return runCatching {
-            val root = json.parseToJsonElement(body) as? JsonObject ?: return body
-            val error = root["error"] as? JsonObject
-            val msg = (error?.get("message") as? JsonPrimitive)?.content
-            msg ?: body
-        }.getOrDefault(body)
-    }
-
-    private fun buildSystemPrompt(attractions: List<Attraction>): String = buildString {
-        append(
-            """You are a versatile AI City Guide. Deeply knowledgeable about Pune (India) but helpful for ANY worldwide query.
-TONE: Helpful, witty, and premium.
-RULES:
-- Concise (2-4 paragraphs max).
-- Bold **Landmark Names**.
-- Factual and accurate.
-- Use the verified Pune context provided if applicable."""
-        )
-        if (attractions.isNotEmpty()) {
-            append("\n\nVERIFIED PUNE ATTRACTIONS:\n")
-            attractions.take(30).forEach { a ->
-                append("• ${a.name} | ${a.category} | ⭐${a.rating}\n")
-            }
-        }
-    }
+    private fun buildSystemPrompt(): String = """
+        You are 'CostPilot AI', a global-tier travel budget Assistant and cost-of-living expert.
+        CAPABILITIES:
+        - You are unrestricted and can answer ANY world-level technical, historical, or travel query.
+        - You possess extreme specialized knowledge of global cost of living, currency exchange, and budget travel.
+        - Always provide tips on how to save money while traveling internationally.
+        TONE: Premium, Helpful, and Highly Competent.
+    """.trimIndent()
 }
-
-// --- Lean Data Models ---
 
 @Serializable
 data class OpenRouterChatRequest(
@@ -168,19 +139,4 @@ data class OpenRouterChatRequest(
 data class OpenRouterMessage(
     val role: String,
     val content: String
-)
-
-@Serializable
-data class OpenRouterChatResponse(
-    val choices: List<OpenRouterChoice> = emptyList()
-)
-
-@Serializable
-data class OpenRouterChoice(
-    val message: OpenRouterMessageContent = OpenRouterMessageContent()
-)
-
-@Serializable
-data class OpenRouterMessageContent(
-    val content: String = ""
 )

@@ -18,7 +18,6 @@
 > Task :app:processDebugManifest UP-TO-DATE
 > Task :app:processDebugManifestForPackage UP-TO-DATE
 > Task :app:processDebugResources UP-TO-DATE
-> Task :app:kspDebugKotlin UP-TO-DATE
 > Task :app:javaPreCompileDebug UP-TO-DATE
 > Task :app:mergeDebugShaders UP-TO-DATE
 > Task :app:compileDebugShaders NO-SOURCE
@@ -35,40 +34,20 @@
 > Task :app:validateSigningDebug UP-TO-DATE
 > Task :app:writeDebugAppMetadata UP-TO-DATE
 > Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:kspDebugKotlin
 
-> Task :app:compileDebugKotlin FAILED
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:50:23 Unresolved reference 'rememberLazyListState'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:52:26 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:52:35 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:53:9 Unresolved reference 'derivedStateOf'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:56:82 Unresolved reference 'index'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:62:5 Unresolved reference 'LaunchedEffect'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:62:35 None of the following candidates is applicable:
-val ColorSchemeKeyTokens.value: Color
-val ShapeKeyTokens.value: Shape
-val TypographyKeyTokens.value: TextStyle
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:63:28 None of the following candidates is applicable:
-val ColorSchemeKeyTokens.value: Color
-val ShapeKeyTokens.value: Shape
-val TypographyKeyTokens.value: TextStyle
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:78:54 Cannot access 'fun loadPosts(isRefresh: Boolean = ...): Unit': it is private in 'com/pranav/punecityguide/ui/viewmodel/ConnectHomeViewModel'.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectPostDetailScreen.kt:106:25 No parameter with name 'enabled' found.
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectPostDetailScreen.kt:109:29 @Composable invocations can only happen from the context of a @Composable function
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectPostDetailScreen.kt:111:29 @Composable invocations can only happen from the context of a @Composable function
-e: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/theme/Theme.kt:62:22 Argument type mismatch: actual type is 'kotlin.text.Typography', but 'androidx.compose.material3.Typography' was expected.
+> Task :app:compileDebugKotlin
+w: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectHomeScreen.kt:171:59 'val Icons.Filled.Sort: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Sort.
+w: file:///C:/Users/prana/AndroidStudioProjects/Punecity/app/src/main/java/com/pranav/punecityguide/ui/screens/ConnectProfileScreen.kt:67:43 'val Icons.Filled.Logout: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Logout.
 
-FAILURE: Build failed with an exception.
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
 
-* What went wrong:
-Execution failed for task ':app:compileDebugKotlin'.
-> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-   > Compilation error. See log for more details
-
-* Try:
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
-> Run with --scan to get full insights.
-> Get more help at https://help.gradle.org.
-
-BUILD FAILED in 7s
-32 actionable tasks: 1 executed, 31 up-to-date
+BUILD SUCCESSFUL in 20s
+39 actionable tasks: 6 executed, 33 up-to-date

@@ -222,7 +222,7 @@ fun AppNavigation(
                         onNavigateToSearch = { navController.navigate(Screen.Search.route) },
                         onNavigateToScan = { navController.navigate(Screen.ScanToPlan.route) },
                         onNavigateToSecret = { navController.navigate(Screen.SecretSpots.route) },
-                        onNavigateToPlans = { navController.navigate(Screen.MyPlans.route) },
+                        onNavigateToPlans = { navController.navigate(Screen.PlansSystem.route) },
                         onAskAi = { prompt ->
                             pendingAiMessage = prompt
                             showAiOverlay = true
@@ -278,10 +278,20 @@ fun AppNavigation(
                     )
                 }
 
-                composable(Screen.CreatePost.route) {
+                composable(
+                    Screen.CreatePost.route,
+                    arguments = listOf(
+                        navArgument("text") { type = NavType.StringType; defaultValue = ""; nullable = true },
+                        navArgument("area") { type = NavType.StringType; defaultValue = ""; nullable = true }
+                    )
+                ) { backStackEntry ->
+                    val text = backStackEntry.arguments?.getString("text") ?: ""
+                    val area = backStackEntry.arguments?.getString("area") ?: ""
                     ConnectCreatePostScreen(
                         onNavigateBack = { navController.navigateUp() },
-                        onPostCreated = { navController.navigateUp() }
+                        onPostCreated = { navController.navigateUp() },
+                        initialDescription = text,
+                        initialArea = area
                     )
                 }
 
@@ -306,7 +316,14 @@ fun AppNavigation(
                     DetailScreen(
                         attractionId = attractionId,
                         database = database,
-                        onNavigateBack = { navController.navigateUp() }
+                        onNavigateBack = { navController.navigateUp() },
+                        onAskAi = { prompt ->
+                            pendingAiMessage = prompt
+                            showAiOverlay = true
+                        },
+                        onPostToCommunity = { text ->
+                            navController.navigate(Screen.CreatePost.createRoute(text = text))
+                        }
                     )
                 }
 
@@ -344,6 +361,24 @@ fun AppNavigation(
                 composable(Screen.MyPlans.route) {
                     MyPlansScreen(
                         database = database,
+                        onNavigateBack = { navController.navigateUp() }
+                    )
+                }
+
+                composable(Screen.PlansSystem.route) {
+                    PlansSystemScreen(
+                        onNavigateBack = { navController.navigateUp() },
+                        onNavigateToDetail = { id -> navController.navigate(Screen.PlanDetail.createRoute(id)) }
+                    )
+                }
+
+                composable(
+                    Screen.PlanDetail.route,
+                    arguments = listOf(navArgument("planId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val planId = backStackEntry.arguments?.getString("planId") ?: ""
+                    PlanDetailScreen(
+                        planId = planId,
                         onNavigateBack = { navController.navigateUp() }
                     )
                 }

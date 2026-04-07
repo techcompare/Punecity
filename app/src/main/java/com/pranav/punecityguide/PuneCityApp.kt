@@ -1,6 +1,7 @@
 package com.pranav.punecityguide
 
 import android.app.Application
+import android.util.Log
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
@@ -9,35 +10,64 @@ import coil3.memory.MemoryCache
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.CachePolicy
 import coil3.request.crossfade
+import com.pranav.punecityguide.data.service.ServiceLocator
 import com.pranav.punecityguide.data.service.SupabaseClient
-import com.pranav.punecityguide.data.service.DataSyncWorker
-import androidx.work.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import okio.Path.Companion.toOkioPath
-import java.util.concurrent.TimeUnit
 
+/**
+ * CostPilot Application — production-grade initialization.
+ *
+ * Startup sequence:
+ * 1. Initialize SupabaseClient (HTTP + auth)
+ * 2. Initialize ServiceLocator (lazy DI container)
+ * 3. Schedule background sync workers
+ * 4. Clean up stale audit logs
+ * 5. Start analytics session
+ */
 class PuneCityApp : Application(), SingletonImageLoader.Factory {
+
+    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     override fun onCreate() {
         super.onCreate()
+        val startMs = System.currentTimeMillis()
+
+        // Core initialization (synchronous — must complete before any UI)
         SupabaseClient.initialize(this)
-        scheduleSync()
-    }
+        ServiceLocator.initialize(this)
 
-    private fun scheduleSync() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
-            .build()
+        // Deferred initialization (async — non-blocking)
+        appScope.launch {
+            try {
+                // Schedule background workers
+                ServiceLocator.backgroundSyncManager.scheduleAll()
 
-        val syncRequest = PeriodicWorkRequestBuilder<DataSyncWorker>(12, TimeUnit.HOURS)
-            .setConstraints(constraints)
-            .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.HOURS)
-            .build()
+                // Clean up old audit logs
+                ServiceLocator.syncAuditRepository.clearOldLogs(daysToKeep = 7)
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "DataSync",
-            ExistingPeriodicWorkPolicy.KEEP,
-            syncRequest
-        )
+                // Start analytics session
+                ServiceLocator.analyticsService.startSession()
+
+                // Pre-warm currency cache
+                ServiceLocator.currencyService.getRates("USD")
+
+                // Update engagement streak + missions
+                ServiceLocator.preferenceManager.updateStreak()
+
+                val bootMs = System.currentTimeMillis() - startMs
+                ServiceLocator.syncAuditRepository.log(
+                    "APP_BOOT",
+                    "CostPilot ${AppConfig.APP_VERSION} started in ${bootMs}ms"
+                )
+                Log.i("CostPilot", "Boot complete in ${bootMs}ms")
+            } catch (e: Exception) {
+                Log.e("CostPilot", "Deferred init error: ${e.message}", e)
+            }
+        }
     }
 
     override fun newImageLoader(context: PlatformContext): ImageLoader {

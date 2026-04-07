@@ -8,58 +8,58 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF818CF8), // Indigo 400
-    onPrimary = Color(0xFF1E1B4B),
-    primaryContainer = Color(0xFF312E81),
-    onPrimaryContainer = Color(0xFFE0E7FF),
-    secondary = Color(0xFFFACC15), // Yellow 400 (Vibrant Contrast)
-    onSecondary = Color(0xFF422006),
-    secondaryContainer = Color(0xFF713F12),
-    onSecondaryContainer = Color(0xFFFEF9C3),
-    tertiary = Color(0xFF34D399), // Emerald 400
-    onTertiary = Color(0xFF064E3B),
-    background = Color(0xFF020617), // Slate 950
-    onBackground = Color(0xFFF1F5F9),
-    surface = Color(0xFF0F172A), // Slate 900
-    onSurface = Color(0xFFF1F5F9),
-    surfaceVariant = Color(0xFF1E293B), // Slate 800
-    onSurfaceVariant = Color(0xFFCBD5E1),
-    error = Color(0xFFF87171),
-    outline = Color(0xFF475569)
+    primary = CostPilotCyan,
+    onPrimary = CostPilotNavy,
+    primaryContainer = Color(0xFF003D4D),
+    onPrimaryContainer = Color(0xFFB8F0FF),
+    secondary = CostPilotGold,
+    onSecondary = Color(0xFF3D2E00),
+    secondaryContainer = Color(0xFF594400),
+    onSecondaryContainer = Color(0xFFFFE08A),
+    tertiary = CostPilotSuccess,
+    onTertiary = Color(0xFF003919),
+    background = CostPilotNavy,
+    onBackground = CostPilotSilver,
+    surface = CostPilotNavyLight,
+    onSurface = CostPilotSilver,
+    surfaceVariant = Color(0xFF1A2744),
+    onSurfaceVariant = Color(0xFFB0BEC5),
+    error = CostPilotDanger,
+    outline = Color(0xFF3A4F6A)
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF4F46E5), // Indigo 600
+    primary = Color(0xFF0088AA),
     onPrimary = Color.White,
-    primaryContainer = Color(0xFFE0E7FF),
-    onPrimaryContainer = Color(0xFF312E81),
-    secondary = Color(0xFFEA580C), // Orange 600
+    primaryContainer = Color(0xFFD4F5FF),
+    onPrimaryContainer = Color(0xFF003544),
+    secondary = Color(0xFF996D00),
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFFFEDD5),
-    onSecondaryContainer = Color(0xFF7C2D12),
-    tertiary = Color(0xFF059669), // Emerald 600
+    secondaryContainer = Color(0xFFFFE08A),
+    onSecondaryContainer = Color(0xFF3D2E00),
+    tertiary = Color(0xFF007A3D),
     onTertiary = Color.White,
-    background = Color(0xFFF8FAFC), // Slate 50
-    onBackground = Color(0xFF0F172A),
+    background = Color(0xFFF5F7FA),
+    onBackground = Color(0xFF0A1628),
     surface = Color.White,
-    onSurface = Color(0xFF0F172A),
-    surfaceVariant = Color(0xFFF1F5F9), // Slate 100
-    onSurfaceVariant = Color(0xFF475569),
-    error = Color(0xFFEF4444),
-    outline = Color(0xFF94A3B8)
+    onSurface = Color(0xFF0A1628),
+    surfaceVariant = Color(0xFFECF0F6),
+    onSurfaceVariant = Color(0xFF4A5568),
+    error = Color(0xFFD32F2F),
+    outline = Color(0xFFB0BEC5)
 )
 
 @Composable
 fun PuneCityTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Disable dynamic color to ensure our custom premium palette shines
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = AppTypography, // Ensure standard typography is available or use default
+        typography = AppTypography,
         content = content
     )
 }

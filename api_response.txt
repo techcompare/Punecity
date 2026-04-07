@@ -1,0 +1,20 @@
+[
+  {
+    "id": "e17910dd-31df-4839-95a7-2dba2cbe4d9b",
+    "user_id": "4bbd6138-027f-4e79-b900-08645069086f",
+    "title": "Pune Buzz",
+    "body": "y",
+    "metadata": null,
+    "community_id": null,
+    "created_at": "2026-03-14T01:34:19.572101+05:30"
+  },
+  {
+    "id": "edaf74e1-9019-4702-9e46-417fc9912017",
+    "user_id": "4bbd6138-027f-4e79-b900-08645069086f",
+    "title": "Pune Buzz",
+    "body": "yo",
+    "metadata": null,
+    "community_id": null,
+    "created_at": "2026-03-14T01:34:37.166651+05:30"
+  }
+]

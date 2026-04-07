@@ -4,16 +4,12 @@ import com.pranav.punecityguide.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.pranav.punecityguide.data.model.Attraction
-import com.pranav.punecityguide.data.repository.AttractionRepository
-import com.pranav.punecityguide.data.service.LocalAiGuideService
 import com.pranav.punecityguide.data.service.RealtimeChatService
 import com.pranav.punecityguide.data.service.SupabaseClient
 import com.pranav.punecityguide.data.service.AiTokenQuotaService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -25,31 +21,27 @@ data class ChatMessage(
 )
 
 data class ChatbotUiState(
-    val isLoadingContext: Boolean = true,
-    val messages: List<ChatMessage> = listOf(
-        ChatMessage(
-            id = 1L,
-            text = "Hi, I am your Pune AI Guide. Ask for plans, budget places, family trips, or food trails.",
-            isUser = false
-        )
-    ),
+    val isLoadingContext: Boolean = false,
+    val isConversationsLoading: Boolean = false,
+    val currentConversationId: String? = null,
+    val conversations: List<com.pranav.punecityguide.data.model.AiConversation> = emptyList(),
+    val messages: List<ChatMessage> = emptyList(),
     val quickPrompts: List<String> = listOf(
-        "Plan 4 hours under Rs 800 for family",
-        "Show hidden gems with less crowd",
-        "Build a monsoon-safe itinerary",
-        "Surprise me with a unique Pune trail"
+        "What's the cheapest travel destination in Asia?",
+        "Help me create a 10-day Japan budget",
+        "Compare living costs: Bangkok vs Bali",
+        "Give me 5 money-saving tips for Europe travel"
     ),
-    val recommendations: List<Attraction> = emptyList(),
     val isSending: Boolean = false,
     val errorMessage: String? = null,
-    val remainingTokens: Int = 10,
+    val remainingTokens: Int = 999,
     val tokenLimitReached: Boolean = false
 )
 
 class ChatbotViewModel(
-    private val repository: AttractionRepository,
     private val auditRepository: com.pranav.punecityguide.data.repository.SyncAuditRepository,
     private val tokenQuotaService: AiTokenQuotaService,
+    private val aiChatRepository: com.pranav.punecityguide.data.repository.AiChatRepository,
     private val userId: String
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ChatbotUiState())
@@ -62,12 +54,9 @@ class ChatbotViewModel(
         )
     }
 
-    private var cachedAttractions: List<Attraction> = emptyList()
-    private var cachedCategories: List<String> = emptyList()
-
     init {
-        loadContext()
         checkTokenQuota()
+        loadConversations()
     }
 
     private fun checkTokenQuota() {
@@ -80,13 +69,32 @@ class ChatbotViewModel(
         }
     }
 
-    private fun loadContext() {
+    private fun loadConversations() {
+        _uiState.update { it.copy(isConversationsLoading = true) }
         viewModelScope.launch {
-            val attractions = repository.getTopAttractions(50).first()
-            val categories = repository.getAllCategories().first()
-            cachedAttractions = attractions
-            cachedCategories = categories
-            _uiState.value = _uiState.value.copy(isLoadingContext = false)
+            aiChatRepository.getConversations(userId).onSuccess { list ->
+                _uiState.update { it.copy(conversations = list, isConversationsLoading = false) }
+            }.onFailure {
+                _uiState.update { it.copy(isConversationsLoading = false) }
+            }
+        }
+    }
+
+    fun selectConversation(id: String) {
+        _uiState.update { it.copy(currentConversationId = id, messages = emptyList(), isSending = true) }
+        viewModelScope.launch {
+            aiChatRepository.getMessages(id).onSuccess { messages ->
+                val domainMessages = messages.map {
+                    ChatMessage(
+                        id = it.id.hashCode().toLong(),
+                        text = it.content,
+                        isUser = it.role == "user"
+                    )
+                }
+                _uiState.update { it.copy(messages = domainMessages, isSending = false) }
+            }.onFailure { e ->
+                _uiState.update { it.copy(isSending = false, errorMessage = "Failed to load history: ${e.message}") }
+            }
         }
     }
 
@@ -94,10 +102,10 @@ class ChatbotViewModel(
         val trimmed = input.trim()
         if (trimmed.isEmpty()) return
         if (_uiState.value.isSending) return
-        // Token limit unrestricted
 
+        val userMsgId = System.currentTimeMillis()
         val userMessage = ChatMessage(
-            id = System.currentTimeMillis(),
+            id = userMsgId,
             text = trimmed,
             isUser = true
         )
@@ -109,33 +117,40 @@ class ChatbotViewModel(
         )
 
         viewModelScope.launch {
-            // No token consumption
-            val remaining = 999 
-            
-            auditRepository.log("AI_QUERY_START", "Input: $trimmed", "Model: ${BuildConfig.CLAUDE_MODEL}")
-            val localResponse = LocalAiGuideService.buildResponse(
-                query = trimmed,
-                attractions = cachedAttractions,
-                categories = cachedCategories
-            )
-
-            val remoteResult = realtimeChatService.getChatReply(
-                history = _uiState.value.messages,
-                userInput = trimmed,
-                attractionsContext = cachedAttractions
-            )
-
-            val botText = remoteResult.getOrElse {
-                localResponse.reply
-            }
-            val recommended = if (remoteResult.isSuccess) {
-                extractMentionedAttractions(botText, cachedAttractions)
-                    .ifEmpty { LocalAiGuideService.recommendAttractions(trimmed, cachedAttractions, limit = 5) }
-            } else {
-                localResponse.recommendations.ifEmpty {
-                    LocalAiGuideService.recommendAttractions(trimmed, cachedAttractions, limit = 5)
+            var convId = _uiState.value.currentConversationId
+            if (convId == null) {
+                val title = if (trimmed.length > 30) trimmed.take(27) + "..." else trimmed
+                val result = aiChatRepository.createConversation(userId, title)
+                result.onSuccess { 
+                    convId = it.id
+                    _uiState.update { s -> s.copy(currentConversationId = it.id, conversations = listOf(it) + s.conversations) }
+                }.onFailure { e ->
+                    _uiState.update { it.copy(isSending = false, errorMessage = "Failed to start conversation: ${e.message}") }
+                    return@launch
                 }
             }
+
+            aiChatRepository.saveMessage(convId!!, "user", trimmed)
+            auditRepository.log("AI_QUERY_START", "Input: $trimmed", "Model: ${BuildConfig.CLAUDE_MODEL}")
+            
+            val remoteResult = realtimeChatService.getChatReply(
+                history = _uiState.value.messages,
+                userInput = trimmed
+            )
+
+            if (remoteResult.isFailure) {
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        isSending = false,
+                        errorMessage = "I'm having trouble connecting to CostPilot AI. Please check your internet or try again."
+                    )
+                }
+                auditRepository.log("AI_QUERY_FAILURE", "Remote failed: ${remoteResult.exceptionOrNull()?.message}")
+                return@launch
+            }
+
+            val botText = remoteResult.getOrThrow()
+            aiChatRepository.saveMessage(convId!!, "assistant", botText)
 
             val botMessage = ChatMessage(
                 id = System.currentTimeMillis() + 1,
@@ -146,43 +161,25 @@ class ChatbotViewModel(
             _uiState.update { currentState ->
                 currentState.copy(
                     messages = currentState.messages + botMessage,
-                    recommendations = recommended,
-                    isSending = false,
-                    remainingTokens = remaining,
-                    tokenLimitReached = remaining <= 0,
-                    errorMessage = remoteResult.exceptionOrNull()?.message
+                    isSending = false
                 )
             }
             onSuccess()
-
-            if (remoteResult.isSuccess) {
-                auditRepository.log("AI_QUERY_SUCCESS", "Response length: ${botText.length}")
-            } else {
-                auditRepository.log("AI_QUERY_FAILURE", "Error: ${remoteResult.exceptionOrNull()?.message}")
-            }
+            auditRepository.log("AI_QUERY_SUCCESS", "Response length: ${botText.length}")
         }
-    }
-
-    /** Scans the AI reply text for names of known attractions and returns them in mention order. */
-    private fun extractMentionedAttractions(text: String, attractions: List<Attraction>): List<Attraction> {
-        val lower = text.lowercase()
-        return attractions
-            .filter { lower.contains(it.name.lowercase()) }
-            .sortedByDescending { lower.indexOf(it.name.lowercase()) == -1 }
-            .take(5)
     }
 
     companion object {
         fun factory(
-            repository: AttractionRepository,
             auditRepository: com.pranav.punecityguide.data.repository.SyncAuditRepository,
             tokenQuotaService: AiTokenQuotaService,
+            aiChatRepository: com.pranav.punecityguide.data.repository.AiChatRepository,
             userId: String
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return ChatbotViewModel(repository, auditRepository, tokenQuotaService, userId) as T
+                    return ChatbotViewModel(auditRepository, tokenQuotaService, aiChatRepository, userId) as T
                 }
             }
         }

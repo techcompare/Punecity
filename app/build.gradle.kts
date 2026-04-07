@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -14,31 +16,43 @@ android {
         applicationId = "com.pranav.punecityguide"
         minSdk = 24
         targetSdk = 36
-        versionCode = 7
-        versionName = "7"
+        versionCode = 8
+        versionName = "8"
 
-        val claudeApiKey = providers.gradleProperty("CLAUDE_API_KEY").orElse("").get()
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
+        }
+
+        fun getProp(name: String, default: String = ""): String {
+            return localProperties.getProperty(name) 
+                ?: providers.gradleProperty(name).orNull?.takeIf { !it.startsWith("\${") }
+                ?: default
+        }
+
+        val claudeApiKey = getProp("CLAUDE_API_KEY")
         buildConfigField("String", "CLAUDE_API_KEY", "\"$claudeApiKey\"")
 
-        val claudeModel = providers.gradleProperty("CLAUDE_MODEL").orElse("nvidia/nemotron-3-super-120b-a12b:free").get()
+        val claudeModel = getProp("CLAUDE_MODEL", "nvidia/nemotron-3-super-120b-a12b:free")
         buildConfigField("String", "CLAUDE_MODEL", "\"$claudeModel\"")
 
-        val remoteAttractionsPath = providers.gradleProperty("REMOTE_ATTRACTIONS_PATH").orElse("attractions").get()
+        val remoteAttractionsPath = getProp("REMOTE_ATTRACTIONS_PATH", "attractions")
         buildConfigField("String", "REMOTE_ATTRACTIONS_PATH", "\"$remoteAttractionsPath\"")
 
-        val supabaseUrl = providers.gradleProperty("SUPABASE_URL").get()
+        val supabaseUrl = getProp("SUPABASE_URL")
         buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
 
-        val supabaseAnonKey = providers.gradleProperty("SUPABASE_ANON_KEY").get()
+        val supabaseAnonKey = getProp("SUPABASE_ANON_KEY")
         buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
 
-        val communitySupabaseUrl = providers.gradleProperty("COMMUNITY_SUPABASE_URL").get()
+        val communitySupabaseUrl = getProp("COMMUNITY_SUPABASE_URL")
         buildConfigField("String", "COMMUNITY_SUPABASE_URL", "\"$communitySupabaseUrl\"")
 
-        val communitySupabaseAnonKey = providers.gradleProperty("COMMUNITY_SUPABASE_ANON_KEY").get()
+        val communitySupabaseAnonKey = getProp("COMMUNITY_SUPABASE_ANON_KEY")
         buildConfigField("String", "COMMUNITY_SUPABASE_ANON_KEY", "\"$communitySupabaseAnonKey\"")
 
-        val communityTable = providers.gradleProperty("COMMUNITY_TABLE").get()
+        val communityTable = getProp("COMMUNITY_TABLE", "posts")
         buildConfigField("String", "COMMUNITY_TABLE", "\"$communityTable\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
