@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -70,12 +71,33 @@ fun SpotDetailsScreen(
         ) {
             // Hero Image
             Box(modifier = Modifier.fillMaxWidth().height(350.dp)) {
-                AsyncImage(
-                    model = spot.imageUrl,
-                    contentDescription = spot.name,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
+                if (spot.imageUrl != null) {
+                    AsyncImage(
+                        model = spot.imageUrl,
+                        contentDescription = spot.name,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    // Gradient placeholder when no image
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.linearGradient(
+                                    colors = listOf(BuzzPrimary.copy(alpha = 0.8f), BuzzAccent.copy(alpha = 0.6f))
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Place,
+                            contentDescription = null,
+                            tint = Color.White.copy(alpha = 0.3f),
+                            modifier = Modifier.size(80.dp)
+                        )
+                    }
+                }
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

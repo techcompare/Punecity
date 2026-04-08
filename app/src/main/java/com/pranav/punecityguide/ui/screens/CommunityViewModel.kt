@@ -35,12 +35,11 @@ class CommunityViewModel : ViewModel() {
             
             // Check if Supabase is configured
             if (!com.pranav.punecityguide.data.SupabaseRest.isConfigured) {
-                // Show demo posts with helpful message
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        posts = getDemoPosts(),
-                        error = "Viewing demo posts. Configure Supabase to enable real community features."
+                        posts = emptyList(),
+                        error = "Community features require backend configuration."
                     )
                 }
                 return@launch
@@ -54,75 +53,20 @@ class CommunityViewModel : ViewModel() {
                 val userMessage = when {
                     error.message?.contains("Unable to resolve host", ignoreCase = true) == true ||
                     error.message?.contains("Network", ignoreCase = true) == true ->
-                        "No internet connection. Showing demo posts."
+                        "No internet connection. Please check your connection and try again."
                     error.message?.contains("timeout", ignoreCase = true) == true ->
-                        "Connection timed out. Showing demo posts."
-                    else -> "Unable to load posts. Showing demo posts."
+                        "Connection timed out. Please try again."
+                    else -> "Unable to load posts. Pull down to refresh."
                 }
-                // Show demo posts as fallback
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        posts = getDemoPosts(),
+                        posts = emptyList(),
                         error = userMessage,
                     )
                 }
             }
         }
-    }
-    
-    private fun getDemoPosts(): List<CommunityPost> {
-        return listOf(
-            CommunityPost(
-                id = "demo1",
-                author = "Pune Explorer",
-                content = "Just discovered an amazing cafe in Koregaon Park! The vibe is incredible and the coffee is top-notch. Highly recommend! ☕",
-                createdAt = "2 hours ago",
-                likes = 24,
-                isLiked = false,
-                isSaved = false
-            ),
-            CommunityPost(
-                id = "demo2",
-                author = "Heritage Lover",
-                content = "Visited Shaniwar Wada today. The history and architecture are breathtaking. A must-visit for anyone in Pune! 🏰",
-                createdAt = "5 hours ago",
-                location = "Shaniwar Wada",
-                likes = 42,
-                isLiked = false,
-                isSaved = false
-            ),
-            CommunityPost(
-                id = "demo3",
-                author = "Foodie Punekar",
-                content = "The street food at JM Road is unbeatable! Had the best vada pav and cutting chai. Nothing beats authentic Pune flavors! 🌮",
-                createdAt = "1 day ago",
-                location = "JM Road",
-                likes = 67,
-                isLiked = false,
-                isSaved = false
-            ),
-            CommunityPost(
-                id = "demo4",
-                author = "Weekend Wanderer",
-                content = "Sunrise trek to Sinhagad Fort was absolutely worth it! The view from the top is stunning. Perfect weekend activity! 🌄",
-                createdAt = "2 days ago",
-                location = "Sinhagad Fort",
-                likes = 89,
-                isLiked = false,
-                isSaved = false
-            ),
-            CommunityPost(
-                id = "demo5",
-                author = "Art Enthusiast",
-                content = "Spent the evening at Dagdusheth Ganpati Temple. The devotion and energy here are truly special. A spiritual experience! 🙏",
-                createdAt = "3 days ago",
-                location = "Dagdusheth Temple",
-                likes = 56,
-                isLiked = false,
-                isSaved = false
-            )
-        )
     }
 
     fun createPost(author: String, content: String, userToken: String? = null) {

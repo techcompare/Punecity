@@ -186,15 +186,6 @@ fun HomeScreen(
                 }
             }
 
-            item {
-                AnimatedVisibility(
-                    visible = showContent,
-                    enter = fadeIn() + scaleIn(initialScale = 0.95f)
-                ) {
-                    HeroCard()
-                }
-            }
-            
             // Quick Stats Row
             if (!isLoading && spots.isNotEmpty()) {
                 item {
@@ -467,42 +458,6 @@ private fun SearchBar(
 }
 
 @Composable
-private fun HeroCard() {
-    Card(
-        shape = RoundedCornerShape(24.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.linearGradient(
-                        listOf(BuzzPrimary, BuzzAccent)
-                    )
-                )
-                .padding(24.dp)
-        ) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    text = "Pune is yours today.",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Color.White,
-                    fontWeight = FontWeight.Black
-                )
-                Text(
-                    text = "From heritage trails to hidden food alleys, one tap discovery.",
-                    color = Color.White.copy(alpha = 0.9f),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
-    }
-}
-
-@Composable
 private fun SectionHeader(title: String, subtitle: String, count: Int? = null) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
@@ -565,14 +520,36 @@ private fun SpotCard(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int = 0
     ) {
         Column {
             Box {
-                AsyncImage(
-                    model = spot.imageUrl,
-                    contentDescription = spot.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(160.dp)
-                )
+                if (spot.imageUrl != null) {
+                    AsyncImage(
+                        model = spot.imageUrl,
+                        contentDescription = spot.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(160.dp)
+                    )
+                } else {
+                    // Gradient placeholder when no image
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(160.dp)
+                            .background(
+                                Brush.linearGradient(
+                                    colors = listOf(BuzzPrimary.copy(alpha = 0.7f), BuzzAccent.copy(alpha = 0.5f))
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Place,
+                            contentDescription = null,
+                            tint = Color.White.copy(alpha = 0.5f),
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                }
                 // Gradient overlay for better text visibility
                 Box(
                     modifier = Modifier
@@ -694,14 +671,36 @@ private fun HiddenGemRow(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box {
-                AsyncImage(
-                    model = spot.imageUrl,
-                    contentDescription = spot.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                )
+                if (spot.imageUrl != null) {
+                    AsyncImage(
+                        model = spot.imageUrl,
+                        contentDescription = spot.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                    )
+                } else {
+                    // Gradient placeholder when no image
+                    Box(
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(
+                                Brush.linearGradient(
+                                    colors = listOf(BuzzPrimary.copy(alpha = 0.7f), BuzzAccent.copy(alpha = 0.5f))
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Place,
+                            contentDescription = null,
+                            tint = Color.White.copy(alpha = 0.5f),
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                }
                 // Hidden gem badge
                 Box(
                     modifier = Modifier

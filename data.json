@@ -8,7 +8,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 8547,
-    "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800",
     "tags": ["Historical", "Architecture", "Heritage"]
   },
   {
@@ -20,7 +19,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 6234,
-    "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800",
     "tags": ["Historical", "Museum", "Gandhi"]
   },
   {
@@ -32,7 +30,6 @@
     "bestTime": "Early Morning",
     "rating": 4.6,
     "reviews": 12453,
-    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
     "tags": ["Trekking", "Fort", "History", "Adventure"]
   },
   {
@@ -44,7 +41,6 @@
     "bestTime": "Evening",
     "rating": 4.7,
     "reviews": 9876,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800",
     "tags": ["Temple", "Spiritual", "Religious"]
   },
   {
@@ -56,7 +52,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 3421,
-    "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800",
     "tags": ["Meditation", "Peaceful", "Spiritual"]
   },
   {
@@ -68,7 +63,6 @@
     "bestTime": "Early Morning",
     "rating": 4.3,
     "reviews": 2134,
-    "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800",
     "tags": ["Trekking", "Nature", "Fitness", "Hidden Gems"]
   },
   {
@@ -80,7 +74,6 @@
     "bestTime": "Evening",
     "rating": 4.5,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800",
     "tags": ["Shopping", "Food", "College Life"]
   },
   {
@@ -92,7 +85,6 @@
     "bestTime": "Evening",
     "rating": 4.6,
     "reviews": 7821,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Cafes", "Fine Dining", "Nightlife"]
   },
   {
@@ -104,7 +96,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
     "tags": ["Garden", "Temple", "Family"]
   },
   {
@@ -116,7 +107,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 2987,
-    "image": "https://images.unsplash.com/photo-1548013146-72479768bada?w=800",
     "tags": ["Historical", "Temple", "Architecture", "Hidden Gems"]
   },
   {
@@ -128,7 +118,6 @@
     "bestTime": "Morning",
     "rating": 4.1,
     "reviews": 6543,
-    "image": "https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=800",
     "tags": ["Zoo", "Wildlife", "Family", "Kids"]
   },
   {
@@ -140,7 +129,6 @@
     "bestTime": "Evening",
     "rating": 4.3,
     "reviews": 3210,
-    "image": "https://images.unsplash.com/photo-1519408245880-9132e74360ab?w=800",
     "tags": ["Garden", "Peaceful", "Photography"]
   },
   {
@@ -152,7 +140,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 4567,
-    "image": "https://images.unsplash.com/photo-1549577434-d7b0b8f16dea?w=800",
     "tags": ["Temple", "Spiritual", "Hill"]
   },
   {
@@ -164,7 +151,6 @@
     "bestTime": "Morning",
     "rating": 4.2,
     "reviews": 2345,
-    "image": "https://images.unsplash.com/photo-1591825729269-caeb344f6df2?w=800",
     "tags": ["Historical", "Museum", "Shivaji"]
   },
   {
@@ -176,7 +162,6 @@
     "bestTime": "Evening",
     "rating": 4.0,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800",
     "tags": ["Garden", "Boating", "Riverside"]
   },
   {
@@ -188,7 +173,6 @@
     "bestTime": "Morning",
     "rating": 4.6,
     "reviews": 1987,
-    "image": "https://images.unsplash.com/photo-1563799679405-5a26e7c6d2f8?w=800",
     "tags": ["Museum", "Art", "Culture", "Hidden Gems"]
   },
   {
@@ -200,7 +184,6 @@
     "bestTime": "Afternoon",
     "rating": 4.3,
     "reviews": 8765,
-    "image": "https://images.unsplash.com/photo-1519167758481-83f29da8c2b0?w=800",
     "tags": ["Shopping", "Food Court", "Entertainment"]
   },
   {
@@ -212,7 +195,6 @@
     "bestTime": "Early Morning",
     "rating": 4.1,
     "reviews": 1234,
-    "image": "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800",
     "tags": ["Lake", "Bird Watching", "Nature", "Hidden Gems"]
   },
   {
@@ -224,7 +206,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 6789,
-    "image": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800",
     "tags": ["Cafe", "Irani Cafe", "Heritage", "Breakfast"]
   },
   {
@@ -236,7 +217,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800",
     "tags": ["Cafe", "Breakfast", "Irani Cafe"]
   },
   {
@@ -248,7 +228,6 @@
     "bestTime": "Monsoon",
     "rating": 4.5,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
     "tags": ["Dam", "Scenic", "Photography", "Road Trip"]
   },
   {
@@ -260,7 +239,6 @@
     "bestTime": "Evening",
     "rating": 4.3,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
     "tags": ["Temple", "Hill", "Sunset", "Viewpoint"]
   },
   {
@@ -272,7 +250,6 @@
     "bestTime": "Monsoon",
     "rating": 4.2,
     "reviews": 7654,
-    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800",
     "tags": ["Hill Station", "Scenic", "Weekend Getaway"]
   },
   {
@@ -284,7 +261,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 2345,
-    "image": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800",
     "tags": ["Dam", "Water Sports", "Picnic"]
   },
   {
@@ -296,7 +272,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 4567,
-    "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800",
     "tags": ["Cafe", "Bakery", "Healthy Food"]
   },
   {
@@ -308,7 +283,6 @@
     "bestTime": "Morning",
     "rating": 4.0,
     "reviews": 1876,
-    "image": "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800",
     "tags": ["Zoo", "Wildlife", "Educational"]
   },
   {
@@ -320,7 +294,6 @@
     "bestTime": "Early Morning",
     "rating": 4.1,
     "reviews": 987,
-    "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800",
     "tags": ["Sports", "Jogging", "Historical"]
   },
   {
@@ -332,7 +305,6 @@
     "bestTime": "Morning",
     "rating": 3.9,
     "reviews": 543,
-    "image": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800",
     "tags": ["Historical", "Architecture", "Hidden Gems"]
   },
   {
@@ -344,7 +316,6 @@
     "bestTime": "Monsoon",
     "rating": 4.4,
     "reviews": 1234,
-    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
     "tags": ["Trekking", "Fort", "Adventure", "Monsoon"]
   },
   {
@@ -356,7 +327,6 @@
     "bestTime": "Morning",
     "rating": 4.0,
     "reviews": 432,
-    "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800",
     "tags": ["Museum", "Culture", "Educational", "Hidden Gems"]
   },
   {
@@ -368,7 +338,6 @@
     "bestTime": "Winter",
     "rating": 4.6,
     "reviews": 2341,
-    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
     "tags": ["Trekking", "Fort", "History", "Adventure"]
   },
   {
@@ -380,7 +349,6 @@
     "bestTime": "Morning",
     "rating": 4.1,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800",
     "tags": ["Garden", "Botanical", "Family"]
   },
   {
@@ -392,7 +360,6 @@
     "bestTime": "Morning",
     "rating": 4.2,
     "reviews": 876,
-    "image": "https://images.unsplash.com/photo-1563799679405-5a26e7c6d2f8?w=800",
     "tags": ["Museum", "Unique", "Kids", "Hidden Gems"]
   },
   {
@@ -404,7 +371,6 @@
     "bestTime": "Morning",
     "rating": 3.9,
     "reviews": 654,
-    "image": "https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=800",
     "tags": ["Museum", "Educational", "History"]
   },
   {
@@ -416,7 +382,6 @@
     "bestTime": "Dinner",
     "rating": 4.4,
     "reviews": 1987,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Fine Dining", "Garden", "Romantic"]
   },
   {
@@ -428,7 +393,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 3210,
-    "image": "https://images.unsplash.com/photo-1567337710282-00832b415979?w=800",
     "tags": ["Street Food", "Misal", "Local Food"]
   },
   {
@@ -440,7 +404,6 @@
     "bestTime": "Morning",
     "rating": 4.6,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800",
     "tags": ["Bakery", "Heritage", "Biscuits"]
   },
   {
@@ -452,7 +415,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 2876,
-    "image": "https://images.unsplash.com/photo-1580477667995-2b94f01c9516?w=800",
     "tags": ["Temple", "Spiritual", "Festival"]
   },
   {
@@ -464,7 +426,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 1543,
-    "image": "https://images.unsplash.com/photo-1549577434-d7b0b8f16dea?w=800",
     "tags": ["Temple", "Spiritual", "Architecture"]
   },
   {
@@ -476,7 +437,6 @@
     "bestTime": "Winter",
     "rating": 4.2,
     "reviews": 876,
-    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
     "tags": ["Trekking", "Fort", "Hidden Gems"]
   },
   {
@@ -488,7 +448,6 @@
     "bestTime": "Afternoon",
     "rating": 4.1,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800",
     "tags": ["Shopping", "Entertainment", "Food Court"]
   },
   {
@@ -500,7 +459,6 @@
     "bestTime": "Evening",
     "rating": 4.0,
     "reviews": 1234,
-    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
     "tags": ["Riverside", "Walking", "Sunset"]
   },
   {
@@ -512,7 +470,6 @@
     "bestTime": "Evening",
     "rating": 4.3,
     "reviews": 765,
-    "image": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800",
     "tags": ["Art", "Culture", "Events", "Hidden Gems"]
   },
   {
@@ -524,7 +481,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 987,
-    "image": "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800",
     "tags": ["Historical", "Architecture", "Hidden Gems"]
   },
   {
@@ -536,7 +492,6 @@
     "bestTime": "Monsoon",
     "rating": 4.3,
     "reviews": 1432,
-    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
     "tags": ["Waterfalls", "Trekking", "Monsoon"]
   },
   {
@@ -548,7 +503,6 @@
     "bestTime": "Afternoon",
     "rating": 4.0,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1519167758481-83f29da8c2b0?w=800",
     "tags": ["Shopping", "Movies", "Food Court"]
   },
   {
@@ -560,7 +514,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 2134,
-    "image": "https://images.unsplash.com/photo-1563799679405-5a26e7c6d2f8?w=800",
     "tags": ["Museum", "Spiritual", "Technology"]
   },
   {
@@ -572,7 +525,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800",
     "tags": ["Shopping", "Food", "Corporate"]
   },
   {
@@ -584,7 +536,6 @@
     "bestTime": "Afternoon",
     "rating": 4.3,
     "reviews": 5678,
-    "image": "https://images.unsplash.com/photo-1519167758481-83f29da8c2b0?w=800",
     "tags": ["Shopping", "Fine Dining", "Premium"]
   },
   {
@@ -596,7 +547,6 @@
     "bestTime": "Morning",
     "rating": 3.9,
     "reviews": 876,
-    "image": "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800",
     "tags": ["Lake", "Jogging", "Nature", "Hidden Gems"]
   },
   {
@@ -608,7 +558,6 @@
     "bestTime": "Evening",
     "rating": 4.4,
     "reviews": 3210,
-    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800",
     "tags": ["Student Hub", "Books", "Food"]
   },
   {
@@ -620,7 +569,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 6543,
-    "image": "https://images.unsplash.com/photo-1567337710282-00832b415979?w=800",
     "tags": ["Shopping", "Street Food", "Busy"]
   },
   {
@@ -632,7 +580,6 @@
     "bestTime": "Breakfast",
     "rating": 4.5,
     "reviews": 8765,
-    "image": "https://images.unsplash.com/photo-1589301773859-4ab2f66e5f0f?w=800",
     "tags": ["Restaurant", "South Indian", "Iconic"]
   },
   {
@@ -644,7 +591,6 @@
     "bestTime": "Lunch",
     "rating": 4.3,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1585937421612-70e008356f35?w=800",
     "tags": ["Restaurant", "Thali", "Indian"]
   },
   {
@@ -656,7 +602,6 @@
     "bestTime": "Afternoon",
     "rating": 4.6,
     "reviews": 7654,
-    "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800",
     "tags": ["Sweets", "Snacks", "Iconic"]
   },
   {
@@ -668,7 +613,6 @@
     "bestTime": "Evening",
     "rating": 4.4,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800",
     "tags": ["Ice Cream", "Heritage", "Dessert"]
   },
   {
@@ -680,7 +624,6 @@
     "bestTime": "Breakfast",
     "rating": 4.2,
     "reviews": 6789,
-    "image": "https://images.unsplash.com/photo-1567337710282-00832b415979?w=800",
     "tags": ["Misal", "Maharashtrian", "Quick Bite"]
   },
   {
@@ -692,7 +635,6 @@
     "bestTime": "Breakfast",
     "rating": 4.3,
     "reviews": 2345,
-    "image": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800",
     "tags": ["Irani Cafe", "Parsi Food", "Heritage"]
   },
   {
@@ -704,7 +646,6 @@
     "bestTime": "Dinner",
     "rating": 4.5,
     "reviews": 1876,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Fine Dining", "Continental", "Romantic"]
   },
   {
@@ -716,7 +657,6 @@
     "bestTime": "Lunch",
     "rating": 4.4,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800",
     "tags": ["Asian", "Fine Dining", "Popular"]
   },
   {
@@ -728,7 +668,6 @@
     "bestTime": "Dinner",
     "rating": 4.5,
     "reviews": 2987,
-    "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800",
     "tags": ["Italian", "Pizza", "Fine Dining"]
   },
   {
@@ -740,7 +679,6 @@
     "bestTime": "Lunch",
     "rating": 4.3,
     "reviews": 5678,
-    "image": "https://images.unsplash.com/photo-1585937421612-70e008356f35?w=800",
     "tags": ["Thali", "Gujarati", "Unlimited"]
   },
   {
@@ -752,7 +690,6 @@
     "bestTime": "Lunch",
     "rating": 4.4,
     "reviews": 1987,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Parsi", "Heritage", "Authentic"]
   },
   {
@@ -764,7 +701,6 @@
     "bestTime": "Breakfast",
     "rating": 4.6,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1567337710282-00832b415979?w=800",
     "tags": ["Misal", "Spicy", "Local Food"]
   },
   {
@@ -776,7 +712,6 @@
     "bestTime": "Lunch",
     "rating": 4.4,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1585937421612-70e008356f35?w=800",
     "tags": ["Maharashtrian", "Thali", "Authentic"]
   },
   {
@@ -788,7 +723,6 @@
     "bestTime": "Lunch",
     "rating": 4.5,
     "reviews": 2876,
-    "image": "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=800",
     "tags": ["Non-Veg", "Mutton", "Spicy"]
   },
   {
@@ -800,7 +734,6 @@
     "bestTime": "Evening",
     "rating": 4.1,
     "reviews": 8765,
-    "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
     "tags": ["Fast Food", "Burgers", "Student Hub"]
   },
   {
@@ -812,7 +745,6 @@
     "bestTime": "Lunch",
     "rating": 4.0,
     "reviews": 9876,
-    "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
     "tags": ["Fast Food", "Family", "Burgers"]
   },
   {
@@ -824,7 +756,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 1543,
-    "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800",
     "tags": ["Bakery", "Artisanal", "Breakfast"]
   },
   {
@@ -836,7 +767,6 @@
     "bestTime": "Evening",
     "rating": 4.4,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800",
     "tags": ["Katta", "Student Hub", "Heritage", "Hidden Gems"]
   },
   {
@@ -848,7 +778,6 @@
     "bestTime": "Afternoon",
     "rating": 4.6,
     "reviews": 6789,
-    "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800",
     "tags": ["Dessert", "Mastani", "Iconic"]
   },
   {
@@ -860,7 +789,6 @@
     "bestTime": "Dinner",
     "rating": 4.3,
     "reviews": 2134,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Fine Dining", "Heritage", "Hotel"]
   },
   {
@@ -872,7 +800,6 @@
     "bestTime": "Lunch",
     "rating": 4.2,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1585937421612-70e008356f35?w=800",
     "tags": ["Buffet", "North Indian", "Family"]
   },
   {
@@ -884,7 +811,6 @@
     "bestTime": "Dinner",
     "rating": 4.3,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1585937421612-70e008356f35?w=800",
     "tags": ["North Indian", "Restaurant", "Family"]
   },
   {
@@ -896,7 +822,6 @@
     "bestTime": "Dinner",
     "rating": 4.4,
     "reviews": 7654,
-    "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=800",
     "tags": ["Buffet", "BBQ", "Unlimited"]
   },
   {
@@ -908,7 +833,6 @@
     "bestTime": "Lunch",
     "rating": 4.4,
     "reviews": 2345,
-    "image": "https://images.unsplash.com/photo-1589301773859-4ab2f66e5f0f?w=800",
     "tags": ["South Indian", "Traditional", "Thali"]
   },
   {
@@ -920,7 +844,6 @@
     "bestTime": "Dinner",
     "rating": 4.2,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1585937421612-70e008356f35?w=800",
     "tags": ["Vegetarian", "Multi-cuisine", "Family"]
   },
   {
@@ -932,7 +855,6 @@
     "bestTime": "Evening",
     "rating": 4.3,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Pub", "Live Music", "Nightlife"]
   },
   {
@@ -944,7 +866,6 @@
     "bestTime": "Evening",
     "rating": 4.4,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Brewery", "Craft Beer", "Food"]
   },
   {
@@ -956,7 +877,6 @@
     "bestTime": "Night",
     "rating": 4.2,
     "reviews": 2876,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Lounge", "Live Music", "Premium"]
   },
   {
@@ -968,7 +888,6 @@
     "bestTime": "Morning",
     "rating": 4.0,
     "reviews": 1987,
-    "image": "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800",
     "tags": ["Market", "Shopping", "Local", "Hidden Gems"]
   },
   {
@@ -980,7 +899,6 @@
     "bestTime": "Evening",
     "rating": 4.1,
     "reviews": 3210,
-    "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800",
     "tags": ["Shopping", "Street Market", "Affordable"]
   },
   {
@@ -992,7 +910,6 @@
     "bestTime": "Morning",
     "rating": 4.0,
     "reviews": 2134,
-    "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800",
     "tags": ["Market", "Traditional", "Shopping"]
   },
   {
@@ -1004,7 +921,6 @@
     "bestTime": "Afternoon",
     "rating": 4.2,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800",
     "tags": ["Shopping", "Jewelry", "Traditional"]
   },
   {
@@ -1016,7 +932,6 @@
     "bestTime": "Lunch",
     "rating": 4.1,
     "reviews": 5432,
-    "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
     "tags": ["IT Park", "Corporate", "Modern"]
   },
   {
@@ -1028,7 +943,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800",
     "tags": ["IT Park", "Township", "Modern"]
   },
   {
@@ -1040,7 +954,6 @@
     "bestTime": "Lunch",
     "rating": 4.0,
     "reviews": 2134,
-    "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
     "tags": ["IT Park", "SEZ", "Corporate"]
   },
   {
@@ -1052,7 +965,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 1987,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Education", "Campus", "Modern"]
   },
   {
@@ -1064,7 +976,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 2876,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Education", "Heritage", "Engineering"]
   },
   {
@@ -1076,7 +987,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 3210,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Education", "Heritage", "Campus"]
   },
   {
@@ -1088,7 +998,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 1543,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Education", "Heritage", "Colonial"]
   },
   {
@@ -1100,7 +1009,6 @@
     "bestTime": "Morning",
     "rating": 4.6,
     "reviews": 876,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Education", "Medical", "Military"]
   },
   {
@@ -1112,7 +1020,6 @@
     "bestTime": "Morning",
     "rating": 4.8,
     "reviews": 2345,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Military", "Training", "Prestigious"]
   },
   {
@@ -1124,7 +1031,6 @@
     "bestTime": "Any time",
     "rating": 4.0,
     "reviews": 8765,
-    "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800",
     "tags": ["Airport", "Travel", "Infrastructure"]
   },
   {
@@ -1136,7 +1042,6 @@
     "bestTime": "Any time",
     "rating": 4.1,
     "reviews": 9876,
-    "image": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800",
     "tags": ["Railway", "Heritage", "Transport"]
   },
   {
@@ -1148,7 +1053,6 @@
     "bestTime": "Any time",
     "rating": 3.8,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800",
     "tags": ["Bus Stand", "Transport", "Hub"]
   },
   {
@@ -1160,7 +1064,6 @@
     "bestTime": "Any time",
     "rating": 4.4,
     "reviews": 5678,
-    "image": "https://images.unsplash.com/photo-1485082669829-0bb3a4d1f631?w=800",
     "tags": ["Metro", "Modern", "Transport"]
   },
   {
@@ -1172,7 +1075,6 @@
     "bestTime": "Evening",
     "rating": 4.3,
     "reviews": 3210,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Dining", "Cafes", "Upscale"]
   },
   {
@@ -1184,7 +1086,6 @@
     "bestTime": "Afternoon",
     "rating": 4.1,
     "reviews": 2876,
-    "image": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800",
     "tags": ["Suburb", "IT Hub", "Residential"]
   },
   {
@@ -1196,7 +1097,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
     "tags": ["Nightlife", "Shopping", "Modern"]
   },
   {
@@ -1208,7 +1108,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 2134,
-    "image": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800",
     "tags": ["Residential", "Green", "Peaceful"]
   },
   {
@@ -1220,7 +1119,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 1987,
-    "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800",
     "tags": ["Sports", "Fitness", "Stadium"]
   },
   {
@@ -1232,7 +1130,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 1543,
-    "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800",
     "tags": ["Sports", "Stadium", "Events"]
   },
   {
@@ -1244,7 +1141,6 @@
     "bestTime": "Morning",
     "rating": 4.0,
     "reviews": 876,
-    "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800",
     "tags": ["Park", "Jogging", "Family", "Hidden Gems"]
   },
   {
@@ -1256,7 +1152,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 3456,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Education", "Campus", "Heritage"]
   },
   {
@@ -1268,7 +1163,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 987,
-    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800",
     "tags": ["Film", "Education", "Heritage"]
   },
   {
@@ -1280,7 +1174,6 @@
     "bestTime": "Winter",
     "rating": 4.7,
     "reviews": 2876,
-    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
     "tags": ["Trekking", "Fort", "History", "Adventure"]
   },
   {
@@ -1292,7 +1185,6 @@
     "bestTime": "Winter",
     "rating": 4.5,
     "reviews": 1654,
-    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
     "tags": ["Trekking", "Fort", "History"]
   },
   {
@@ -1304,7 +1196,6 @@
     "bestTime": "Monsoon",
     "rating": 4.4,
     "reviews": 2134,
-    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
     "tags": ["Trekking", "Fort", "Lake View"]
   },
   {
@@ -1316,7 +1207,7 @@
     "bestTime": "Monsoon",
     "rating": 4.6,
     "reviews": 4321,
-    "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
     "tags": ["Trekking", "Fort", "Monsoon", "Popular"]
   }
 ]
+
