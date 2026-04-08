@@ -53,8 +53,6 @@ import com.pranav.punecityguide.ui.screens.SavedViewModel
 import com.pranav.punecityguide.ui.screens.SpotDetailsScreen
 import com.pranav.punecityguide.ui.screens.TermsOfServiceScreen
 import com.pranav.punecityguide.ui.screens.WelcomeScreen
-import com.pranav.punecityguide.ui.screens.PlansScreen
-import com.pranav.punecityguide.ui.screens.PlansViewModel
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -94,7 +92,6 @@ fun PuneBuzzApp(
     val startRoute = if (showWelcomeOnStart) "welcome" else if (hasSession) "discover" else "auth"
     val items = listOf(
         BottomNavItem("discover", "Discover", Icons.Default.Explore),
-        BottomNavItem("plans", "Plans", Icons.Default.Route),
         BottomNavItem("community", "Community", Icons.Default.Groups),
         BottomNavItem("saved", "Saved", Icons.Default.Bookmark),
         BottomNavItem("profile", "Profile", Icons.Default.Person),
@@ -281,17 +278,6 @@ fun PuneBuzzApp(
                         onOpenAuth = {
                             navController.navigate("auth")
                         },
-                    )
-                }
-                composable("plans") {
-                    val plansViewModel: PlansViewModel = viewModel()
-                    val uiState by plansViewModel.uiState.collectAsState()
-                    PlansScreen(
-                        plans = uiState.plans,
-                        isLoading = uiState.isLoading,
-                        onPlanSelected = { plan ->
-                            // Plan detail navigation (future enhancement)
-                        }
                     )
                 }
                 composable("saved") {

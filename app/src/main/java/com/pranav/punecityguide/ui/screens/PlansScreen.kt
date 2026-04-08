@@ -184,9 +184,7 @@ private fun PlanCard(
                         model = plan.imageUrl,
                         contentDescription = plan.title,
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                        error = null, // Gradient overlay will show on error
-                        placeholder = null
+                        contentScale = ContentScale.Crop
                     )
                     Box(
                         modifier = Modifier

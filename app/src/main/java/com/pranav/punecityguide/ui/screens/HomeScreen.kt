@@ -371,7 +371,7 @@ private fun SmartHeader(isLoading: Boolean = false) {
                     modifier = Modifier
                         .size(10.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFF4ADE80).copy(alpha = pulseAlpha))
+                        .background(Color(0xFF4ADE80).copy(alpha = pulseAlpha.coerceIn(0f, 1f)))
                 )
             }
             Text(
@@ -497,10 +497,6 @@ private fun HeroCard() {
                     color = Color.White.copy(alpha = 0.9f),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    ActionPill("Open Map", Icons.Default.Map)
-                }
             }
         }
     }
@@ -575,9 +571,7 @@ private fun SpotCard(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int = 0
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(160.dp),
-                    error = null, // Gradient overlay will show on error
-                    placeholder = null
+                        .height(160.dp)
                 )
                 // Gradient overlay for better text visibility
                 Box(
@@ -689,7 +683,7 @@ private fun HiddenGemRow(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int
         colors = CardDefaults.cardColors(containerColor = BuzzCard),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = offsetX.dp)
+            .padding(start = offsetX.coerceAtLeast(0f).dp)
             .clickable { onClick(spot) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -706,9 +700,7 @@ private fun HiddenGemRow(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(80.dp)
-                        .clip(RoundedCornerShape(16.dp)),
-                    error = null,
-                    placeholder = null
+                        .clip(RoundedCornerShape(16.dp))
                 )
                 // Hidden gem badge
                 Box(
@@ -958,19 +950,3 @@ private fun ErrorCard(message: String, onRetry: () -> Unit) {
         }
     }
 }
-
-@Composable
-private fun ActionPill(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color.White.copy(alpha = 0.2f))
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(icon, contentDescription = text, tint = Color.White, modifier = Modifier.size(16.dp))
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = text, color = Color.White, style = MaterialTheme.typography.labelLarge)
-    }
-}
-

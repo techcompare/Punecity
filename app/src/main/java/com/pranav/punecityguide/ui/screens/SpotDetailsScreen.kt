@@ -74,9 +74,7 @@ fun SpotDetailsScreen(
                     model = spot.imageUrl,
                     contentDescription = spot.name,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                    error = null, // Let the gradient overlay show on error
-                    placeholder = null
+                    contentScale = ContentScale.Crop
                 )
                 Box(
                     modifier = Modifier
