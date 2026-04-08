@@ -114,9 +114,6 @@ fun HomeScreen(
     val filteredSpots = remember(spots, currentCategory, searchQuery) {
         val categoryFiltered = when (currentCategory) {
             "All" -> spots
-            "Hidden Gems" -> spots.filter { spot ->
-                spot.tags.any { it.equals("Hidden Gems", ignoreCase = true) }
-            }
             else -> spots.filter { spot ->
                 spot.category?.equals(currentCategory, ignoreCase = true) == true
             }
@@ -134,7 +131,7 @@ fun HomeScreen(
         }
     }
     
-    val categories = listOf("All", "Heritage", "Food", "Spiritual", "Katta Culture", "Hidden Gems")
+    val categories = listOf("All", "Heritage", "Food", "Nature", "Spiritual")
 
     Box(modifier = Modifier.fillMaxSize()) {
         PullToRefreshBox(
@@ -196,8 +193,7 @@ fun HomeScreen(
                     ) {
                         QuickStatsRow(
                             totalPlaces = spots.size,
-                            categories = spots.mapNotNull { it.category }.distinct().size,
-                            hiddenGems = spots.count { it.tags.any { t -> t.equals("Hidden Gems", ignoreCase = true) } }
+                            categories = spots.mapNotNull { it.category }.distinct().size
                         )
                     }
                 }
@@ -223,8 +219,8 @@ fun HomeScreen(
             } else {
                 item { 
                     SectionHeader(
-                        title = if (searchQuery.isNotBlank()) "Search Results" else "Featured Discoveries",
-                        subtitle = if (searchQuery.isNotBlank()) "${filteredSpots.size} places found" else "Handpicked for you",
+                        title = if (searchQuery.isNotBlank()) "Search Results" else "Places in Pune",
+                        subtitle = if (searchQuery.isNotBlank()) "${filteredSpots.size} places found" else "Explore the city",
                         count = filteredSpots.size
                     )
                 }
@@ -238,18 +234,8 @@ fun HomeScreen(
                         }
                     }
                 }
-
-                val hiddenGems = filteredSpots.filter { spot ->
-                    spot.tags.any { it.equals("Hidden Gems", ignoreCase = true) }
-                }
-                if (hiddenGems.isNotEmpty() && searchQuery.isBlank()) {
-                    item { SectionHeader(title = "Hidden Gems", subtitle = "Local secrets", count = hiddenGems.size) }
-                    itemsIndexed(hiddenGems.take(5)) { index, spot ->
-                        HiddenGemRow(spot = spot, onClick = onSpotSelected, index = index)
-                    }
-                }
                 
-                // Popular Areas Section
+                // Explore by Area Section
                 if (searchQuery.isBlank()) {
                     val areas = spots.mapNotNull { it.area }.distinct().take(6)
                     if (areas.isNotEmpty()) {
@@ -642,112 +628,6 @@ private fun SpotCard(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int = 0
 }
 
 @Composable
-private fun HiddenGemRow(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int = 0) {
-    var visible by remember { mutableStateOf(false) }
-    
-    LaunchedEffect(Unit) {
-        delay(index * 100L)
-        visible = true
-    }
-    
-    val offsetX by animateFloatAsState(
-        targetValue = if (visible) 0f else 50f,
-        animationSpec = spring(dampingRatio = 0.7f),
-        label = "rowOffset"
-    )
-    
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = BuzzCard),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = offsetX.coerceAtLeast(0f).dp)
-            .clickable { onClick(spot) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box {
-                if (spot.imageUrl != null) {
-                    AsyncImage(
-                        model = spot.imageUrl,
-                        contentDescription = spot.name,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                    )
-                } else {
-                    // Gradient placeholder when no image
-                    Box(
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(
-                                Brush.linearGradient(
-                                    colors = listOf(BuzzPrimary.copy(alpha = 0.7f), BuzzAccent.copy(alpha = 0.5f))
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Place,
-                            contentDescription = null,
-                            tint = Color.White.copy(alpha = 0.5f),
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                }
-                // Hidden gem badge
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(4.dp)
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(BuzzAccent)
-                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                ) {
-                    Text(
-                        text = "💎",
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    spot.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (spot.area != null) {
-                    Text(
-                        spot.area,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = BuzzPrimary
-                    )
-                }
-                if (!spot.description.isNullOrBlank()) {
-                    Text(
-                        spot.description,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = BuzzTextMuted,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun LoadingShimmer() {
     Column(
         modifier = Modifier
@@ -764,7 +644,7 @@ private fun LoadingShimmer() {
 
 // Quick Stats Row
 @Composable
-private fun QuickStatsRow(totalPlaces: Int, categories: Int, hiddenGems: Int) {
+private fun QuickStatsRow(totalPlaces: Int, categories: Int) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -779,12 +659,6 @@ private fun QuickStatsRow(totalPlaces: Int, categories: Int, hiddenGems: Int) {
             value = categories.toString(),
             label = "Categories",
             color = BuzzSecondary,
-            modifier = Modifier.weight(1f)
-        )
-        StatBadge(
-            value = hiddenGems.toString(),
-            label = "Gems",
-            color = BuzzAccent,
             modifier = Modifier.weight(1f)
         )
     }

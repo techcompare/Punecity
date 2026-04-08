@@ -8,7 +8,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 8547,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Shaniwarwada_gate.JPG/1280px-Shaniwarwada_gate.JPG",
     "tags": ["Historical", "Architecture", "Heritage"]
   },
   {
@@ -20,7 +19,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 6234,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Aga_Khan_Palace_Pune.jpg/1280px-Aga_Khan_Palace_Pune.jpg",
     "tags": ["Historical", "Museum", "Gandhi"]
   },
   {
@@ -32,7 +30,6 @@
     "bestTime": "Early Morning",
     "rating": 4.6,
     "reviews": 12453,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sinhagad_Fort_walls.jpg/1280px-Sinhagad_Fort_walls.jpg",
     "tags": ["Trekking", "Fort", "History", "Adventure"]
   },
   {
@@ -44,7 +41,6 @@
     "bestTime": "Evening",
     "rating": 4.7,
     "reviews": 9876,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dagdusheth_Halwai_Ganpati%2C_Pune%2C_Maharashtra.jpg/800px-Dagdusheth_Halwai_Ganpati%2C_Pune%2C_Maharashtra.jpg",
     "tags": ["Temple", "Spiritual", "Religious"]
   },
   {
@@ -56,7 +52,6 @@
     "bestTime": "Morning",
     "rating": 4.2,
     "reviews": 3456,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Pataleshwar_cave_temple%2C_Pune_02.jpg/1280px-Pataleshwar_cave_temple%2C_Pune_02.jpg",
     "tags": ["Cave", "Temple", "Ancient", "Heritage"]
   },
   {
@@ -68,7 +63,6 @@
     "bestTime": "Afternoon",
     "rating": 4.4,
     "reviews": 4567,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Raja_Dinkar_Kelkar_Museum_Pune.jpg/1280px-Raja_Dinkar_Kelkar_Museum_Pune.jpg",
     "tags": ["Museum", "Art", "Culture", "Heritage"]
   },
   {
@@ -80,7 +74,6 @@
     "bestTime": "Morning",
     "rating": 4.1,
     "reviews": 5678,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/OshoAuditorium.jpg/1280px-OshoAuditorium.jpg",
     "tags": ["Meditation", "Spiritual", "Wellness"]
   },
   {
@@ -92,7 +85,6 @@
     "bestTime": "Evening",
     "rating": 4.3,
     "reviews": 7890,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Parvati_Hill_temple%2C_Pune.jpg/1280px-Parvati_Hill_temple%2C_Pune.jpg",
     "tags": ["Temple", "Hill", "Views", "Spiritual"]
   },
   {
@@ -104,7 +96,6 @@
     "bestTime": "Morning",
     "rating": 4.2,
     "reviews": 4321,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Saras_Baug_Ganpati%2CPune.jpg/1280px-Saras_Baug_Ganpati%2CPune.jpg",
     "tags": ["Garden", "Temple", "Nature", "Park"]
   },
   {
@@ -116,7 +107,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 3210,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Pu.La._Deshpande_Garden_1.jpg/1280px-Pu.La._Deshpande_Garden_1.jpg",
     "tags": ["Garden", "Japanese", "Nature", "Photography"]
   },
   {
@@ -128,7 +118,6 @@
     "bestTime": "Morning",
     "rating": 4.1,
     "reviews": 2345,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Lal_Mahal_Pune.jpg/1280px-Lal_Mahal_Pune.jpg",
     "tags": ["Palace", "Shivaji", "History", "Heritage"]
   },
   {
@@ -140,7 +129,6 @@
     "bestTime": "Evening",
     "rating": 4.0,
     "reviews": 5432,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bund_Garden_Pune.jpg/1280px-Bund_Garden_Pune.jpg",
     "tags": ["Garden", "Park", "Boating", "Nature"]
   },
   {
@@ -152,7 +140,6 @@
     "bestTime": "Morning",
     "rating": 4.2,
     "reviews": 6789,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Rajiv_Gandhi_Zoological_Park_Pune.jpg/1280px-Rajiv_Gandhi_Zoological_Park_Pune.jpg",
     "tags": ["Zoo", "Wildlife", "Family", "Nature"]
   },
   {
@@ -164,7 +151,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 3456,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Fergusson_College_Main_Building.jpg/1280px-Fergusson_College_Main_Building.jpg",
     "tags": ["College", "Architecture", "Heritage", "Education"]
   },
   {
@@ -176,7 +162,6 @@
     "bestTime": "Evening",
     "rating": 4.6,
     "reviews": 4567,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/ISKCON_Pune.jpg/1280px-ISKCON_Pune.jpg",
     "tags": ["Temple", "Krishna", "Spiritual", "ISKCON"]
   },
   {
@@ -188,7 +173,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 3210,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Empress_Garden_Pune.jpg/1280px-Empress_Garden_Pune.jpg",
     "tags": ["Garden", "Flowers", "Nature", "Park"]
   },
   {
@@ -200,7 +184,6 @@
     "bestTime": "Monsoon",
     "rating": 4.4,
     "reviews": 5678,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Khadakwasla_Dam_1.JPG/1280px-Khadakwasla_Dam_1.JPG",
     "tags": ["Dam", "Scenic", "Nature", "Weekend"]
   },
   {
@@ -212,7 +195,6 @@
     "bestTime": "Monsoon",
     "rating": 4.5,
     "reviews": 4321,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Panshet_Dam.jpg/1280px-Panshet_Dam.jpg",
     "tags": ["Dam", "Water Sports", "Nature", "Adventure"]
   },
   {
@@ -224,7 +206,6 @@
     "bestTime": "Monsoon",
     "rating": 4.5,
     "reviews": 5432,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mulshi_Lake.jpg/1280px-Mulshi_Lake.jpg",
     "tags": ["Dam", "Lake", "Scenic", "Nature"]
   },
   {
@@ -236,7 +217,6 @@
     "bestTime": "Monsoon",
     "rating": 4.0,
     "reviews": 6543,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Dasve_Lavasa.JPG/1280px-Dasve_Lavasa.JPG",
     "tags": ["Hill Station", "Lake", "Architecture", "Weekend"]
   },
   {
@@ -248,7 +228,6 @@
     "bestTime": "Monsoon",
     "rating": 4.4,
     "reviews": 12345,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Lonavala_Valley.jpg/1280px-Lonavala_Valley.jpg",
     "tags": ["Hill Station", "Scenic", "Weekend", "Nature"]
   },
   {
@@ -260,7 +239,6 @@
     "bestTime": "Winter",
     "rating": 4.6,
     "reviews": 7654,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Rajgad_Fort_-_Part_1.jpg/1280px-Rajgad_Fort_-_Part_1.jpg",
     "tags": ["Fort", "Trek", "History", "Adventure"]
   },
   {
@@ -272,7 +250,6 @@
     "bestTime": "Winter",
     "rating": 4.5,
     "reviews": 5432,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Torna_Fort.jpg/1280px-Torna_Fort.jpg",
     "tags": ["Fort", "Trek", "Shivaji", "Adventure"]
   },
   {
@@ -284,7 +261,6 @@
     "bestTime": "Winter",
     "rating": 4.4,
     "reviews": 3210,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PurandarFort.jpg/1280px-PurandarFort.jpg",
     "tags": ["Fort", "History", "Trek", "Heritage"]
   },
   {
@@ -296,7 +272,6 @@
     "bestTime": "Monsoon",
     "rating": 4.5,
     "reviews": 8765,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lohagad_Fort_stairs.jpg/1280px-Lohagad_Fort_stairs.jpg",
     "tags": ["Fort", "Trek", "Monsoon", "Adventure"]
   },
   {
@@ -308,7 +283,6 @@
     "bestTime": "Monsoon",
     "rating": 4.4,
     "reviews": 4321,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Visapur_Fort.jpg/1280px-Visapur_Fort.jpg",
     "tags": ["Fort", "Trek", "Caves", "Adventure"]
   },
   {
@@ -320,7 +294,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 6543,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Karla_Caves.jpg/1280px-Karla_Caves.jpg",
     "tags": ["Caves", "Buddhist", "Ancient", "Heritage"]
   },
   {
@@ -332,7 +305,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 4321,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Bhaja_caves.jpg/1280px-Bhaja_caves.jpg",
     "tags": ["Caves", "Buddhist", "Ancient", "Heritage"]
   },
   {
@@ -344,7 +316,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 2345,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/National_War_Memorial_Southern_Command_Pune.jpg/1280px-National_War_Memorial_Southern_Command_Pune.jpg",
     "tags": ["Memorial", "Military", "Heritage", "History"]
   },
   {
@@ -356,7 +327,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 1234,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Deccan_Gymkhana.jpg/1280px-Deccan_Gymkhana.jpg",
     "tags": ["Sports", "Heritage", "Landmark", "Historic"]
   },
   {
@@ -368,8 +338,7 @@
     "bestTime": "Evening",
     "rating": 4.5,
     "reviews": 9876,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Fergusson_College_Main_Building.jpg/1280px-Fergusson_College_Main_Building.jpg",
-    "tags": ["Food", "Street Food", "Cafes", "Shopping", "Hidden Gems"]
+    "tags": ["Food", "Street Food", "Cafes", "Shopping", ]
   },
   {
     "id": 32,
@@ -380,8 +349,7 @@
     "bestTime": "Evening",
     "rating": 4.4,
     "reviews": 8765,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Jungli_Maharaj_Temple_in_Pune.jpg/1280px-Jungli_Maharaj_Temple_in_Pune.jpg",
-    "tags": ["Food", "Bakeries", "Street Food", "Cafes", "Hidden Gems"]
+    "tags": ["Food", "Bakeries", "Street Food", "Cafes", ]
   },
   {
     "id": 33,
@@ -392,7 +360,6 @@
     "bestTime": "Afternoon",
     "rating": 4.3,
     "reviews": 5432,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mahatma_Gandhi_Road%2C_Pune_01.jpg/1280px-Mahatma_Gandhi_Road%2C_Pune_01.jpg",
     "tags": ["Food", "Shopping", "Heritage", "Cafes"]
   },
   {
@@ -404,8 +371,7 @@
     "bestTime": "Evening",
     "rating": 4.5,
     "reviews": 7654,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/OshoAuditorium.jpg/1280px-OshoAuditorium.jpg",
-    "tags": ["Food", "Nightlife", "Cafes", "Fine Dining", "Hidden Gems"]
+    "tags": ["Food", "Nightlife", "Cafes", "Fine Dining", ]
   },
   {
     "id": 35,
@@ -416,7 +382,6 @@
     "bestTime": "Evening",
     "rating": 4.2,
     "reviews": 4321,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Aundh_ITI_Pune.JPG/1280px-Aundh_ITI_Pune.JPG",
     "tags": ["Food", "Cafes", "Modern", "Shopping"]
   },
   {
@@ -428,7 +393,6 @@
     "bestTime": "Evening",
     "rating": 4.3,
     "reviews": 5432,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Phoenix_Marketcity_Pune.jpg/1280px-Phoenix_Marketcity_Pune.jpg",
     "tags": ["Food", "Shopping", "Malls", "Entertainment"]
   },
   {
@@ -440,7 +404,6 @@
     "bestTime": "Evening",
     "rating": 4.4,
     "reviews": 3210,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Phoenix_Marketcity_Pune.jpg/1280px-Phoenix_Marketcity_Pune.jpg",
     "tags": ["Food", "Rooftop", "Fine Dining", "Nightlife"]
   },
   {
@@ -452,7 +415,6 @@
     "bestTime": "Evening",
     "rating": 4.7,
     "reviews": 8765,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dagdusheth_Halwai_Ganpati%2C_Pune%2C_Maharashtra.jpg/800px-Dagdusheth_Halwai_Ganpati%2C_Pune%2C_Maharashtra.jpg",
     "tags": ["Temple", "Ganpati", "Festival", "Spiritual"]
   },
   {
@@ -464,7 +426,6 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 6543,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Chaturshringi.jpg/1280px-Chaturshringi.jpg",
     "tags": ["Temple", "Goddess", "Hill", "Spiritual"]
   },
   {
@@ -476,7 +437,6 @@
     "bestTime": "Morning",
     "rating": 4.6,
     "reviews": 5432,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Kasba_Ganpati_Pune.jpg/1280px-Kasba_Ganpati_Pune.jpg",
     "tags": ["Temple", "Ganpati", "Heritage", "Spiritual"]
   },
   {
@@ -488,7 +448,6 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 2345,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Tambdi_Jogeshwari_Mandir.jpg/1280px-Tambdi_Jogeshwari_Mandir.jpg",
     "tags": ["Temple", "Goddess", "Ancient", "Spiritual"]
   },
   {
@@ -500,7 +459,6 @@
     "bestTime": "Evening",
     "rating": 4.4,
     "reviews": 4321,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Parvati_Hill_temple%2C_Pune.jpg/1280px-Parvati_Hill_temple%2C_Pune.jpg",
     "tags": ["Temple", "Shiva", "Hill", "Views"]
   },
   {
@@ -512,7 +470,6 @@
     "bestTime": "Morning",
     "rating": 4.0,
     "reviews": 3456,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Rajiv_Gandhi_Zoological_Park_Pune.jpg/1280px-Rajiv_Gandhi_Zoological_Park_Pune.jpg",
     "tags": ["Zoo", "Animals", "Family", "Nature"]
   },
   {
@@ -524,8 +481,7 @@
     "bestTime": "Early Morning",
     "rating": 4.5,
     "reviews": 7654,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vetal_Tekdi_Pune.jpg/1280px-Vetal_Tekdi_Pune.jpg",
-    "tags": ["Trekking", "Nature", "Views", "Fitness", "Hidden Gems"]
+    "tags": ["Trekking", "Nature", "Views", "Fitness", ]
   },
   {
     "id": 45,
@@ -536,8 +492,7 @@
     "bestTime": "Morning",
     "rating": 4.3,
     "reviews": 4321,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Taljai_hills.jpg/1280px-Taljai_hills.jpg",
-    "tags": ["Hill", "Trekking", "Nature", "Temple", "Hidden Gems"]
+    "tags": ["Hill", "Trekking", "Nature", "Temple", ]
   },
   {
     "id": 46,
@@ -548,8 +503,7 @@
     "bestTime": "Morning",
     "rating": 4.2,
     "reviews": 3210,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Pashan_Lake_Pune_02.jpg/1280px-Pashan_Lake_Pune_02.jpg",
-    "tags": ["Lake", "Birds", "Nature", "Peace", "Hidden Gems"]
+    "tags": ["Lake", "Birds", "Nature", "Peace", ]
   },
   {
     "id": 47,
@@ -560,7 +514,6 @@
     "bestTime": "Winter",
     "rating": 4.4,
     "reviews": 2345,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Panshet_Dam.jpg/1280px-Panshet_Dam.jpg",
     "tags": ["Water Sports", "Camping", "Adventure", "Nature"]
   },
   {
@@ -572,7 +525,6 @@
     "bestTime": "Morning",
     "rating": 4.7,
     "reviews": 5432,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/NDA_Khadakwasla.jpg/1280px-NDA_Khadakwasla.jpg",
     "tags": ["Military", "Academy", "Heritage", "Pride"]
   },
   {
@@ -584,7 +536,6 @@
     "bestTime": "Morning",
     "rating": 4.4,
     "reviews": 2345,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/FTII_Pune.jpg/1280px-FTII_Pune.jpg",
     "tags": ["Film", "Education", "Heritage", "Art"]
   },
   {
@@ -596,7 +547,7 @@
     "bestTime": "Morning",
     "rating": 4.5,
     "reviews": 3456,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Symbiosis_International_University_Lavale.jpg/1280px-Symbiosis_International_University_Lavale.jpg",
     "tags": ["University", "Education", "Campus", "Modern"]
   }
 ]
+
