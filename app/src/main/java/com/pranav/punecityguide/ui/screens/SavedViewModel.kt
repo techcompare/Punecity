@@ -50,4 +50,11 @@ class SavedViewModel(application: Application) : AndroidViewModel(application) {
         // No-op for Flow-based repo, but we can reset loading state for visual feedback
         _uiState.update { it.copy(isLoading = true) }
     }
+
+    fun removePlace(place: SavedPlace) {
+        viewModelScope.launch {
+            val context = getApplication<Application>().applicationContext
+            SavedRepository.removeSavedPlace(context, place.id)
+        }
+    }
 }

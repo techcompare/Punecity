@@ -51,6 +51,18 @@ object SavedRepository {
         }
     }
 
+    suspend fun removeSavedPlace(context: Context, placeId: String) {
+        val dao = PuneDatabase.getDatabase(context).savedPlaceDao()
+        dao.deleteSavedPlace(
+            SavedPlaceEntity(
+                id = placeId,
+                name = "", 
+                subtitle = null,
+                imageUrl = null
+            )
+        )
+    }
+
     suspend fun isSaved(context: Context, spotId: Int): Boolean {
         return PuneDatabase.getDatabase(context).savedPlaceDao().isPlaceSaved(spotId.toString())
     }

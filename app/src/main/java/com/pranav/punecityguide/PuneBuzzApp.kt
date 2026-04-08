@@ -288,6 +288,16 @@ fun PuneBuzzApp(
                         places = uiState.places,
                         error = uiState.error,
                         onRetry = savedViewModel::refresh,
+                        onRemovePlace = savedViewModel::removePlace,
+                        onSharePlace = { place ->
+                            val sendIntent = android.content.Intent().apply {
+                                action = android.content.Intent.ACTION_SEND
+                                putExtra(android.content.Intent.EXTRA_TEXT, "Check out this place in Pune: ${place.name}")
+                                type = "text/plain"
+                            }
+                            val shareIntent = android.content.Intent.createChooser(sendIntent, null)
+                            context.startActivity(shareIntent)
+                        }
                     )
                 }
                 composable("profile") {

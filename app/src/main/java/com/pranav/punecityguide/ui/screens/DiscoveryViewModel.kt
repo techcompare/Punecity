@@ -41,14 +41,15 @@ class DiscoveryViewModel : ViewModel() {
                     )
                 }
             }.onFailure { throwable ->
+                // Show error message - no fallback to seeded data
                 val userMessage = when {
                     throwable.message?.contains("Unable to resolve host", ignoreCase = true) == true ||
                     throwable.message?.contains("Network", ignoreCase = true) == true ||
                     throwable.message?.contains("UnknownHost", ignoreCase = true) == true -> 
-                        "No internet connection. Please check your network and try again."
+                        "No internet connection. Please connect to the internet to view places."
                     throwable.message?.contains("timeout", ignoreCase = true) == true ->
-                        "Connection timed out. Please try again."
-                    else -> "Unable to load places. Please try again later."
+                        "Connection timed out. Please check your internet and try again."
+                    else -> "Failed to load data. Please check your internet connection and try again."
                 }
                 _uiState.update {
                     it.copy(

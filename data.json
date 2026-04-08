@@ -6,9 +6,12 @@
     "location": "Shaniwar Peth",
     "description": "Historic fortification built in 1732, former seat of the Peshwa rulers of the Maratha Empire",
     "bestTime": "Morning",
-    "rating": 4.3,
-    "reviews": 8547,
-    "tags": ["Historical", "Architecture", "Heritage"]
+    "tags": [
+      "Historical",
+      "Architecture",
+      "Heritage"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/shaniwar-wada.jpg"
   },
   {
     "id": 2,
@@ -17,9 +20,12 @@
     "location": "Nagar Road",
     "description": "Historic palace where Mahatma Gandhi was imprisoned during freedom struggle",
     "bestTime": "Morning",
-    "rating": 4.5,
-    "reviews": 6234,
-    "tags": ["Historical", "Museum", "Gandhi"]
+    "tags": [
+      "Historical",
+      "Museum",
+      "Gandhi"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/aga-khan-palace.jpg"
   },
   {
     "id": 3,
@@ -28,9 +34,13 @@
     "location": "Sinhagad",
     "description": "Ancient hill fortress with rich Maratha history and stunning valley views",
     "bestTime": "Early Morning",
-    "rating": 4.6,
-    "reviews": 12453,
-    "tags": ["Trekking", "Fort", "History", "Adventure"]
+    "tags": [
+      "Trekking",
+      "Fort",
+      "History",
+      "Adventure"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/sinhagad-fort.jpg"
   },
   {
     "id": 4,
@@ -39,9 +49,12 @@
     "location": "Budhwar Peth",
     "description": "Famous Ganesh temple known for its beautiful idol and elaborate decorations",
     "bestTime": "Evening",
-    "rating": 4.7,
-    "reviews": 9876,
-    "tags": ["Temple", "Spiritual", "Religious"]
+    "tags": [
+      "Temple",
+      "Spiritual",
+      "Religious"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/dagdusheth-halwai-ganpati-temple.jpg"
   },
   {
     "id": 5,
@@ -50,9 +63,13 @@
     "location": "Jungli Maharaj Road",
     "description": "8th century rock-cut cave temple dedicated to Lord Shiva",
     "bestTime": "Morning",
-    "rating": 4.2,
-    "reviews": 3456,
-    "tags": ["Cave", "Temple", "Ancient", "Heritage"]
+    "tags": [
+      "Cave",
+      "Temple",
+      "Ancient",
+      "Heritage"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/pataleshwar-cave-temple.jpg"
   },
   {
     "id": 6,
@@ -61,9 +78,13 @@
     "location": "Shukrawar Peth",
     "description": "Museum housing over 20,000 artifacts collected by Dr. Dinkar Kelkar",
     "bestTime": "Afternoon",
-    "rating": 4.4,
-    "reviews": 4567,
-    "tags": ["Museum", "Art", "Culture", "Heritage"]
+    "tags": [
+      "Museum",
+      "Art",
+      "Culture",
+      "Heritage"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/raja-dinkar-kelkar-museum.jpg"
   },
   {
     "id": 7,
@@ -72,9 +93,12 @@
     "location": "Koregaon Park",
     "description": "International meditation resort founded by Osho Rajneesh",
     "bestTime": "Morning",
-    "rating": 4.1,
-    "reviews": 5678,
-    "tags": ["Meditation", "Spiritual", "Wellness"]
+    "tags": [
+      "Meditation",
+      "Spiritual",
+      "Wellness"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/osho-ashram.jpg"
   },
   {
     "id": 8,
@@ -83,9 +107,13 @@
     "location": "Parvati",
     "description": "Temple complex on a hill offering panoramic views of Pune city",
     "bestTime": "Evening",
-    "rating": 4.3,
-    "reviews": 7890,
-    "tags": ["Temple", "Hill", "Views", "Spiritual"]
+    "tags": [
+      "Temple",
+      "Hill",
+      "Views",
+      "Spiritual"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/parvati-hill-temple.jpg"
   },
   {
     "id": 9,
@@ -94,9 +122,13 @@
     "location": "Sadashiv Peth",
     "description": "Historic garden with Ganpati temple, popular for morning walks",
     "bestTime": "Morning",
-    "rating": 4.2,
-    "reviews": 4321,
-    "tags": ["Garden", "Temple", "Nature", "Park"]
+    "tags": [
+      "Garden",
+      "Temple",
+      "Nature",
+      "Park"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/saras-baug.jpg"
   },
   {
     "id": 10,
@@ -105,9 +137,13 @@
     "location": "Sinhagad Road",
     "description": "Japanese-style garden symbolizing friendship between Pune and Okayama",
     "bestTime": "Morning",
-    "rating": 4.4,
-    "reviews": 3210,
-    "tags": ["Garden", "Japanese", "Nature", "Photography"]
+    "tags": [
+      "Garden",
+      "Japanese",
+      "Nature",
+      "Photography"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/pune-okayama-friendship-garden.jpg"
   },
   {
     "id": 11,
@@ -116,9 +152,13 @@
     "location": "Kasba Peth",
     "description": "Historic palace where Shivaji Maharaj spent his childhood",
     "bestTime": "Morning",
-    "rating": 4.1,
-    "reviews": 2345,
-    "tags": ["Palace", "Shivaji", "History", "Heritage"]
+    "tags": [
+      "Palace",
+      "Shivaji",
+      "History",
+      "Heritage"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/lal-mahal.jpg"
   },
   {
     "id": 12,
@@ -127,9 +167,13 @@
     "location": "Yerwada",
     "description": "Popular garden along Mula-Mutha river with boating facility",
     "bestTime": "Evening",
-    "rating": 4.0,
-    "reviews": 5432,
-    "tags": ["Garden", "Park", "Boating", "Nature"]
+    "tags": [
+      "Garden",
+      "Park",
+      "Boating",
+      "Nature"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/bund-garden.jpg"
   },
   {
     "id": 13,
@@ -138,9 +182,13 @@
     "location": "Katraj",
     "description": "Zoo and snake park with diverse wildlife and rescue center",
     "bestTime": "Morning",
-    "rating": 4.2,
-    "reviews": 6789,
-    "tags": ["Zoo", "Wildlife", "Family", "Nature"]
+    "tags": [
+      "Zoo",
+      "Wildlife",
+      "Family",
+      "Nature"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/rajiv-gandhi-zoological-park.jpg"
   },
   {
     "id": 14,
@@ -149,9 +197,13 @@
     "location": "FC Road",
     "description": "Historic educational institution with beautiful Gothic architecture",
     "bestTime": "Morning",
-    "rating": 4.5,
-    "reviews": 3456,
-    "tags": ["College", "Architecture", "Heritage", "Education"]
+    "tags": [
+      "College",
+      "Architecture",
+      "Heritage",
+      "Education"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/fergusson-college.jpg"
   },
   {
     "id": 15,
@@ -160,9 +212,13 @@
     "location": "Katraj",
     "description": "Beautiful Krishna temple with daily prayers and cultural programs",
     "bestTime": "Evening",
-    "rating": 4.6,
-    "reviews": 4567,
-    "tags": ["Temple", "Krishna", "Spiritual", "ISKCON"]
+    "tags": [
+      "Temple",
+      "Krishna",
+      "Spiritual",
+      "ISKCON"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/iskcon-temple.jpg"
   },
   {
     "id": 16,
@@ -171,9 +227,13 @@
     "location": "Camp",
     "description": "Botanical garden established in 1880, hosts annual flower show",
     "bestTime": "Morning",
-    "rating": 4.3,
-    "reviews": 3210,
-    "tags": ["Garden", "Flowers", "Nature", "Park"]
+    "tags": [
+      "Garden",
+      "Flowers",
+      "Nature",
+      "Park"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/empress-garden.jpg"
   },
   {
     "id": 17,
@@ -182,9 +242,13 @@
     "location": "Khadakwasla",
     "description": "Scenic dam on Mutha River, popular weekend destination",
     "bestTime": "Monsoon",
-    "rating": 4.4,
-    "reviews": 5678,
-    "tags": ["Dam", "Scenic", "Nature", "Weekend"]
+    "tags": [
+      "Dam",
+      "Scenic",
+      "Nature",
+      "Weekend"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/khadakwasla-dam.jpg"
   },
   {
     "id": 18,
@@ -193,9 +257,13 @@
     "location": "Panshet",
     "description": "Beautiful dam surrounded by Sahyadri hills, water sports available",
     "bestTime": "Monsoon",
-    "rating": 4.5,
-    "reviews": 4321,
-    "tags": ["Dam", "Water Sports", "Nature", "Adventure"]
+    "tags": [
+      "Dam",
+      "Water Sports",
+      "Nature",
+      "Adventure"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/panshet-dam.jpg"
   },
   {
     "id": 19,
@@ -204,9 +272,13 @@
     "location": "Mulshi",
     "description": "Scenic reservoir surrounded by lush greenery and mountains",
     "bestTime": "Monsoon",
-    "rating": 4.5,
-    "reviews": 5432,
-    "tags": ["Dam", "Lake", "Scenic", "Nature"]
+    "tags": [
+      "Dam",
+      "Lake",
+      "Scenic",
+      "Nature"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/mulshi-dam.jpg"
   },
   {
     "id": 20,
@@ -215,9 +287,13 @@
     "location": "Lavasa",
     "description": "Planned hill city with Italian-inspired architecture and lake views",
     "bestTime": "Monsoon",
-    "rating": 4.0,
-    "reviews": 6543,
-    "tags": ["Hill Station", "Lake", "Architecture", "Weekend"]
+    "tags": [
+      "Hill Station",
+      "Lake",
+      "Architecture",
+      "Weekend"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/lavasa.jpg"
   },
   {
     "id": 21,
@@ -226,9 +302,13 @@
     "location": "Lonavala",
     "description": "Popular hill station known for chikki, fudge and scenic views",
     "bestTime": "Monsoon",
-    "rating": 4.4,
-    "reviews": 12345,
-    "tags": ["Hill Station", "Scenic", "Weekend", "Nature"]
+    "tags": [
+      "Hill Station",
+      "Scenic",
+      "Weekend",
+      "Nature"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/lonavala.jpg"
   },
   {
     "id": 22,
@@ -237,9 +317,13 @@
     "location": "Rajgad",
     "description": "Capital of Maratha Empire under Shivaji for 26 years",
     "bestTime": "Winter",
-    "rating": 4.6,
-    "reviews": 7654,
-    "tags": ["Fort", "Trek", "History", "Adventure"]
+    "tags": [
+      "Fort",
+      "Trek",
+      "History",
+      "Adventure"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/rajgad-fort.jpg"
   },
   {
     "id": 23,
@@ -248,9 +332,13 @@
     "location": "Velhe",
     "description": "First fort captured by Shivaji Maharaj at age 16",
     "bestTime": "Winter",
-    "rating": 4.5,
-    "reviews": 5432,
-    "tags": ["Fort", "Trek", "Shivaji", "Adventure"]
+    "tags": [
+      "Fort",
+      "Trek",
+      "Shivaji",
+      "Adventure"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/torna-fort.jpg"
   },
   {
     "id": 24,
@@ -259,9 +347,13 @@
     "location": "Saswad",
     "description": "Historic fort and birthplace of Sambhaji Maharaj",
     "bestTime": "Winter",
-    "rating": 4.4,
-    "reviews": 3210,
-    "tags": ["Fort", "History", "Trek", "Heritage"]
+    "tags": [
+      "Fort",
+      "History",
+      "Trek",
+      "Heritage"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/purandar-fort.jpg"
   },
   {
     "id": 25,
@@ -270,9 +362,13 @@
     "location": "Lonavala",
     "description": "Iron fort with strategic location and stunning monsoon views",
     "bestTime": "Monsoon",
-    "rating": 4.5,
-    "reviews": 8765,
-    "tags": ["Fort", "Trek", "Monsoon", "Adventure"]
+    "tags": [
+      "Fort",
+      "Trek",
+      "Monsoon",
+      "Adventure"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/lohagad-fort.jpg"
   },
   {
     "id": 26,
@@ -281,9 +377,13 @@
     "location": "Lonavala",
     "description": "Twin fort of Lohagad with ancient caves and cisterns",
     "bestTime": "Monsoon",
-    "rating": 4.4,
-    "reviews": 4321,
-    "tags": ["Fort", "Trek", "Caves", "Adventure"]
+    "tags": [
+      "Fort",
+      "Trek",
+      "Caves",
+      "Adventure"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/visapur-fort.jpg"
   },
   {
     "id": 27,
@@ -292,9 +392,13 @@
     "location": "Lonavala",
     "description": "Ancient Buddhist rock-cut caves dating to 2nd century BCE",
     "bestTime": "Morning",
-    "rating": 4.5,
-    "reviews": 6543,
-    "tags": ["Caves", "Buddhist", "Ancient", "Heritage"]
+    "tags": [
+      "Caves",
+      "Buddhist",
+      "Ancient",
+      "Heritage"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/karla-caves.jpg"
   },
   {
     "id": 28,
@@ -303,9 +407,13 @@
     "location": "Lonavala",
     "description": "22 rock-cut caves from 2nd century BCE with Buddhist sculptures",
     "bestTime": "Morning",
-    "rating": 4.4,
-    "reviews": 4321,
-    "tags": ["Caves", "Buddhist", "Ancient", "Heritage"]
+    "tags": [
+      "Caves",
+      "Buddhist",
+      "Ancient",
+      "Heritage"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/bhaja-caves.jpg"
   },
   {
     "id": 29,
@@ -314,9 +422,13 @@
     "location": "Ganeshkhind",
     "description": "Memorial honoring Indian armed forces, part of Southern Command",
     "bestTime": "Morning",
-    "rating": 4.3,
-    "reviews": 2345,
-    "tags": ["Memorial", "Military", "Heritage", "History"]
+    "tags": [
+      "Memorial",
+      "Military",
+      "Heritage",
+      "History"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/national-war-memorial.jpg"
   },
   {
     "id": 30,
@@ -325,9 +437,13 @@
     "location": "Deccan",
     "description": "Historic sports club established in 1916, landmark of Pune",
     "bestTime": "Evening",
-    "rating": 4.2,
-    "reviews": 1234,
-    "tags": ["Sports", "Heritage", "Landmark", "Historic"]
+    "tags": [
+      "Sports",
+      "Heritage",
+      "Landmark",
+      "Historic"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/deccan-gymkhana.jpg"
   },
   {
     "id": 31,
@@ -336,9 +452,13 @@
     "location": "Fergusson College Road",
     "description": "Iconic food street with cafes, street food and shopping",
     "bestTime": "Evening",
-    "rating": 4.5,
-    "reviews": 9876,
-    "tags": ["Food", "Street Food", "Cafes", "Shopping", ]
+    "tags": [
+      "Food",
+      "Street Food",
+      "Cafes",
+      "Shopping"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/fc-road.jpg"
   },
   {
     "id": 32,
@@ -347,9 +467,13 @@
     "location": "Jungli Maharaj Road",
     "description": "Popular food destination with legendary eateries and bakeries",
     "bestTime": "Evening",
-    "rating": 4.4,
-    "reviews": 8765,
-    "tags": ["Food", "Bakeries", "Street Food", "Cafes", ]
+    "tags": [
+      "Food",
+      "Bakeries",
+      "Street Food",
+      "Cafes"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/jm-road.jpg"
   },
   {
     "id": 33,
@@ -358,9 +482,13 @@
     "location": "Camp",
     "description": "Heritage shopping street with Irani cafes and restaurants",
     "bestTime": "Afternoon",
-    "rating": 4.3,
-    "reviews": 5432,
-    "tags": ["Food", "Shopping", "Heritage", "Cafes"]
+    "tags": [
+      "Food",
+      "Shopping",
+      "Heritage",
+      "Cafes"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/mg-road.jpg"
   },
   {
     "id": 34,
@@ -369,9 +497,13 @@
     "location": "Koregaon Park",
     "description": "Upscale area with trendy cafes, pubs and fine dining restaurants",
     "bestTime": "Evening",
-    "rating": 4.5,
-    "reviews": 7654,
-    "tags": ["Food", "Nightlife", "Cafes", "Fine Dining", ]
+    "tags": [
+      "Food",
+      "Nightlife",
+      "Cafes",
+      "Fine Dining"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/koregaon-park.jpg"
   },
   {
     "id": 35,
@@ -380,9 +512,13 @@
     "location": "Aundh",
     "description": "Modern suburb with diverse food options and cafes",
     "bestTime": "Evening",
-    "rating": 4.2,
-    "reviews": 4321,
-    "tags": ["Food", "Cafes", "Modern", "Shopping"]
+    "tags": [
+      "Food",
+      "Cafes",
+      "Modern",
+      "Shopping"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/aundh.jpg"
   },
   {
     "id": 36,
@@ -391,9 +527,13 @@
     "location": "Viman Nagar",
     "description": "IT hub area with malls, restaurants and entertainment",
     "bestTime": "Evening",
-    "rating": 4.3,
-    "reviews": 5432,
-    "tags": ["Food", "Shopping", "Malls", "Entertainment"]
+    "tags": [
+      "Food",
+      "Shopping",
+      "Malls",
+      "Entertainment"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/viman-nagar.jpg"
   },
   {
     "id": 37,
@@ -402,9 +542,13 @@
     "location": "Kalyani Nagar",
     "description": "Premium residential area with rooftop cafes and fine dining",
     "bestTime": "Evening",
-    "rating": 4.4,
-    "reviews": 3210,
-    "tags": ["Food", "Rooftop", "Fine Dining", "Nightlife"]
+    "tags": [
+      "Food",
+      "Rooftop",
+      "Fine Dining",
+      "Nightlife"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/kalyani-nagar.jpg"
   },
   {
     "id": 38,
@@ -413,9 +557,13 @@
     "location": "Budhwar Peth",
     "description": "Trust managing the famous Dagdusheth temple and festivals",
     "bestTime": "Evening",
-    "rating": 4.7,
-    "reviews": 8765,
-    "tags": ["Temple", "Ganpati", "Festival", "Spiritual"]
+    "tags": [
+      "Temple",
+      "Ganpati",
+      "Festival",
+      "Spiritual"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/shreemant-dagdusheth-halwai-sarvajanik-ganapati-trust.jpg"
   },
   {
     "id": 39,
@@ -424,9 +572,13 @@
     "location": "Senapati Bapat Road",
     "description": "Temple dedicated to Goddess Chaturshringi on a hill with 100 steps",
     "bestTime": "Morning",
-    "rating": 4.5,
-    "reviews": 6543,
-    "tags": ["Temple", "Goddess", "Hill", "Spiritual"]
+    "tags": [
+      "Temple",
+      "Goddess",
+      "Hill",
+      "Spiritual"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/chaturshringi-temple.jpg"
   },
   {
     "id": 40,
@@ -435,9 +587,13 @@
     "location": "Kasba Peth",
     "description": "Gram Daivat of Pune, one of the most important Ganpati temples",
     "bestTime": "Morning",
-    "rating": 4.6,
-    "reviews": 5432,
-    "tags": ["Temple", "Ganpati", "Heritage", "Spiritual"]
+    "tags": [
+      "Temple",
+      "Ganpati",
+      "Heritage",
+      "Spiritual"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/kasba-ganpati.jpg"
   },
   {
     "id": 41,
@@ -446,9 +602,13 @@
     "location": "Budhwar Peth",
     "description": "Ancient temple dedicated to Goddess Jogeshwari",
     "bestTime": "Morning",
-    "rating": 4.3,
-    "reviews": 2345,
-    "tags": ["Temple", "Goddess", "Ancient", "Spiritual"]
+    "tags": [
+      "Temple",
+      "Goddess",
+      "Ancient",
+      "Spiritual"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/tambdi-jogeshwari-temple.jpg"
   },
   {
     "id": 42,
@@ -457,9 +617,13 @@
     "location": "Parvati",
     "description": "Beautiful Shiva temple on Parvati Hill with panoramic city views",
     "bestTime": "Evening",
-    "rating": 4.4,
-    "reviews": 4321,
-    "tags": ["Temple", "Shiva", "Hill", "Views"]
+    "tags": [
+      "Temple",
+      "Shiva",
+      "Hill",
+      "Views"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/omkareshwar-temple.jpg"
   },
   {
     "id": 43,
@@ -468,9 +632,13 @@
     "location": "Parvati",
     "description": "Zoo at the foot of Parvati Hill with various animals and birds",
     "bestTime": "Morning",
-    "rating": 4.0,
-    "reviews": 3456,
-    "tags": ["Zoo", "Animals", "Family", "Nature"]
+    "tags": [
+      "Zoo",
+      "Animals",
+      "Family",
+      "Nature"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/peshwa-udyan.jpg"
   },
   {
     "id": 44,
@@ -479,9 +647,13 @@
     "location": "ARAI Hill",
     "description": "Popular hiking spot with panoramic views of Pune city",
     "bestTime": "Early Morning",
-    "rating": 4.5,
-    "reviews": 7654,
-    "tags": ["Trekking", "Nature", "Views", "Fitness", ]
+    "tags": [
+      "Trekking",
+      "Nature",
+      "Views",
+      "Fitness"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/vetal-tekdi.jpg"
   },
   {
     "id": 45,
@@ -490,9 +662,13 @@
     "location": "Taljai",
     "description": "Forested hill with temple and nature trails in the city",
     "bestTime": "Morning",
-    "rating": 4.3,
-    "reviews": 4321,
-    "tags": ["Hill", "Trekking", "Nature", "Temple", ]
+    "tags": [
+      "Hill",
+      "Trekking",
+      "Nature",
+      "Temple"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/taljai-hill.jpg"
   },
   {
     "id": 46,
@@ -501,9 +677,13 @@
     "location": "Pashan",
     "description": "Serene lake surrounded by hills, great for bird watching",
     "bestTime": "Morning",
-    "rating": 4.2,
-    "reviews": 3210,
-    "tags": ["Lake", "Birds", "Nature", "Peace", ]
+    "tags": [
+      "Lake",
+      "Birds",
+      "Nature",
+      "Peace"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/pashan-lake.jpg"
   },
   {
     "id": 47,
@@ -512,9 +692,13 @@
     "location": "Panshet",
     "description": "Water sports and camping destination near Panshet Dam",
     "bestTime": "Winter",
-    "rating": 4.4,
-    "reviews": 2345,
-    "tags": ["Water Sports", "Camping", "Adventure", "Nature"]
+    "tags": [
+      "Water Sports",
+      "Camping",
+      "Adventure",
+      "Nature"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/peacock-bay.jpg"
   },
   {
     "id": 48,
@@ -523,9 +707,13 @@
     "location": "Khadakwasla",
     "description": "Premier military academy training future officers of Indian Armed Forces",
     "bestTime": "Morning",
-    "rating": 4.7,
-    "reviews": 5432,
-    "tags": ["Military", "Academy", "Heritage", "Pride"]
+    "tags": [
+      "Military",
+      "Academy",
+      "Heritage",
+      "Pride"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/national-defence-academy.jpg"
   },
   {
     "id": 49,
@@ -534,9 +722,13 @@
     "location": "Law College Road",
     "description": "Premier film school of India, located in former Prabhat Studio",
     "bestTime": "Morning",
-    "rating": 4.4,
-    "reviews": 2345,
-    "tags": ["Film", "Education", "Heritage", "Art"]
+    "tags": [
+      "Film",
+      "Education",
+      "Heritage",
+      "Art"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/film-and-television-institute-of-india.jpg"
   },
   {
     "id": 50,
@@ -545,9 +737,12 @@
     "location": "Lavale",
     "description": "Prestigious university with beautiful hilltop campus",
     "bestTime": "Morning",
-    "rating": 4.5,
-    "reviews": 3456,
-    "tags": ["University", "Education", "Campus", "Modern"]
+    "tags": [
+      "University",
+      "Education",
+      "Campus",
+      "Modern"
+    ],
+    "image": "https://raw.githubusercontent.com/techcompare/Punecity/main/images/symbiosis-international-university.jpg"
   }
 ]
-
