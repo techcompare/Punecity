@@ -1,210 +1,542 @@
 package com.pranav.punecityguide.ui.screens
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pranav.punecityguide.data.database.PuneCityDatabase
-import com.pranav.punecityguide.data.model.CityCost
-import com.pranav.punecityguide.data.model.CommunityMessage
-import com.pranav.punecityguide.data.service.*
-import com.pranav.punecityguide.ui.components.*
-import com.pranav.punecityguide.ui.theme.*
-import com.pranav.punecityguide.ui.viewmodel.*
-import java.util.Calendar
+import coil3.compose.AsyncImage
+import com.pranav.punecityguide.model.PuneSpot
+import com.pranav.punecityguide.ui.theme.BuzzAccent
+import com.pranav.punecityguide.ui.theme.BuzzCard
+import com.pranav.punecityguide.ui.theme.BuzzPrimary
+import com.pranav.punecityguide.ui.theme.BuzzSecondary
+import com.pranav.punecityguide.ui.theme.BuzzTextMuted
+import com.pranav.punecityguide.ui.theme.BuzzTextPrimary
+import kotlinx.coroutines.delay
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(
-    database: PuneCityDatabase,
-    onNavigateToCompare: () -> Unit = {},
-    onNavigateToTrips: () -> Unit = {},
-    onNavigateToInsights: () -> Unit = {},
-    onAskAi: (String) -> Unit = {}
+fun HomeScreen(
+    spots: List<PuneSpot>,
+    isLoading: Boolean,
+    currentCategory: String,
+    error: String?,
+    onRetry: () -> Unit,
+    onCategorySelected: (String) -> Unit,
+    onSpotSelected: (PuneSpot) -> Unit,
 ) {
-    val dashboardViewModel: DashboardViewModel = viewModel(factory = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return DashboardViewModel(ServiceLocator) as T
-        }
-    })
-    val dashState by dashboardViewModel.uiState.collectAsState()
+    var searchQuery by remember { mutableStateOf("") }
+    var isRefreshing by remember { mutableStateOf(false) }
+    var showContent by remember { mutableStateOf(false) }
     
-    val expenseViewModel: ExpenseViewModel = viewModel(factory = ExpenseViewModel.factory(database.expenseDao()))
-    val expenseState by expenseViewModel.uiState.collectAsState()
-    var showAddDialog by remember { mutableStateOf(false) }
-
-    Scaffold(
-        topBar = { DashboardHeader(dashState.userName, dashState.streak) },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showAddDialog = true },
-                containerColor = CostPilotCyan,
-                contentColor = Color.White,
-                shape = CircleShape,
-                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 12.dp)
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Expense", modifier = Modifier.size(28.dp))
+    // Animate content appearance
+    LaunchedEffect(Unit) {
+        delay(100)
+        showContent = true
+    }
+    
+    // Handle pull to refresh
+    LaunchedEffect(isRefreshing) {
+        if (isRefreshing) {
+            onRetry()
+            delay(1000)
+            isRefreshing = false
+        }
+    }
+    
+    // Filter spots by category and search
+    val filteredSpots = remember(spots, currentCategory, searchQuery) {
+        val categoryFiltered = when (currentCategory) {
+            "All" -> spots
+            "Hidden Gems" -> spots.filter { spot ->
+                spot.tags.any { it.equals("Hidden Gems", ignoreCase = true) }
+            }
+            else -> spots.filter { spot ->
+                spot.category?.equals(currentCategory, ignoreCase = true) == true
             }
         }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.background),
-            contentPadding = PaddingValues(bottom = 120.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            // ── Hero Stats Card ──
-            item {
-                HeroStatsCard(
-                    totalExpenses = expenseState.total,
-                    citiesAvailable = dashState.trendingCities.size,
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
-            }
-
-            // ── Daily Missions ──
-            item {
-                DailyMissionsSection(dashState.missions)
-            }
-
-            // ── Spot of the Day / Pulse ──
-            item {
-                SpotOfTheDaySection(
-                    city = dashState.spotOfTheDay,
-                    pulse = dashState.pulseData,
-                    onClick = onNavigateToCompare
-                )
-            }
-
-            // ── Community Snippet ──
-            item {
-                CommunitySnippetSection(
-                    message = dashState.latestCommunityMessage,
-                    onClick = onNavigateToInsights
-                )
-            }
-
-            // ── Quick Actions ──
-            item {
-                ActionGridSection(
-                    onNavigateToCompare, onNavigateToTrips, onAskAi, onNavigateToInsights
-                )
-            }
-
-            // ── Recent Expenses ──
-            item {
-                DashboardSectionHeader("LATEST TRACKING")
-            }
-
-            if (expenseState.expenses.isEmpty()) {
-                item { DashboardEmptyState() }
-            } else {
-                items(expenseState.expenses.take(3), key = { it.id }) { expense ->
-                    ExpenseItemCard(
-                        expense = expense,
-                        onDelete = { expenseViewModel.deleteExpense(expense) },
-                        modifier = Modifier.padding(horizontal = 20.dp)
-                    )
-                }
+        
+        if (searchQuery.isBlank()) {
+            categoryFiltered
+        } else {
+            categoryFiltered.filter { spot ->
+                spot.name.contains(searchQuery, ignoreCase = true) ||
+                spot.area?.contains(searchQuery, ignoreCase = true) == true ||
+                spot.description?.contains(searchQuery, ignoreCase = true) == true ||
+                spot.category?.contains(searchQuery, ignoreCase = true) == true
             }
         }
     }
+    
+    val categories = listOf("All", "Heritage", "Food", "Spiritual", "Katta Culture", "Hidden Gems")
 
-    if (showAddDialog) {
-        AddExpenseDialog(
-            onDismiss = { showAddDialog = false },
-            onConfirm = { title, amount, cat ->
-                expenseViewModel.addExpense(title, amount, cat)
-                showAddDialog = false
+    Box(modifier = Modifier.fillMaxSize()) {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = { isRefreshing = true },
+            modifier = Modifier.fillMaxSize()
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+            item {
+                AnimatedVisibility(
+                    visible = showContent,
+                    enter = fadeIn() + slideInVertically { -40 }
+                ) {
+                    SmartHeader(isLoading = isLoading)
+                }
             }
+            
+            item {
+                AnimatedVisibility(
+                    visible = showContent,
+                    enter = fadeIn() + slideInVertically { -30 }
+                ) {
+                    SearchBar(
+                        query = searchQuery,
+                        onQueryChange = { searchQuery = it },
+                        onClear = { searchQuery = "" }
+                    )
+                }
+            }
+            
+            item {
+                AnimatedVisibility(
+                    visible = showContent,
+                    enter = fadeIn() + slideInVertically { -20 }
+                ) {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        itemsIndexed(categories) { index, cat ->
+                            CategoryChip(
+                                label = cat,
+                                isSelected = cat == currentCategory,
+                                onClick = { onCategorySelected(cat) },
+                                index = index
+                            )
+                        }
+                    }
+                }
+            }
+
+            item {
+                AnimatedVisibility(
+                    visible = showContent,
+                    enter = fadeIn() + scaleIn(initialScale = 0.95f)
+                ) {
+                    HeroCard()
+                }
+            }
+            
+            // Quick Stats Row
+            if (!isLoading && spots.isNotEmpty()) {
+                item {
+                    AnimatedVisibility(
+                        visible = showContent,
+                        enter = fadeIn() + slideInVertically { 20 }
+                    ) {
+                        QuickStatsRow(
+                            totalPlaces = spots.size,
+                            categories = spots.mapNotNull { it.category }.distinct().size,
+                            hiddenGems = spots.count { it.tags.any { t -> t.equals("Hidden Gems", ignoreCase = true) } }
+                        )
+                    }
+                }
+            }
+
+            if (isLoading) {
+                item { LoadingShimmer() }
+            } else if (error != null) {
+                item { ErrorCard(message = error, onRetry = onRetry) }
+            } else if (spots.isEmpty()) {
+                item { EmptyStateCard() }
+            } else if (filteredSpots.isEmpty()) {
+                item { 
+                    NoResultsCard(
+                        searchQuery = searchQuery,
+                        category = currentCategory,
+                        onClearFilters = {
+                            searchQuery = ""
+                            onCategorySelected("All")
+                        }
+                    )
+                }
+            } else {
+                item { 
+                    SectionHeader(
+                        title = if (searchQuery.isNotBlank()) "Search Results" else "Featured Discoveries",
+                        subtitle = if (searchQuery.isNotBlank()) "${filteredSpots.size} places found" else "Handpicked for you",
+                        count = filteredSpots.size
+                    )
+                }
+                item {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        contentPadding = PaddingValues(bottom = 8.dp)
+                    ) {
+                        itemsIndexed(filteredSpots) { index, spot ->
+                            SpotCard(spot = spot, onClick = onSpotSelected, index = index)
+                        }
+                    }
+                }
+
+                val hiddenGems = filteredSpots.filter { spot ->
+                    spot.tags.any { it.equals("Hidden Gems", ignoreCase = true) }
+                }
+                if (hiddenGems.isNotEmpty() && searchQuery.isBlank()) {
+                    item { SectionHeader(title = "Hidden Gems", subtitle = "Local secrets", count = hiddenGems.size) }
+                    itemsIndexed(hiddenGems.take(5)) { index, spot ->
+                        HiddenGemRow(spot = spot, onClick = onSpotSelected, index = index)
+                    }
+                }
+                
+                // Popular Areas Section
+                if (searchQuery.isBlank()) {
+                    val areas = spots.mapNotNull { it.area }.distinct().take(6)
+                    if (areas.isNotEmpty()) {
+                        item { SectionHeader(title = "Explore by Area", subtitle = "Popular neighborhoods") }
+                        item { AreasGrid(areas = areas, onAreaClick = { searchQuery = it }) }
+                    }
+                }
+            }
+            item { Spacer(modifier = Modifier.height(100.dp)) }
+        }
+    }
+
+        // Floating Refresh Button
+        FloatingActionButton(
+            onClick = {
+                isRefreshing = true
+                onRetry()
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp),
+            containerColor = BuzzPrimary,
+            contentColor = Color.White,
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            val scale by animateFloatAsState(
+                targetValue = if (isRefreshing) 0.8f else 1f,
+                animationSpec = spring(dampingRatio = 0.4f),
+                label = "refreshScale"
+            )
+            Icon(
+                Icons.Default.Refresh,
+                contentDescription = "Refresh discoveries",
+                modifier = Modifier.scale(scale)
+            )
+        }
+    }
+    
+    // Reset refreshing state when loading completes
+    LaunchedEffect(isLoading) {
+        if (!isLoading) isRefreshing = false
+    }
+}
+
+@Composable
+private fun CategoryChip(label: String, isSelected: Boolean, onClick: () -> Unit, index: Int = 0) {
+    var visible by remember { mutableStateOf(false) }
+    
+    LaunchedEffect(Unit) {
+        delay(index * 50L)
+        visible = true
+    }
+    
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelected) BuzzPrimary else BuzzCard,
+        label = "chipBg"
+    )
+    val textColor by animateColorAsState(
+        targetValue = if (isSelected) Color.White else BuzzTextPrimary,
+        label = "chipText"
+    )
+    val scale by animateFloatAsState(
+        targetValue = if (visible) 1f else 0.8f,
+        animationSpec = spring(dampingRatio = 0.6f),
+        label = "chipScale"
+    )
+    
+    Box(
+        modifier = Modifier
+            .scale(scale)
+            .clip(RoundedCornerShape(12.dp))
+            .background(backgroundColor)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { onClick() }
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelLarge,
+            color = textColor,
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
         )
     }
 }
 
-// ─────────────────────────────────────────────────────
-// Retention Components
-// ─────────────────────────────────────────────────────
-
 @Composable
-private fun DashboardHeader(userName: String, streak: Int) {
-    val greeting = remember {
-        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        when {
-            hour < 12 -> "Morning"
-            hour < 17 -> "Afternoon"
-            else -> "Evening"
+private fun SmartHeader(isLoading: Boolean = false) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "puneBuzz",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = BuzzPrimary,
+                    fontWeight = FontWeight.Black
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                // Live indicator
+                val pulseAlpha by animateFloatAsState(
+                    targetValue = if (isLoading) 0.3f else 1f,
+                    animationSpec = spring(),
+                    label = "pulse"
+                )
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF4ADE80).copy(alpha = pulseAlpha))
+                )
+            }
+            Text(
+                text = if (isLoading) "Refreshing..." else "Live Discoveries",
+                style = MaterialTheme.typography.labelMedium,
+                color = BuzzTextMuted
+            )
+        }
+        
+        // Time-based greeting badge
+        val greeting = remember {
+            val hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
+            when {
+                hour < 12 -> "☀️ Good Morning"
+                hour < 17 -> "🌤️ Good Afternoon"
+                hour < 21 -> "🌆 Good Evening"
+                else -> "🌙 Good Night"
+            }
+        }
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(12.dp))
+                .background(BuzzCard)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = greeting,
+                style = MaterialTheme.typography.labelSmall,
+                color = BuzzTextMuted
+            )
         }
     }
+}
 
+@Composable
+private fun SearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onClear: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .statusBarsPadding()
-            .padding(20.dp),
+            .height(56.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(BuzzCard)
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            Icons.Default.Search,
+            contentDescription = null,
+            tint = if (query.isNotBlank()) BuzzPrimary else BuzzTextMuted
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        BasicTextField(
+            value = query,
+            onValueChange = onQueryChange,
+            modifier = Modifier.weight(1f),
+            textStyle = TextStyle(
+                color = BuzzTextPrimary,
+                fontSize = 16.sp
+            ),
+            singleLine = true,
+            cursorBrush = SolidColor(BuzzPrimary),
+            decorationBox = { innerTextField ->
+                Box {
+                    if (query.isEmpty()) {
+                        Text(
+                            text = "Search cafes, forts, food lanes...",
+                            color = BuzzTextMuted,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+        )
+        if (query.isNotBlank()) {
+            IconButton(
+                onClick = onClear,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    Icons.Default.Clear,
+                    contentDescription = "Clear search",
+                    tint = BuzzTextMuted,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeroCard() {
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.linearGradient(
+                        listOf(BuzzPrimary, BuzzAccent)
+                    )
+                )
+                .padding(24.dp)
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "Pune is yours today.",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White,
+                    fontWeight = FontWeight.Black
+                )
+                Text(
+                    text = "From heritage trails to hidden food alleys, one tap discovery.",
+                    color = Color.White.copy(alpha = 0.9f),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    ActionPill("Open Map", Icons.Default.Map)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(title: String, subtitle: String, count: Int? = null) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
             Text(
-                text = "COSTPILOT",
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Black,
-                letterSpacing = 3.sp,
-                color = CostPilotCyan
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Good $greeting, $userName",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.onBackground,
-                letterSpacing = (-0.5).sp
+                text = subtitle,
+                style = MaterialTheme.typography.labelMedium,
+                color = BuzzTextMuted
             )
         }
-        
-        // Streak counter - highly visible
-        Surface(
-            shape = CircleShape,
-            color = if (streak > 0) Color(0xFFFF9800) else Color.Gray.copy(alpha = 0.1f),
-            modifier = Modifier.height(40.dp)
-        ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+        if (count != null) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(BuzzPrimary.copy(alpha = 0.1f))
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
             ) {
-                Icon(Icons.Default.LocalFireDepartment, null, tint = if (streak > 0) Color.White else Color.Gray, modifier = Modifier.size(18.dp))
                 Text(
-                    text = "$streak",
-                    color = if (streak > 0) Color.White else Color.Gray,
-                    fontWeight = FontWeight.Black,
-                    style = MaterialTheme.typography.labelLarge
+                    text = count.toString(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = BuzzPrimary,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
@@ -212,180 +544,124 @@ private fun DashboardHeader(userName: String, streak: Int) {
 }
 
 @Composable
-private fun DailyMissionsSection(missions: MissionsState) {
-    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            DashboardSectionHeader("DAILY MISSIONS", modifier = Modifier.padding(0.dp))
-            Text(
-                "${missions.totalDone}/3 DONE",
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold,
-                color = if (missions.allDone) CostPilotSuccess else CostPilotCyan
-            )
-        }
-        Spacer(Modifier.height(12.dp))
-        Surface(
-            shape = RoundedCornerShape(24.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                modifier = Modifier.padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                MissionIcon(Icons.Default.Compare, "Compare", missions.compareDone)
-                MissionIcon(Icons.Default.AddBusiness, "Track", missions.expenseDone)
-                MissionIcon(Icons.Default.Forum, "Community", missions.communityDone)
-            }
-        }
-    }
-}
-
-@Composable
-private fun MissionIcon(icon: ImageVector, label: String, isDone: Boolean) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Surface(
-            shape = CircleShape,
-            color = if (isDone) CostPilotSuccess else Color.Gray.copy(alpha = 0.2f),
-            modifier = Modifier.size(44.dp)
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    icon, null,
-                    modifier = Modifier.size(20.dp),
-                    tint = if (isDone) Color.White else Color.Gray
-                )
-            }
-        }
-        Spacer(Modifier.height(6.dp))
-        Text(label, style = MaterialTheme.typography.labelSmall, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
-    }
-}
-
-@Composable
-private fun SpotOfTheDaySection(city: CityCost?, pulse: PulseService.PulseData?, onClick: () -> Unit) {
-    if (city == null) return
+private fun SpotCard(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int = 0) {
+    var visible by remember { mutableStateOf(false) }
     
-    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-        DashboardSectionHeader("SPOT OF THE DAY", modifier = Modifier.padding(0.dp))
-        Spacer(Modifier.height(12.dp))
-        Surface(
-            onClick = onClick,
-            shape = RoundedCornerShape(28.dp),
-            modifier = Modifier.fillMaxWidth().height(180.dp),
-            shadowElevation = 8.dp
-        ) {
+    LaunchedEffect(Unit) {
+        delay(index * 80L)
+        visible = true
+    }
+    
+    val scale by animateFloatAsState(
+        targetValue = if (visible) 1f else 0.9f,
+        animationSpec = spring(dampingRatio = 0.7f),
+        label = "cardScale"
+    )
+    
+    Card(
+        modifier = Modifier
+            .width(280.dp)
+            .scale(scale)
+            .clickable { onClick(spot) },
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = BuzzCard),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column {
             Box {
-                // Background image placeholder with gradient
+                AsyncImage(
+                    model = spot.imageUrl,
+                    contentDescription = spot.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp),
+                    error = null, // Gradient overlay will show on error
+                    placeholder = null
+                )
+                // Gradient overlay for better text visibility
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Brush.verticalGradient(listOf(Color.Transparent, Color.Black.copy(alpha = 0.8f))))
-                )
-                
-                // Weather / Pulse overlay
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(24.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Surface(
-                            shape = CircleShape,
-                            color = Color.Black.copy(alpha = 0.3f)
-                        ) {
-                            Text(
-                                "LIVE PULSE",
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Black,
-                                color = Color.White
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.5f))
                             )
-                        }
-                        if (pulse != null) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("${pulse.temp}°", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = Color.White)
-                                Spacer(Modifier.width(8.dp))
-                                Text(pulse.condition, color = Color.White.copy(alpha = 0.8f), style = MaterialTheme.typography.labelMedium)
-                            }
-                        }
-                    }
-                    
-                    Column {
-                        Text(
-                            city.cityName,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                shadow = androidx.compose.ui.graphics.Shadow(
-                                    color = Color.Black,
-                                    offset = androidx.compose.ui.geometry.Offset(2f, 2f),
-                                    blurRadius = 4f
-                                )
-                            ),
-                            fontWeight = FontWeight.Black,
-                            color = Color.White
                         )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.LocationOn, null, tint = Color.White.copy(alpha = 0.6f), modifier = Modifier.size(12.dp))
-                            Spacer(Modifier.width(4.dp))
-                            Text(city.country, color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
-                        }
+                )
+                if (spot.rating != null) {
+                    Row(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .align(Alignment.TopEnd)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(Color.Black.copy(alpha = 0.7f))
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.Star,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp),
+                            tint = Color(0xFFFFD700)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = spot.rating.toString(),
+                            color = Color.White,
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
+                }
+                // Category badge at bottom left
+                Box(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .align(Alignment.BottomStart)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(BuzzPrimary)
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                ) {
+                    Text(
+                        text = spot.category ?: "Discovery",
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun CommunitySnippetSection(message: CommunityMessage?, onClick: () -> Unit) {
-    if (message == null) return
-    
-    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            DashboardSectionHeader("COMMUNITY PULSE", modifier = Modifier.padding(0.dp))
-            Text(
-                "JOIN CHAT",
-                modifier = Modifier.clickable { onClick() },
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Black,
-                color = CostPilotCyan
-            )
-        }
-        Spacer(Modifier.height(12.dp))
-        Surface(
-            onClick = onClick,
-            shape = RoundedCornerShape(24.dp),
-            color = MaterialTheme.colorScheme.surface,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
-        ) {
-            Row(
-                modifier = Modifier.padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Surface(shape = CircleShape, color = CostPilotCyan.copy(alpha = 0.1f), modifier = Modifier.size(40.dp)) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Text(message.userName.take(1), fontWeight = FontWeight.Bold, color = CostPilotCyan)
-                    }
-                }
-                Column {
-                    Text(message.userName, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(
+                    text = spot.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(BuzzSecondary)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        message.content,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                        text = spot.area ?: "Pune",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = BuzzTextMuted
+                    )
+                }
+                if (!spot.description.isNullOrBlank()) {
+                    Text(
+                        text = spot.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = BuzzTextMuted,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -394,92 +670,307 @@ private fun CommunitySnippetSection(message: CommunityMessage?, onClick: () -> U
 }
 
 @Composable
-private fun ActionGridSection(onComp: () -> Unit, onTrip: () -> Unit, onAi: (String) -> Unit, onChat: () -> Unit) {
-    DashboardSectionHeader("QUICK ACCESS")
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
-        item { ActionCard("Compare", Icons.Default.CompareArrows, GradientPrimary, onComp) }
-        item { ActionCard("Plan", Icons.Default.FlightTakeoff, GradientGold, onTrip) }
-        item { ActionCard("AI Advisor", Icons.Default.AutoAwesome, GradientPremium) { onAi("Give me a travel budget tip") } }
-        item { ActionCard("Insights", Icons.Default.Insights, GradientSuccess, onChat) }
+private fun HiddenGemRow(spot: PuneSpot, onClick: (PuneSpot) -> Unit, index: Int = 0) {
+    var visible by remember { mutableStateOf(false) }
+    
+    LaunchedEffect(Unit) {
+        delay(index * 100L)
+        visible = true
     }
-}
-
-@Composable
-private fun ActionCard(title: String, icon: ImageVector, gradient: List<Color>, onClick: () -> Unit) {
-    Surface(
-        onClick = onClick,
-        modifier = Modifier.width(120.dp).height(100.dp),
-        shape = RoundedCornerShape(24.dp),
-        shadowElevation = 8.dp
+    
+    val offsetX by animateFloatAsState(
+        targetValue = if (visible) 0f else 50f,
+        animationSpec = spring(dampingRatio = 0.7f),
+        label = "rowOffset"
+    )
+    
+    Card(
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = BuzzCard),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = offsetX.dp)
+            .clickable { onClick(spot) },
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Box(modifier = Modifier.background(Brush.linearGradient(gradient)).padding(16.dp)) {
-            Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-                Icon(icon, null, tint = Color.White, modifier = Modifier.size(24.dp))
-                Text(title, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black, color = Color.White)
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box {
+                AsyncImage(
+                    model = spot.imageUrl,
+                    contentDescription = spot.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(16.dp)),
+                    error = null,
+                    placeholder = null
+                )
+                // Hidden gem badge
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(4.dp)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(BuzzAccent)
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = "💎",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    spot.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (spot.area != null) {
+                    Text(
+                        spot.area,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = BuzzPrimary
+                    )
+                }
+                if (!spot.description.isNullOrBlank()) {
+                    Text(
+                        spot.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = BuzzTextMuted,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun DashboardSectionHeader(title: String, modifier: Modifier = Modifier.padding(horizontal = 20.dp)) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Black,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        letterSpacing = 2.sp,
-        modifier = modifier
-    )
-}
-
-@Composable
-private fun DashboardEmptyState() {
+private fun LoadingShimmer() {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(48.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .clip(RoundedCornerShape(24.dp))
+            .background(BuzzCard),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Surface(
-            shape = CircleShape,
-            color = CostPilotCyan.copy(alpha = 0.08f),
-            modifier = Modifier.size(80.dp)
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.FlightTakeoff, null, modifier = Modifier.size(36.dp), tint = CostPilotCyan.copy(alpha = 0.4f))
-            }
-        }
-        Spacer(Modifier.height(20.dp))
-        Text("Ready for takeoff!", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.ExtraBold)
-        Text("Start tracking expenses from\nyour next adventure.", textAlign = TextAlign.Center, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 18.sp)
+        Text("Tuning into Pune Buzz...", color = BuzzTextMuted)
+    }
+}
+
+// Quick Stats Row
+@Composable
+private fun QuickStatsRow(totalPlaces: Int, categories: Int, hiddenGems: Int) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        StatBadge(
+            value = totalPlaces.toString(),
+            label = "Places",
+            color = BuzzPrimary,
+            modifier = Modifier.weight(1f)
+        )
+        StatBadge(
+            value = categories.toString(),
+            label = "Categories",
+            color = BuzzSecondary,
+            modifier = Modifier.weight(1f)
+        )
+        StatBadge(
+            value = hiddenGems.toString(),
+            label = "Gems",
+            color = BuzzAccent,
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 
 @Composable
-private fun HeroStatsCard(totalExpenses: Double, citiesAvailable: Int, modifier: Modifier) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(28.dp),
-        shadowElevation = 16.dp,
-        border = BorderStroke(1.dp, CostPilotCyan.copy(alpha = 0.2f))
+private fun StatBadge(value: String, label: String, color: Color, modifier: Modifier = Modifier) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BuzzCard),
+        modifier = modifier
     ) {
-        Box(modifier = Modifier.background(Brush.linearGradient(GradientPrimary)).padding(24.dp)) {
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Column {
-                        Text("TOTAL TRACKED", color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall, letterSpacing = 2.sp, fontWeight = FontWeight.Bold)
-                        Text(text = "$%,.2f".format(totalExpenses), style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.ExtraBold, color = Color.White, letterSpacing = (-1).sp)
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = value,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Black,
+                color = color
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = BuzzTextMuted
+            )
+        }
+    }
+}
+
+// Empty state when no data
+@Composable
+private fun EmptyStateCard() {
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = BuzzCard),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .background(BuzzPrimary.copy(alpha = 0.1f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("🌆", style = MaterialTheme.typography.headlineLarge)
+            }
+            Text(
+                text = "No discoveries available",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Check back later for live updates from Pune",
+                color = BuzzTextMuted,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+// No results for search/filter
+@Composable
+private fun NoResultsCard(searchQuery: String, category: String, onClearFilters: () -> Unit) {
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = BuzzCard),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text("🔍", style = MaterialTheme.typography.headlineLarge)
+            Text(
+                text = "No matches found",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = buildString {
+                    if (searchQuery.isNotBlank()) append("\"$searchQuery\" ")
+                    if (category != "All") append("in $category")
+                }.ifBlank { "Try adjusting your filters" },
+                color = BuzzTextMuted,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+            Button(
+                onClick = onClearFilters,
+                colors = ButtonDefaults.buttonColors(containerColor = BuzzPrimary),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("Clear Filters")
+            }
+        }
+    }
+}
+
+// Areas Grid for exploration
+@Composable
+private fun AreasGrid(areas: List<String>, onAreaClick: (String) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        areas.chunked(3).forEach { row ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                row.forEach { area ->
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(BuzzCard)
+                            .clickable { onAreaClick(area) }
+                            .padding(12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = area,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = BuzzTextPrimary,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
                 }
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.background(Color.White.copy(alpha = 0.12f), CircleShape).padding(horizontal = 14.dp, vertical = 6.dp)) {
-                    Box(modifier = Modifier.size(6.dp).background(CostPilotSuccess, CircleShape))
-                    Spacer(Modifier.width(8.dp))
-                    Text("$citiesAvailable Global Cities Live", style = MaterialTheme.typography.labelSmall, color = Color.White, fontWeight = FontWeight.SemiBold)
+                // Fill remaining space if row has fewer than 3 items
+                repeat(3 - row.size) {
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
         }
     }
 }
+
+@Composable
+private fun ErrorCard(message: String, onRetry: () -> Unit) {
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = BuzzCard),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text("Connection Issue", style = MaterialTheme.typography.titleMedium, color = BuzzSecondary)
+            Text(message, style = MaterialTheme.typography.bodyMedium, color = BuzzTextMuted)
+            Button(onClick = onRetry) {
+                Text("Reconnect")
+            }
+        }
+    }
+}
+
+@Composable
+private fun ActionPill(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color.White.copy(alpha = 0.2f))
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = text, tint = Color.White, modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = text, color = Color.White, style = MaterialTheme.typography.labelLarge)
+    }
+}
+

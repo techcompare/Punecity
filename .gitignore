@@ -14,3 +14,24 @@
 .cxx
 local.properties
 gradle.properties
+
+# Build output files
+*.log
+*.txt
+build_*.txt
+*_output.txt
+*_error*.txt
+compile_out.txt
+errors_only.txt
+
+# Kotlin compiler errors
+.kotlin/
+
+# Release artifacts
+*.aab
+*.apk
+app/release/
+
+# Temporary directories
+awesome-toolkit/
+city-guide-os/

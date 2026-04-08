@@ -1,78 +1,17 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="288dp"
-    android:height="288dp"
-    android:viewportWidth="288"
-    android:viewportHeight="288">
-
-    <!-- Outer glow halo -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.05"
-        android:pathData="M144,16 a128,128 0 1 1 -0.01,0 z" />
-
-    <!-- Connection ring 1 (community symbol) -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.18"
-        android:pathData="M144,28 a116,116 0 1 1 -0.01,0 z M144,36 a108,108 0 0 0 -0.01,0 a108,108 0 1 0 0.01,0 z" />
-
-    <!-- Connection ring 2 (inner) -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.10"
-        android:pathData="M144,50 a94,94 0 1 1 -0.01,0 z M144,58 a86,86 0 0 0 -0.01,0 a86,86 0 1 0 0.01,0 z" />
-
-    <!-- White inner circle base -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M144,64 a56,56 0 1 1 -0.01,0 z" />
-
-    <!-- Bold "P" lettermark in indigo -->
-    <path
-        android:fillColor="#312E81"
-        android:pathData="M120,76 L120,154 L133,154 L133,130 L150,130
-                           C164,130 175,122 175,105 C175,88 164,76 150,76 Z
-                           M133,88 L150,88 C158,88 163,93.5 163,105 C163,116.5 158,120 150,120 L133,120 Z" />
-
-    <!-- Gold location pin -->
-    <path
-        android:fillColor="#F59E0B"
-        android:pathData="M144,166 C132,166 122,176 122,186 C122,202 144,224 144,224 C144,224 166,202 166,186 C166,176 156,166 144,166 Z
-                           M144,196 C139,196 135,192 135,187 C135,182 139,178 144,178 C149,178 153,182 153,187 C153,192 149,196 144,196 Z" />
-
-    <!-- Gold sparkle — top right, large -->
-    <path
-        android:fillColor="#F59E0B"
-        android:pathData="M213,48 L218,34 L223,48 L237,53 L223,58 L218,72 L213,58 L199,53 Z" />
-
-    <!-- White sparkle — top left -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.95"
-        android:pathData="M70,72 L76,60 L82,72 L94,78 L82,84 L76,96 L70,84 L58,78 Z" />
-
-    <!-- Teal sparkle — right, medium -->
-    <path
-        android:fillColor="#2DD4BF"
-        android:fillAlpha="0.9"
-        android:pathData="M224,136 L228,126 L232,136 L242,140 L232,144 L228,154 L224,144 L214,140 Z" />
-
-    <!-- Tiny gold dot — bottom left -->
-    <path
-        android:fillColor="#F59E0B"
-        android:fillAlpha="0.80"
-        android:pathData="M66,162 L69,154 L72,162 L80,165 L72,168 L69,176 L66,168 L58,165 Z" />
-
-    <!-- Tiny white dot — top center -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.70"
-        android:pathData="M152,30 L154.5,24 L157,30 L163,32.5 L157,35 L154.5,41 L152,35 L146,32.5 Z" />
-
-    <!-- Rose accent dot — left -->
-    <path
-        android:fillColor="#F43F5E"
-        android:fillAlpha="0.75"
-        android:pathData="M52,118 L54.5,112 L57,118 L63,120.5 L57,123 L54.5,129 L52,123 L46,120.5 Z" />
-
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:translateX="22" android:translateY="22">
+        <path
+            android:fillColor="#06B6D4"
+            android:pathData="M32,0C14.327,0,0,14.327,0,32s14.327,32,32,32s32,-14.327,32,-32S49.673,0,32,0zM32,58c-14.359,0,-26,-11.641,-26,-26S17.641,6,32,6s26,11.641,26,26S46.359,58,32,58z"/>
+        <path
+            android:fillColor="#06B6D4"
+            android:pathData="M32,12c-11.046,0,-20,8.954,-20,20s8.954,20,20,20s20,-8.954,20,-20S43.046,12,32,12zM32,46c-7.732,0,-14,-6.268,-14,-14s6.268,-14,14,-14s14,6.268,14,14S39.732,46,32,46z"/>
+        <path
+            android:fillColor="#F97316"
+            android:pathData="M32,24c-4.418,0,-8,3.582,-8,8s3.582,8,8,8s8,-3.582,8,-8S36.418,24,32,24z"/>
+    </group>
 </vector>

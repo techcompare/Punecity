@@ -1,0 +1,61 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Modern gradient background -->
+    <path
+        android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor" xmlns:aapt="http://schemas.android.com/aapt">
+            <gradient
+                android:startY="0"
+                android:startX="0"
+                android:endY="108"
+                android:endX="108"
+                android:type="linear">
+                <item android:offset="0" android:color="#06B6D4"/>
+                <item android:offset="1" android:color="#0891B2"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    
+    <!-- Stylized "P" letter for Pune -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,30 L45,30 Q60,30 60,45 Q60,60 45,60 L35,60 L35,78 L28,78 L28,30 Z M35,37 L35,53 L45,53 Q53,53 53,45 Q53,37 45,37 Z"
+        android:fillAlpha="0.95"/>
+    
+    <!-- Location pin accent -->
+    <path
+        android:fillColor="#F97316"
+        android:pathData="M70,35 C70,28 75,23 81,23 C87,23 92,28 92,35 C92,42 81,52 81,52 C81,52 70,42 70,35 Z"/>
+    
+    <!-- Pin center dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M81,35 m-3.5,0 a3.5,3.5 0,1,1 7,0 a3.5,3.5 0,1,1 -7,0"/>
+    
+    <!-- Curved accent line -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M52,65 Q62,70 72,65"
+        android:strokeAlpha="0.4"/>
+    
+    <!-- Modern dots accent -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M68,75 m-2,0 a2,2 0,1,1 4,0 a2,2 0,1,1 -4,0"
+        android:fillAlpha="0.6"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M75,77 m-1.5,0 a1.5,1.5 0,1,1 3,0 a1.5,1.5 0,1,1 -3,0"
+        android:fillAlpha="0.4"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M81,78 m-1,0 a1,1 0,1,1 2,0 a1,1 0,1,1 -2,0"
+        android:fillAlpha="0.3"/>
+</vector>
