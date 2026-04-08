@@ -251,9 +251,8 @@ By downloading, installing, or using Pune Buzz, you agree to be bound by these T
         item { PolicySection("2. Description of Service", """
 Pune Buzz is a city guide app for Pune, India that provides:
 
-• Discovery of places, cafes, heritage sites, and hidden gems
+• Discovery of places, cafes, and heritage sites
 • Community features for sharing experiences
-• Curated itineraries and plans
 • Personal collection of saved places
 
 The app is provided "as is" and we continuously work to improve it.

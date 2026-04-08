@@ -232,7 +232,7 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            "Discover Hidden Gems.\nJoin the Community.\nExplore Like a Local.",
+                            "Discover Places.\nJoin the Community.\nExplore Pune.",
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
